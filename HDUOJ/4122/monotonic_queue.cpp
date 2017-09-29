@@ -136,7 +136,7 @@ void push(int time)
     q[tail] = time;
     tail++;
 	
-	// Pop head if it expires.
+    // Pop head if it expires.
     while (head < tail && time - q[head] > t)
 		pop(LEFT);
 
@@ -149,7 +149,7 @@ int main()
 
     while (true)
     {
-		// Don't forget to initialize!
+        // Don't forget to initialize!
         ans = 0;
         head = 0;
         tail = 0;
@@ -181,11 +181,11 @@ int main()
         {
             push(i);
 
-			// Note that there might be multiple orders at the same time!
-			// Therefore, use while instead of if.
+            // Note that there might be multiple orders at the same time!
+            // Therefore, use while instead of if.
             while (i == order[k].t)
             {
-				// Head is always the minimum.
+                // Head is always the minimum.
                 ans += order[k].num * (cost[q[head]] + s * (i - q[head]));
 
                 k++;
