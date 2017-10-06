@@ -137,4 +137,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+# Tests
+*.in
+*.out
+*.txt
+
 # End of https://www.gitignore.io/api/c,c++,linux,macos,windows
