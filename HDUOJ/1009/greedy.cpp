@@ -34,12 +34,7 @@ int main()
 	{
 		if (m == -1 && n == -1)
 			break;
-		// FUCK!
-		if (n == 0)
-		{
-			printf("0.000\n");
-			continue;
-		}
+
 		for (int i = 0; i < n; i++)
 			cin >> arr[i].javaBean >> arr[i].catFood;
 		sort(arr, arr + n, sortRule);
