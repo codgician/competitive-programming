@@ -13,6 +13,7 @@ data arr[SIZE];
 
 double getArea(data p0, data p1, data p2)
 {
+    // return 0.5 *((p1.x - p0.x) * (p2.y - p0.y) - (p1.y - p0.y) * (p2.x - p0.x));
     return 0.5 * (p0.x * p1.y + p2.x * p0.y + p1.x * p2.y - p2.x * p1.y - p0.x * p2.y - p1.x * p0.y);
 }
 
