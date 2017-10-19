@@ -28,7 +28,7 @@ int main()
         int startPt = 0;
         while (startPt < nodeNum)
         {
-            sort(degree, degree + nodeNum, cmpRule);
+            sort(degree + startPt, degree + nodeNum, cmpRule);
             if (degree[nodeNum - 1] < 0)
             {
                 ans = false;
