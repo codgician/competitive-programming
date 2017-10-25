@@ -12,25 +12,44 @@ int getFibb(int a, int b, int n)
 int main()
 {
     ios::sync_with_stdio(false);
-    fibb[0] = 1;
     fibb[1] = 1;
-    int a, b, n;
+    fibb[2] = 1;
+    int a, b, n, cycStart, cycEnd, cycLength;
     while (cin >> a >> b >> n)
     {
         if (a == 0 && b == 0 && n == 0)
             break;
-        int cntPt;
-        for (cntPt = 2; cntPt < 50; cntPt++)
+        int i = 3;
+        while (true)
         {
-            fibb[cntPt] = getFibb(a, b, cntPt);
-            if (fibb[cntPt] == fibb[1] && fibb[cntPt - 1] == fibb[0])
+            fibb[i] = getFibb(a, b, i);
+            bool flag = false;
+            for (int j = 2; j < i; j++)
+            {
+                if (fibb[i] == fibb[j] && fibb[i - 1] == fibb[j - 1])
+                {
+                    flag = true;
+                    cycStart = j - 1;
+                    cycEnd = i - 2;
+                    cycLength = i - j;
+                    break;
+                }
+            }
+            if (flag)
                 break;
+            i++;
         }
-        int tmp = n % (cntPt - 1);
-        if (tmp == 0)
-            cout << fibb[cntPt - 2] << endl;
+
+        if (n <= cycEnd)
+            cout << fibb[n] << endl;
         else
-            cout << fibb[tmp - 1] << endl;
+        {
+            int tmp = (n - cycStart + 1) % cycLength;
+            if (tmp == 0)
+                cout << fibb[cycEnd] << endl;
+            else
+                cout << fibb[cycStart + tmp - 1] << endl;
+        }
     }
     return 0;
 }
