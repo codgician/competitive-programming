@@ -1,46 +1,43 @@
-// Greedy algorithm.
-// f stands for final. t stands for temporary.
-
 #include <iostream>
-#define MAXN 1000010
+#include <cstdio>
+#include <climits>
+#define MAXN 100001
 using namespace std;
-
-int arr[MAXN];
 
 int main()
 {
     ios::sync_with_stdio(false);
-
-    int caseCount;
-    cin >> caseCount;
-    for (int i = 1; i <= caseCount; i++)
+    int caseNum;
+    cin >> caseNum;
+    for (int i = 1; i <= caseNum; i++)
     {
-        int n;
-        int sum = 0, maxSum = -100000, fStart, fEnd, tStart = 0;
-        cin >> n;
-        for (int tEnd = 0; tEnd < n; tEnd++)
+        int eleNum, maxSum, sum, tStartPt = 0, startPt = 0, endPt = 0;
+        cin >> eleNum;
+        cin >> sum;
+        maxSum = sum;
+        for (int t = 1; t < eleNum; t++)
         {
-            cin >> arr[tEnd];
-            sum += arr[tEnd];
+            int tmp;
+            cin >> tmp;
+            if (sum < 0)
+            {
+                tStartPt = t;
+                sum = tmp;
+            }
+            else
+                sum += tmp;
+
             if (sum > maxSum)
             {
                 maxSum = sum;
-                fStart = tStart + 1;
-                fEnd = tEnd + 1;
-            }
-
-            // If the sum is even smaller than zero, move on to the next.
-            // The sub-sequence would be bigger without them.
-            if (sum < 0)
-            {
-                sum = 0;
-                tStart = tEnd + 1;
+                endPt = t;
+                startPt = tStartPt;
             }
         }
 
         cout << "Case " << i << ":" << endl;
-        cout << maxSum << " " << fStart << " " << fEnd << endl;
-        if (i < caseCount)
+        cout << maxSum << " " << startPt + 1 << " " << endPt + 1 << endl;
+        if (i < caseNum)
             cout << endl;
     }
     return 0;
