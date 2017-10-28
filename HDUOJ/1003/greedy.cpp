@@ -1,3 +1,10 @@
+// This is actually an optimized version of dp.cpp
+// We can easily figure out its state transition equation:
+// dp[i] = max(dp[i - 1] + arr[i], arr[i])
+// It means that the only thing that matters is whether dp[i - 1] is positive or not!
+// So if the previous sub-sequence has a sum smaller than 0, why need it?
+// The sum must be bigger if we abandon them and start a new sub-sequence!
+
 #include <iostream>
 #include <cstdio>
 #include <climits>
@@ -19,6 +26,8 @@ int main()
         {
             int tmp;
             cin >> tmp;
+
+            // if dp[i - 1] < 0
             if (sum < 0)
             {
                 tStartPt = t;
