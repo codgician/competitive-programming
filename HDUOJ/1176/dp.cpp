@@ -30,19 +30,6 @@ int main()
                 maxTime = pieTime;
         }
 
-        /* Test input.
-        for (int i = 0; i <= maxTime; i++)
-        {
-            for (int j = 0; j < NODE_SIZE; j++)
-            {
-                cout << arr[i][j];
-                if (j == NODE_SIZE - 1)
-                    cout << endl;
-                else
-                    cout << " ";
-            }
-        }*/
-
         for (int j = 0; j < NODE_SIZE; j++)
         {
             dp[maxTime][j] = arr[maxTime][j];
