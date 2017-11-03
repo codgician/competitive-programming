@@ -27,9 +27,11 @@ int main()
         {
             cin >> arr[i].value;
         }
+        int totVolume = 0;
         for (int i = 0; i < boneNum; i++)
         {
             cin >> arr[i].volume;
+            totVolume += arr[i].volume;
         }
 
         for (int j = 0; j <= bagVolume; j++)
@@ -39,10 +41,11 @@ int main()
 
         for (int i = 0; i < boneNum; i++)
         {
-            for (int j = bagVolume; j >= arr[i].volume; j--)
+            for (int j = bagVolume; j >= max(arr[i].volume, bagVolume - totVolume); j--)
             {
                 dp[j] = max(dp[j], dp[j - arr[i].volume] + arr[i].value);
             }
+            totVolume -= arr[i].volume;
         }
         cout << dp[bagVolume] << endl;
     }
