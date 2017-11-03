@@ -14,7 +14,6 @@ typedef struct Node {
 } coin;
 
 coin arr[SIZE];
-
 int dp[PIG_WEIGHT];
 
 int main()
@@ -31,17 +30,7 @@ int main()
         int coinNum;
         cin >> coinNum;
         for (int i = 0; i < coinNum; i++)
-        {
             cin >> arr[i].value >> arr[i].weight;
-
-            // Abandon if weight larger than piggy.
-            if (arr[i].weight > pigWeight)
-            {
-                i--;
-                coinNum--;
-                continue;
-            }
-        }
 
         dp[0] = 0;
         for (int j = 1; j <= pigWeight; j++)
@@ -49,12 +38,9 @@ int main()
 
         for (int i = 0; i < coinNum; i++)
         {
-            for (int j = pigWeight; j >= arr[i].weight; j--)
+            for (int j = arr[i].weight; j <= pigWeight; j++)
             {
-                for (int k = 0; j - k * arr[i].weight >= 0; k++)
-                {
-                    dp[j] = min(dp[j], dp[j - k * arr[i].weight] + k * arr[i].value);
-                }
+                dp[j] = min(dp[j], dp[j - arr[i].weight] + arr[i].value);
             }
         }
 
