@@ -8,8 +8,8 @@
 using namespace std;
 
 typedef struct _Node {
-    double x;
-    double y;
+    long long int x;
+    long long int y;
 } node;
 
 typedef struct _Line {
@@ -21,7 +21,7 @@ line arr[SIZE];
 
 int arrPt = 0;
 
-double getCrossedProduct(node a, node b)
+long long int getCrossedProduct(node a, node b)
 {
     return a.x * b.y - b.x * a.y;
 }
@@ -36,20 +36,20 @@ node nodeMinus(node a, node b)
 
 bool isOnSegment(line a, node b)
 {
-    double xMin = min(a.startPt.x, a.endPt.x);
-    double xMax = max(a.startPt.x, a.endPt.x);
-    double yMin = min(a.startPt.y, a.endPt.y);
-    double yMax = max(a.startPt.y, a.endPt.y);
+    long long int xMin = min(a.startPt.x, a.endPt.x);
+    long long int xMax = max(a.startPt.x, a.endPt.x);
+    long long int yMin = min(a.startPt.y, a.endPt.y);
+    long long int yMax = max(a.startPt.y, a.endPt.y);
 
     return b.x >= xMin && b.x <= xMax && b.y >= yMin && b.y <= yMax;
 }
 
 bool hasIntersect(line a, line b)
 {
-    double cp1 = getCrossedProduct(nodeMinus(a.endPt, a.startPt), nodeMinus(b.startPt, a.startPt));
-    double cp2 = getCrossedProduct(nodeMinus(a.endPt, a.startPt), nodeMinus(b.endPt, a.startPt));
-    double cp3 = getCrossedProduct(nodeMinus(b.endPt, b.startPt), nodeMinus(a.startPt, b.startPt));
-    double cp4 = getCrossedProduct(nodeMinus(b.endPt, b.startPt), nodeMinus(a.endPt, b.startPt));
+    long long int cp1 = getCrossedProduct(nodeMinus(a.endPt, a.startPt), nodeMinus(b.startPt, a.startPt));
+    long long int cp2 = getCrossedProduct(nodeMinus(a.endPt, a.startPt), nodeMinus(b.endPt, a.startPt));
+    long long int cp3 = getCrossedProduct(nodeMinus(b.endPt, b.startPt), nodeMinus(a.startPt, b.startPt));
+    long long int cp4 = getCrossedProduct(nodeMinus(b.endPt, b.startPt), nodeMinus(a.endPt, b.startPt));
 
     if (cp1 * cp2 < 0 && cp3 * cp4 < 0)
         return true;
@@ -65,20 +65,26 @@ bool hasIntersect(line a, line b)
         return false;
 }
 
+bool isNodeEqual(node a, node b)
+{
+    return a.x == b.x && a.y == b.y;
+}
+
 int main()
 {
     ios::sync_with_stdio(false);
     int pipeNum;
     while (cin >> pipeNum)
     {
+        arrPt = 0;
         for (int i = 0; i < pipeNum; i++)
         {
-            int edgeNum;
-            cin >> edgeNum;
+            int nodeNum;
+            cin >> nodeNum;
 
             node prev;
             cin >> prev.x >> prev.y;
-            for (int i = 1; i < edgeNum; i++)
+            for (int i = 1; i < nodeNum; i++)
             {
                 node cnt;
                 cin >> cnt.x >> cnt.y;
@@ -92,12 +98,21 @@ int main()
         bool isFound = false;
         for (int i = 0; i < arrPt; i++)
         {
+            bool hasEscaped = false;
             for (int j = i + 1; j < arrPt; j++)
             {
-                if (hasIntersect(arr[i], arr[j]))
+                if (!hasEscaped && isNodeEqual(arr[j].startPt, arr[j - 1].endPt))
                 {
-                    isFound = true;
-                    break;
+                    continue;
+                }
+                else
+                {
+                    hasEscaped = true;
+                    if (hasIntersect(arr[i], arr[j]))
+                    {
+                        isFound = true;
+                        break;
+                    }
                 }
             }
 
@@ -105,7 +120,7 @@ int main()
                 break;
         }
 
-        cout << (isFound) ? "Yes" : "No" << endl;
+        cout << ((isFound) ? "Yes" : "No") << endl;
     }
     return 0;
 }
