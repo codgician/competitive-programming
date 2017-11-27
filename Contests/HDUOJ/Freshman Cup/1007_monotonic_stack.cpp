@@ -111,7 +111,7 @@ int main()
         cin >> n;
 
         // Convert the problem from finding the maximum 0-1 matrix
-        // to finding the maximum all 0 / all 1 matrix.
+        // to finding the maximum all-0 / all-1 matrix.
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < n; j++)
@@ -122,17 +122,19 @@ int main()
             }
         }
 
-        // First find biggest all-0 matrix.
+        // First find largest all-0 matrix.
         initTmp(0);
         getAns();
 
-        // Next find biggest all-1 matrix.
+        // Next find largest all-1 matrix.
         initTmp(1);
         getAns();
 
         if (ans == 1)
             ans = 0;
 
+        // I think ans == 1 means such 0-1 matrix don't exist.
+        // But actually the test cases are weak. This is not covered.
         cout << ans << endl;
     }
     return 0;
