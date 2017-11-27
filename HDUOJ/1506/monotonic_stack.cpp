@@ -8,15 +8,15 @@
 using namespace std;
 
 typedef struct Node {
-    long long int height;
-    long long int startPos;
+    int height;
+    int startPos;
 } rec;
 
 rec arr[SIZE];
 
-long long int arrPt = 0;
+int arrPt = 0;
 
-void push(long long int height, long long int startPos)
+void push(int height, int startPos)
 {
     arr[arrPt].height = height;
     arr[arrPt].startPos = startPos;
@@ -33,20 +33,15 @@ rec getHead()
     return arr[arrPt - 1];
 }
 
-long long int getLength()
+int getLength()
 {
     return arrPt;
-}
-
-long long int getMax(long long int a, long long int b)
-{
-    return a > b ? a : b;
 }
 
 int main()
 {
     ios::sync_with_stdio(false);
-    long long int recNum;
+    int recNum;
     while (cin >> recNum)
     {
         if (recNum == 0)
@@ -59,14 +54,14 @@ int main()
 
         for (long long int i = 0; i < recNum; i++)
         {
-            long long int height;
+            int height;
             cin >> height;
 
             int startPos = i;
 
             while (getHead().height > height)
             {
-                ans = getMax(ans, (i - getHead().startPos) * getHead().height);
+                ans = max(ans, (long long int)(i - getHead().startPos) * getHead().height);
                 startPos = getHead().startPos;
                 pop();
             }
@@ -77,7 +72,7 @@ int main()
 
         while (getLength() > 1)
         {
-            ans = getMax(ans, (recNum - getHead().startPos) * getHead().height);
+            ans = max(ans, (long long int)(recNum - getHead().startPos) * getHead().height);
             pop();
         }
 
