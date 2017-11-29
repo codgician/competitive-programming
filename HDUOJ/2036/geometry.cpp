@@ -1,17 +1,18 @@
 #include <iostream>
 #include <cstdio>
 #include <cmath>
+#include <iomanip>
 #define SIZE 10010
 using namespace std;
 
-typedef struct Node {
+typedef struct _Dot {
     int x;
     int y;
-} data;
+} dot;
 
-data arr[SIZE];
+dot arr[SIZE];
 
-double getArea(data p0, data p1, data p2)
+double getArea(dot p0, dot p1, dot p2)
 {
     // return 0.5 *((p1.x - p0.x) * (p2.y - p0.y) - (p1.y - p0.y) * (p2.x - p0.x));
     return 0.5 * (p0.x * p1.y + p2.x * p0.y + p1.x * p2.y - p2.x * p1.y - p0.x * p2.y - p1.x * p0.y);
@@ -20,18 +21,18 @@ double getArea(data p0, data p1, data p2)
 int main()
 {
     ios::sync_with_stdio(false);
-    int dataNum;
-    while (cin >> dataNum)
+    int dotNum;
+    while (cin >> dotNum)
     {
-        if (dataNum == 0)
+        if (dotNum == 0)
             break;
-        for (int i = 0; i < dataNum; i++)
+        for (int i = 0; i < dotNum; i++)
             cin >> arr[i].x >> arr[i].y;
         double area = 0;
-        for (int i = 1; i < dataNum - 1; i++)
+        for (int i = 1; i < dotNum - 1; i++)
             area += getArea(arr[0], arr[i], arr[i + 1]);
 
-        printf("%.1lf\n", area);
+        cout << fixed << setprecision(1) << area << endl;
     }
     return 0;
 }

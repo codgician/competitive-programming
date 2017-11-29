@@ -7,34 +7,34 @@
 #define SIZE 99999
 using namespace std;
 
-typedef struct _Node {
+typedef struct _Dot {
     long long int x;
     long long int y;
-} node;
+} dot;
 
-typedef struct _Line {
-    node startPt;
-    node endPt;
-} line;
+typedef struct _Segment {
+    dot startPt;
+    dot endPt;
+} segment;
 
-line arr[SIZE];
+segment arr[SIZE];
 
 int arrPt = 0;
 
-long long int getCrossedProduct(node a, node b)
+long long int getCrossedProduct(dot a, dot b)
 {
     return a.x * b.y - b.x * a.y;
 }
 
-node nodeMinus(node a, node b)
+dot dotMinus(dot a, dot b)
 {
-    node ans;
+    dot ans;
     ans.x = a.x - b.x;
     ans.y = a.y - b.y;
     return ans;
 }
 
-bool isOnSegment(line a, node b)
+bool isOnSegment(segment a, dot b)
 {
     long long int xMin = min(a.startPt.x, a.endPt.x);
     long long int xMax = max(a.startPt.x, a.endPt.x);
@@ -44,12 +44,12 @@ bool isOnSegment(line a, node b)
     return b.x >= xMin && b.x <= xMax && b.y >= yMin && b.y <= yMax;
 }
 
-bool hasIntersect(line a, line b)
+bool hasIntersect(segment a, segment b)
 {
-    long long int cp1 = getCrossedProduct(nodeMinus(a.endPt, a.startPt), nodeMinus(b.startPt, a.startPt));
-    long long int cp2 = getCrossedProduct(nodeMinus(a.endPt, a.startPt), nodeMinus(b.endPt, a.startPt));
-    long long int cp3 = getCrossedProduct(nodeMinus(b.endPt, b.startPt), nodeMinus(a.startPt, b.startPt));
-    long long int cp4 = getCrossedProduct(nodeMinus(b.endPt, b.startPt), nodeMinus(a.endPt, b.startPt));
+    long long int cp1 = getCrossedProduct(dotMinus(a.endPt, a.startPt), dotMinus(b.startPt, a.startPt));
+    long long int cp2 = getCrossedProduct(dotMinus(a.endPt, a.startPt), dotMinus(b.endPt, a.startPt));
+    long long int cp3 = getCrossedProduct(dotMinus(b.endPt, b.startPt), dotMinus(a.startPt, b.startPt));
+    long long int cp4 = getCrossedProduct(dotMinus(b.endPt, b.startPt), dotMinus(a.endPt, b.startPt));
 
     if (cp1 * cp2 < 0 && cp3 * cp4 < 0)
         return true;
@@ -65,7 +65,7 @@ bool hasIntersect(line a, line b)
         return false;
 }
 
-bool isNodeEqual(node a, node b)
+bool isdotEqual(dot a, dot b)
 {
     return a.x == b.x && a.y == b.y;
 }
@@ -79,14 +79,14 @@ int main()
         arrPt = 0;
         for (int i = 0; i < pipeNum; i++)
         {
-            int nodeNum;
-            cin >> nodeNum;
+            int dotNum;
+            cin >> dotNum;
 
-            node prev;
+            dot prev;
             cin >> prev.x >> prev.y;
-            for (int i = 1; i < nodeNum; i++)
+            for (int i = 1; i < dotNum; i++)
             {
-                node cnt;
+                dot cnt;
                 cin >> cnt.x >> cnt.y;
                 arr[arrPt].startPt = prev;
                 arr[arrPt].endPt = cnt;
@@ -101,7 +101,7 @@ int main()
             bool hasEscaped = false;
             for (int j = i + 1; j < arrPt; j++)
             {
-                if (!hasEscaped && isNodeEqual(arr[j].startPt, arr[j - 1].endPt))
+                if (!hasEscaped && isdotEqual(arr[j].startPt, arr[j - 1].endPt))
                 {
                     continue;
                 }

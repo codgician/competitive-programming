@@ -9,39 +9,39 @@
 #define SIZE 101
 using namespace std;
 
-typedef struct _Node {
+typedef struct _Dot {
     int x;
     int y;
-} node;
+} dot;
 
-node arr[SIZE];
+dot arr[SIZE];
 
-int getCrossedProduct(node a, node b)
+int getCrossedProduct(dot a, dot b)
 {
     return a.x * b.y - b.x * a.y;
 }
 
-double getDistance(node a, node b)
+double getDistance(dot a, dot b)
 {
     return sqrt((double)((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y)));
 }
 
-node nodeMinus(node a, node b)
+dot dotMinus(dot a, dot b)
 {
-    node ans;
+    dot ans;
     ans.x = a.x - b.x;
     ans.y = a.y - b.y;
     return ans;
 }
 
-bool isLeft(node a, node b, node c)
+bool isLeft(dot a, dot b, dot c)
 {
-    return getCrossedProduct(nodeMinus(b, a), nodeMinus(c, a)) > 0;
+    return getCrossedProduct(dotMinus(b, a), dotMinus(c, a)) > 0;
 }
 
-bool cmpRule(node a, node b)
+bool cmpRule(dot a, dot b)
 {
-    int crossedProduct = getCrossedProduct(nodeMinus(a, arr[0]), nodeMinus(b, arr[0]));
+    int crossedProduct = getCrossedProduct(dotMinus(a, arr[0]), dotMinus(b, arr[0]));
     if (crossedProduct < 0)
         return false;
     else if (crossedProduct == 0 && getDistance(a, arr[0]) < getDistance(b, arr[0]))
@@ -51,10 +51,10 @@ bool cmpRule(node a, node b)
 }
 
 // Maintain a stack.
-node graham[SIZE];
+dot graham[SIZE];
 int arrPt = 0;
 
-void push(node n)
+void push(dot n)
 {
     graham[arrPt] = n;
     arrPt++;
@@ -68,49 +68,49 @@ void pop()
 int main()
 {
     ios::sync_with_stdio(false);
-    int nodeNum;
-    while (cin >> nodeNum)
+    int dotNum;
+    while (cin >> dotNum)
     {
-        if (nodeNum == 0)
+        if (dotNum == 0)
             break;
-        else if (nodeNum == 1)
+        else if (dotNum == 1)
         {
             int x, y;
             cin >> x >> y;
             cout << "0.00" << endl;
         }
-        else if (nodeNum == 2)
+        else if (dotNum == 2)
         {
-            node a, b;
+            dot a, b;
             cin >> a.x >> a.y >> b.x >> b.y;
             cout << fixed << setprecision(2) << getDistance(a, b) << endl;
         }
         else
         {
             // Find the point with the minimum y coordinate.
-            int lowestNodeIndex = 0;
-            node lowestNode;
-            lowestNode.y = INT_MAX;
-            for (int i = 0; i < nodeNum; i++)
+            int lowestdotIndex = 0;
+            dot lowestdot;
+            lowestdot.y = INT_MAX;
+            for (int i = 0; i < dotNum; i++)
             {
                 cin >> arr[i].x >> arr[i].y;
-                if (arr[i].y < lowestNode.y || (arr[i].y == lowestNode.y && arr[i].x < lowestNode.x))
+                if (arr[i].y < lowestdot.y || (arr[i].y == lowestdot.y && arr[i].x < lowestdot.x))
                 {
-                    lowestNodeIndex = i;
-                    lowestNode = arr[i];
+                    lowestdotIndex = i;
+                    lowestdot = arr[i];
                 }
             }
-            swap(arr[0], arr[lowestNodeIndex]);
+            swap(arr[0], arr[lowestdotIndex]);
 
             // Sort it!
-            sort(arr + 1, arr + nodeNum, cmpRule);
+            sort(arr + 1, arr + dotNum, cmpRule);
 
             arrPt = 0;
             push(arr[0]);
             push(arr[1]);
             push(arr[2]);
 
-            for (int i = 3; i < nodeNum; i++)
+            for (int i = 3; i < dotNum; i++)
             {
                 while (!isLeft(graham[arrPt - 2], graham[arrPt - 1], arr[i]) && arrPt > 2)
                 {

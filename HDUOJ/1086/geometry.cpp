@@ -7,32 +7,32 @@
 #define SIZE 101
 using namespace std;
 
-typedef struct _Node {
+typedef struct _Dot {
     double x;
     double y;
-} node;
+} dot;
 
-typedef struct _Line {
-    node startPt;
-    node endPt;
-} line;
+typedef struct _Segment {
+    dot startPt;
+    dot endPt;
+} segment;
 
-line arr[SIZE];
+segment arr[SIZE];
 
-double getCrossedProduct(node a, node b)
+double getCrossedProduct(dot a, dot b)
 {
     return a.x * b.y - b.x * a.y;
 }
 
-node nodeMinus(node a, node b)
+dot dotMinus(dot a, dot b)
 {
-    node ans;
+    dot ans;
     ans.x = a.x - b.x;
     ans.y = a.y - b.y;
     return ans;
 }
 
-bool isOnSegment(line a, node b)
+bool isOnSegment(segment a, dot b)
 {
     double xMin = min(a.startPt.x, a.endPt.x);
     double xMax = max(a.startPt.x, a.endPt.x);
@@ -42,12 +42,12 @@ bool isOnSegment(line a, node b)
     return b.x >= xMin && b.x <= xMax && b.y >= yMin && b.y <= yMax;
 }
 
-bool hasIntersect(line a, line b)
+bool hasIntersect(segment a, segment b)
 {
-    double cp1 = getCrossedProduct(nodeMinus(a.endPt, a.startPt), nodeMinus(b.startPt, a.startPt));
-    double cp2 = getCrossedProduct(nodeMinus(a.endPt, a.startPt), nodeMinus(b.endPt, a.startPt));
-    double cp3 = getCrossedProduct(nodeMinus(b.endPt, b.startPt), nodeMinus(a.startPt, b.startPt));
-    double cp4 = getCrossedProduct(nodeMinus(b.endPt, b.startPt), nodeMinus(a.endPt, b.startPt));
+    double cp1 = getCrossedProduct(dotMinus(a.endPt, a.startPt), dotMinus(b.startPt, a.startPt));
+    double cp2 = getCrossedProduct(dotMinus(a.endPt, a.startPt), dotMinus(b.endPt, a.startPt));
+    double cp3 = getCrossedProduct(dotMinus(b.endPt, b.startPt), dotMinus(a.startPt, b.startPt));
+    double cp4 = getCrossedProduct(dotMinus(b.endPt, b.startPt), dotMinus(a.endPt, b.startPt));
 
     if (cp1 * cp2 < 0 && cp3 * cp4 < 0)
         return true;
@@ -66,20 +66,20 @@ bool hasIntersect(line a, line b)
 int main()
 {
     ios::sync_with_stdio(false);
-    int lineNum;
-    while (cin >> lineNum)
+    int segmentNum;
+    while (cin >> segmentNum)
     {
-        if (lineNum == 0)
+        if (segmentNum == 0)
             break;
-        for (int i = 0; i < lineNum; i++)
+        for (int i = 0; i < segmentNum; i++)
         {
             cin >> arr[i].startPt.x >> arr[i].startPt.y >> arr[i].endPt.x >> arr[i].endPt.y;
         }
 
         int ans = 0;
-        for (int i = 0; i < lineNum; i++)
+        for (int i = 0; i < segmentNum; i++)
         {
-            for (int j = i + 1; j < lineNum; j++)
+            for (int j = i + 1; j < segmentNum; j++)
             {
                 if (hasIntersect(arr[i], arr[j]))
                     ans++;

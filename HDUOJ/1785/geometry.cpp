@@ -8,19 +8,19 @@
 #define SIZE 101
 using namespace std;
 
-typedef struct _Node {
+typedef struct _Dot {
     double x;
     double y;
-} node;
+} dot;
 
-node arr[SIZE];
+dot arr[SIZE];
 
-double getCrossedProduct(node a, node b)
+double getCrossedProduct(dot a, dot b)
 {
     return a.x * b.y - b.x * a.y;
 }
 
-bool cmpRule(node a, node b)
+bool cmpRule(dot a, dot b)
 {
     if (getCrossedProduct(a, b) > 0)
         return true;
