@@ -42,7 +42,7 @@ bool isOnSegment(segment a, dot b)
     return b.x >= xMin && b.x <= xMax && b.y >= yMin && b.y <= yMax;
 }
 
-bool hasIntersect(segment a, segment b)
+bool hasIntersection(segment a, segment b)
 {
     double cp1 = getCrossedProduct(dotMinus(a.endPt, a.startPt), dotMinus(b.startPt, a.startPt));
     double cp2 = getCrossedProduct(dotMinus(a.endPt, a.startPt), dotMinus(b.endPt, a.startPt));
@@ -81,7 +81,7 @@ int main()
         {
             for (int j = i + 1; j < segmentNum; j++)
             {
-                if (hasIntersect(arr[i], arr[j]))
+                if (hasIntersection(arr[i], arr[j]))
                     ans++;
             }
         }

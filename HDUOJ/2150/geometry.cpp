@@ -44,7 +44,7 @@ bool isOnSegment(segment a, dot b)
     return b.x >= xMin && b.x <= xMax && b.y >= yMin && b.y <= yMax;
 }
 
-bool hasIntersect(segment a, segment b)
+bool hasIntersection(segment a, segment b)
 {
     long long int cp1 = getCrossedProduct(dotMinus(a.endPt, a.startPt), dotMinus(b.startPt, a.startPt));
     long long int cp2 = getCrossedProduct(dotMinus(a.endPt, a.startPt), dotMinus(b.endPt, a.startPt));
@@ -65,7 +65,7 @@ bool hasIntersect(segment a, segment b)
         return false;
 }
 
-bool isdotEqual(dot a, dot b)
+bool isDotEqual(dot a, dot b)
 {
     return a.x == b.x && a.y == b.y;
 }
@@ -98,17 +98,17 @@ int main()
         bool isFound = false;
         for (int i = 0; i < arrPt; i++)
         {
-            bool hasEscaped = false;
+            bool isContinous = false;
             for (int j = i + 1; j < arrPt; j++)
             {
-                if (!hasEscaped && isdotEqual(arr[j].startPt, arr[j - 1].endPt))
+                if (!isContinous && isDotEqual(arr[j].startPt, arr[j - 1].endPt))
                 {
                     continue;
                 }
                 else
                 {
-                    hasEscaped = true;
-                    if (hasIntersect(arr[i], arr[j]))
+                    isContinous = true;
+                    if (hasIntersection(arr[i], arr[j]))
                     {
                         isFound = true;
                         break;
