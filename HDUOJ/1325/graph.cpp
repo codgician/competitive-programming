@@ -9,7 +9,7 @@
 #define SIZE 1000010
 using namespace std;
 
-int in[SIZE], out[SIZE];
+int in[SIZE];
 bool hasMentioned[SIZE];
 
 int maxPt = 0;
@@ -22,7 +22,6 @@ void init()
     for (int i = 0; i < SIZE; i++)
     {
         in[i] = 0;
-        out[i] = 0;
         hasMentioned[i] = false;
     }
 }
@@ -69,7 +68,6 @@ int main()
         {
             hasMentioned[a] = true;
             hasMentioned[b] = true;
-            out[a]++;
             in[b]++;
             maxPt = max(maxPt, max(a, b));
             if (a == b)
