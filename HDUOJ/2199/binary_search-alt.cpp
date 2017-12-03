@@ -34,9 +34,9 @@ int main()
             while (fabs(result - y) > 1e-5)
             {
                 if (result > y)
-                    right = mid - 1;
+                    right = mid;
                 else if (result < y)
-                    left = mid + 1;
+                    left = mid;
                 else
                     break;
                 mid = (left + right) / 2;

@@ -24,9 +24,9 @@ double work(double left, double right)
         return mid;
 
     if (result > y)
-        return work(left, mid - 1);
+        return work(left, mid);
     else if (result < y)
-        return work(mid + 1, right);
+        return work(mid, right);
     else
         return mid;
 }
