@@ -18,14 +18,17 @@ double calc(double x)
 double work(double left, double right)
 {
     double mid = (left + right) / 2;
+    double result = calc(mid);
 
-    if (fabs(calc(mid) - y) < 1e-5)
+    if (fabs(result - y) < 1e-5)
         return mid;
 
-    if (calc(mid) > y)
+    if (result > y)
         return work(left, mid - 1);
-    else
+    else if (result < y)
         return work(mid + 1, right);
+    else
+        return mid;
 }
 
 int main()
