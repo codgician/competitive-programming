@@ -38,6 +38,9 @@ int main()
 
         for (int i = 0; i < coinNum; i++)
         {
+            if (arr[i].weight > pigWeight)
+                continue;
+
             for (int j = arr[i].weight; j <= pigWeight; j++)
             {
                 dp[j] = min(dp[j], dp[j - arr[i].weight] + arr[i].value);
@@ -45,13 +48,9 @@ int main()
         }
 
         if (dp[pigWeight] == INF)
-        {
             cout << "This is impossible." << endl;
-        }
         else
-        {
             cout << "The minimum amount of money in the piggy-bank is " << dp[pigWeight] << "." << endl;
-        }
     }
     return 0;
 }
