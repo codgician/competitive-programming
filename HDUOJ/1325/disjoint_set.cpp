@@ -13,12 +13,12 @@ int arr[SIZE], in[SIZE];
 bool hasMentioned[SIZE];
 
 int maxPt = 0;
-bool notTree = false;
+bool hasLoop = false;
 
 void init()
 {
     maxPt = 0;
-    notTree = false;
+    hasLoop = false;
     for (int i = 0; i < SIZE; i++)
     {
         arr[i] = i;
@@ -45,14 +45,15 @@ void mergeNode(int a, int b)
     int bParent = getParent(b);
 
     if (aParent != bParent)
-    {
         arr[bParent] = aParent;
-    }
+    // b should only appear once! In degree should always be 1!
+    if (b != bParent || aParent == bParent)
+        hasLoop = true;
 }
 
 bool isTree()
 {
-    if (notTree)
+    if (hasLoop)
         return false;
 
     int ans = 0;
@@ -90,9 +91,6 @@ int main()
         }
         else
         {
-            // Should not contain ring.
-            if (arr[b] != b || getParent(a) == b)
-                notTree = true;
             hasMentioned[a] = true;
             hasMentioned[b] = true;
             mergeNode(a, b);
