@@ -29,27 +29,24 @@ int main()
         int arrPt = 0;
         for (int i = 0; i < riceType; i++)
         {
-            int price, weight;
-            cin >> price >> weight;
-            arr[arrPt].price = price;
-            arr[arrPt].weight = weight;
-            arrPt++;
+            int price, weight, num;
+            cin >> price >> weight >> num;
 
-            int num;
-            cin >> num;
-
-            int tmp = 1, sum = 1;
-            while (num - sum > (tmp << 1))
+            int tmp = 0, sum = 0;
+            while (sum + (1 << tmp) < num)
             {
-                tmp <<= 1;
-                arr[arrPt].price = price * tmp;
-                arr[arrPt].weight = weight * tmp;
+                arr[arrPt].price = (price << tmp);
+                arr[arrPt].weight = (weight << tmp);
                 arrPt++;
-                sum += tmp;
+                sum += (1 << tmp);
+                tmp++;
             }
-            arr[arrPt].price = price * (num - sum);
-            arr[arrPt].weight = weight * (num - sum);
-            arrPt++;
+            if (num > sum)
+            {
+                arr[arrPt].price = price * (num - sum);
+                arr[arrPt].weight = weight * (num - sum);
+                arrPt++;
+            }
         }
 
         for (int i = 0; i <= money; i++)
