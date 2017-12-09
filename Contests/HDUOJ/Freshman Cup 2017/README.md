@@ -1,4 +1,4 @@
-# HDU Freshman Cup
+# HDU Freshman Cup 2017
 
 **11/25/2017 12:00 ~ 16:00**
 
