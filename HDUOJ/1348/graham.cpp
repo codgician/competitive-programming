@@ -129,7 +129,7 @@ int main()
             ans += getDistance(graham[0], graham[arrPt - 1]);
         }
         ans += PI * R * 2;
-        printf("%.0f\n", ans);
+        printf("%.0lf\n", ans);
         if (t < caseNum - 1)
             printf("\n");
     }
