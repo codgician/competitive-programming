@@ -7,7 +7,7 @@
 #include <climits>
 #include <iomanip>
 #define SIZE 101
-#define PI 3.14159
+#define PI acos(-1.0)
 using namespace std;
 
 typedef struct _Dot {
