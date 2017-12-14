@@ -22,19 +22,16 @@ void init()
 
 int work(int leftPt, int rightPt, unsigned long long int n)
 {
-    int midPt = (leftPt + rightPt) / 2;
-
-    if (arr[midPt] >= n && arr[midPt - 1] < n)
-        return midPt;
-
-    if (arr[midPt] < n)
+    while (leftPt <= rightPt)
     {
-        return work(midPt + 1, rightPt, n);
+        int midPt = (leftPt + rightPt) >> 1;
+
+        if (arr[midPt] < n)
+            leftPt = midPt + 1;
+        else
+            rightPt = midPt - 1;
     }
-    else
-    {
-        return work(leftPt, midPt - 1, n);
-    }
+    return rightPt + 1;
 }
 
 int main()
