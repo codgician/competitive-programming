@@ -12,8 +12,8 @@ int interval[26], lastPos[26];
 int main()
 {
     ios::sync_with_stdio(false);
-    string a;
-    cin >> a;
+    string s;
+    cin >> s;
 
     for (int i = 0; i < 26; i++)
     {
@@ -21,21 +21,21 @@ int main()
         lastPos[i] = -1;
     }
 
-    for (int i = 0; i < a.length(); i++)
+    for (int i = 0; i < s.length(); i++)
     {
-        int index = a[i] - 'a';
+        int index = s[i] - 'a';
         interval[index] = max(interval[index], i - lastPos[index] - 1);
         lastPos[index] = i;
     }
 
-    int minInterval = a.length();
+    int minInterval = s.length();
     for (int i = 0; i < 26; i++)
     {
         if (interval[i] != -1)
         {
-            if (lastPos[i] != a.length() - 1)
-                interval[i] = max(interval[i], (int)a.length() - lastPos[i] - 1);
-            if (interval[i] != -1 && interval[i] < minInterval)
+            if (lastPos[i] != s.length() - 1)
+                interval[i] = max(interval[i], (int)s.length() - lastPos[i] - 1);
+            if (interval[i] < minInterval)
                 minInterval = interval[i];
         }
     }
