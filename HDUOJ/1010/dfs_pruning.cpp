@@ -19,25 +19,24 @@ struct Node {
 
 bool getBlockType(int i, int j)
 {
-    return (i & 1) == (j & 1);
+    return (i + j) & 1;
 }
 
 bool dfsCut(int i, int j, int t)
 {
-    int ansType = (getBlockType(i, j) == door.type) ? 0 : 1;
+    int ansType = !(getBlockType(i, j) == door.type);
     if (t & 1 != ansType)
         return false;
     return true;
 }
 
+bool canMove(int i, int j)
+{
+    return i >= 0 && i < n && j >= 0 && j < m && !hasVisited[i][j] && !matrix[i][j];
+}
+
 void dfs(int i, int j, int step)
 {
-    if (hasFound)
-        return;
-
-    if (i < 0 || i >= n || j < 0 || j >= m || hasVisited[i][j] || matrix[i][j])
-        return;
-
     if (i == door.i && j == door.j)
     {
         if (step == t)
@@ -57,9 +56,10 @@ void dfs(int i, int j, int step)
     {
         if (hasFound)
             return;
-        int next_i = i + move_y[t];
-        int next_j = j + move_x[t];
-        dfs(next_i, next_j, step + 1);
+        int next_i = i + move_x[t];
+        int next_j = j + move_y[t];
+        if (canMove(next_i, next_j))
+            dfs(next_i, next_j, step + 1);
     }
 
     hasVisited[i][j] = false;
@@ -71,13 +71,13 @@ int main()
     while (cin >> n >> m >> t)
     {
         hasFound = false;
+        memset(hasVisited, false, sizeof(hasVisited));
         if (n == 0 && m == 0 && t == 0)
             break;
         for (int i = 0; i < n; i++)
         {
             for (int j = 0; j < m; j++)
             {
-                hasVisited[i][j] = false;
                 char a;
                 cin >> a;
                 if (a == 'X')
