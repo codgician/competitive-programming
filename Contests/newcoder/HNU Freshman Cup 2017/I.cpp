@@ -9,7 +9,6 @@
 using namespace std;
 
 bool arr[SIZE][SIZE];  // Can walk?
-bool hasVisited[SIZE][SIZE];
 
 int di[4] = {1, -1, 0, 0}, dj[4] = {0, 0, 1, -1};
 int row, column;
@@ -32,19 +31,15 @@ void floodFill(int i, int j)
 {
     arr[i][j] = false;
     filledBlock++;
-    hasVisited[i][j] = true;
-
     for (int k = 0; k < 4; k++)
     {
         int nexti = i + di[k];
         int nextj = j + dj[k];
-        if (canMove(nexti, nextj) && !hasVisited[nexti][nextj])
+        if (canMove(nexti, nextj))
         {
             floodFill(nexti, nextj);
         }
     }
-
-    hasVisited[i][j] = false;
 }
 
 int main()
@@ -75,7 +70,6 @@ int main()
             }
         }
 
-        memset(hasVisited, false ,sizeof(hasVisited));
         for (int j = 0; j < column; j++)
         {
             if (arr[0][j])
