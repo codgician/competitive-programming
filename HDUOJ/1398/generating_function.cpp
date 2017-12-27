@@ -20,26 +20,20 @@ int main()
         if (n == 0)
             break;
 
-        for (int i = 0; i <= n; i++)
-        {
-            c1[i] = 1;
-            c2[i] = 0;
-        }
+        memset(c1, 0, sizeof(c1));
+        c1[0] = 1;
 
-        for (int i = 2; i <= n; i++)
+        for (int i = 0; i < n; i++)
         {
+            memset(c2, 0, sizeof(c2));
             for (int j = 0; j <= n; j++)
             {
-                for (int k = 0; j + k * i * i <= n; k++)
+                for (int k = 0; j * (i + 1) * (i + 1) + k <= n; k++)
                 {
-                    c2[j + k * i * i] += c1[j];
+                    c2[j * (i + 1) * (i + 1) + k] += c1[k];
                 }
             }
-            for (int j = 0; j <= n; j++)
-            {
-                c1[j] = c2[j];
-                c2[j] = 0;
-            }
+            memcpy(c1, c2, sizeof(c2));
         }
         cout << c1[n] << endl;
     }
