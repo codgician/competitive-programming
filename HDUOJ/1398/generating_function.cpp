@@ -30,9 +30,9 @@ int main()
         {
             for (int j = 0; j <= n; j++)
             {
-                for (int k = 0; k + j <= n; k += i * i)
+                for (int k = 0; j + k * i * i <= n; k++)
                 {
-                    c2[k + j] += c1[j];
+                    c2[j + k * i * i] += c1[j];
                 }
             }
             for (int j = 0; j <= n; j++)
