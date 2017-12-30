@@ -28,19 +28,12 @@ int main()
     ios::sync_with_stdio(false);
     long long int blockNum, colorNum;
     cin >> blockNum >> colorNum;
-    if (blockNum == 1)
-    {
-        cout << 0 << endl;
-    }
-    else
-    {
-        long long int tot = quickPow(colorNum, blockNum) % mod;
-        long long int noSame = ((colorNum % mod) * quickPow(colorNum - 1, blockNum - 1)) % mod;
-        long long int ans = tot - noSame;
-        if (ans < 0)
-            ans += mod;
-        ans %= mod;
-        cout << ans << endl;
-    }
+    long long int tot = quickPow(colorNum, blockNum) % mod;
+    long long int noSame = ((colorNum % mod) * quickPow(colorNum - 1, blockNum - 1)) % mod;
+    long long int ans = tot - noSame;
+    if (ans < 0)
+        ans += mod;
+    ans %= mod;
+    cout << ans << endl;
     return 0;
 }
