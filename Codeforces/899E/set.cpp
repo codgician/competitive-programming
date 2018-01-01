@@ -37,7 +37,7 @@ int main()
     segment.insert({leftPt, rightPt - leftPt});
 
     int ans = 0;
-    while (len.size())
+    while (len.size() > 1)
     {
         ans++;
         pair<int, int> cntLen = *len.begin();
@@ -45,7 +45,7 @@ int main()
         set<pair<int, int> >::iterator leftSegmentPos = segment.lower_bound({cntLen.second, -cntLen.first});
         set<pair<int, int> >::iterator rightSegmentPos = segment.upper_bound({cntLen.second, -cntLen.first});
 
-        // Merge left and right segment if they exist and has the same number
+        // Merge left and right segment if they exist and have the same number
         if (leftSegmentPos != segment.begin() && rightSegmentPos != segment.end())
         {
             leftSegmentPos--;
@@ -62,6 +62,7 @@ int main()
         }
         segment.erase({cntLen.second, -cntLen.first});
     }
+    ans++;
     cout << ans << endl;
     return 0;
 }
