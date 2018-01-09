@@ -61,7 +61,7 @@ int main()
     sort(arr + 0, arr + probNum, cmpRule);
 
     int left = 0, right = probNum;
-    while (left < right)
+    while (left <= right)
     {
         int mid = (left + right) >> 1;
         if (check(mid))
@@ -70,13 +70,12 @@ int main()
         }
         else
         {
-            right = mid;
+            right = mid - 1;
         }
     }
-    // "right" is the first impossible k
-    int ans = right;
-    if (!check(ans))
-        ans--;
+    int ans = 0;
+    if (left > 0)
+        ans = left - 1;
     cout << ans << endl;
     cout << ans << endl;
 
