@@ -33,10 +33,6 @@ int main()
     {
         money[i] = min(money[i], money[i - 1] * 2);
     }
-    for (int i = SIZE - 2; i >= 0; i--)
-    {
-        money[i] = min(money[i], money[i + 1]);
-    }
 
     long long int ans = 0;
     for (int i = 0; i < SIZE - 1; i++)
