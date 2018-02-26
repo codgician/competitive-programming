@@ -19,7 +19,7 @@ int aModeNum, bModeNum, jobNum;
 
 bool canFind(int aModeId)
 {
-    for (int i = 0; i < bModeNum; i++)
+    for (int i = 1; i < bModeNum; i++)
     {
         if (arr[aModeId][i] && !hasTried[i])
         {
