@@ -1,27 +1,32 @@
 #include <iostream>
 #include <cstdio>
-#include <algorithm>
 #include <cmath>
+#include <algorithm>
 #include <cstring>
 #include <string>
 #include <iomanip>
+#include <climits>
+#include <vector>
+#include <queue>
+#include <set>
+#include <map>
 #define SIZE 501
 using namespace std;
 
-bool arr[SIZE][SIZE], used[SIZE];
-int boy[SIZE];  // girlIndex of boy i.
+bool arr[SIZE][SIZE], hasTried[SIZE];
+int boyMatch[SIZE];
 int girlNum, boyNum;
 
-bool canFind(int n)
+bool canFind(int girlId)
 {
     for (int i = 0; i < boyNum; i++)
     {
-        if (arr[n][i] && !used[i])
+        if (arr[girlId][i] && !hasTried[i])
         {
-            used[i] = true;
-            if (boy[i] == -1 || canFind(boy[i]))
+            hasTried[i] = true;
+            if (boyMatch[i] == -1 || canFind(boyMatch[i]))
             {
-                boy[i] = n;
+                boyMatch[i] = girlId;
                 return true;
             }
         }
@@ -37,23 +42,20 @@ int main()
     {
         if (possComb == 0)
             break;
-
-        cin >> girlNum >> boyNum;
         memset(arr, false, sizeof(arr));
-        for (int i = 0; i < boyNum; i++)
-            boy[i] = -1;
-
+        memset(boyMatch, -1, sizeof(boyMatch));
+        cin >> girlNum >> boyNum;
         for (int i = 0; i < possComb; i++)
         {
-            int girl, boy;
-            cin >> girl >> boy;
-            arr[girl - 1][boy - 1] = true;
+            int girlId, boyId;
+            cin >> girlId >> boyId;
+            arr[--girlId][--boyId] = true;
         }
 
         int ans = 0;
         for (int i = 0; i < girlNum; i++)
         {
-            memset(used, false, sizeof(used));
+            memset(hasTried, false, sizeof(hasTried));
             if (canFind(i))
                 ans++;
         }
@@ -62,3 +64,4 @@ int main()
     }
     return 0;
 }
+
