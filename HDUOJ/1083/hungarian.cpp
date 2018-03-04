@@ -35,7 +35,7 @@ bool canFind(int courseId)
     return false;
 }
 
-bool hungarain()
+bool hungarian()
 {
     memset(stuMatch, -1, sizeof(stuMatch));
     int ans = 0;
@@ -73,7 +73,7 @@ int main()
             }
         }
 
-        if (hungarain())
+        if (hungarian())
             cout << "YES" << endl;
         else
             cout << "NO" << endl;

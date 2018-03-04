@@ -49,7 +49,7 @@ bool canFind(int stuId)
     return false;
 }
 
-int hungarain()
+int hungarian()
 {
     memset(roomMatch, -1, sizeof(roomMatch));
     memset(roomEx, 0, sizeof(roomEx));
@@ -134,7 +134,7 @@ int main()
                 arr[stuId][roomId] = -INF;
         }
 
-        int ans = hungarain();
+        int ans = hungarian();
         cout << "Case " << casePt++ << ": " << ans << endl;
     }
     return 0;

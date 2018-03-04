@@ -41,7 +41,7 @@ bool canFind(int rowId)
     return false;
 }
 
-int hungarain()
+int hungarian()
 {
     memset(columnMatch, -1, sizeof(columnMatch));
     int ans = 0;
@@ -109,7 +109,7 @@ int main()
             }
         }
 
-        int ans = hungarain();
+        int ans = hungarian();
         cout << ans << endl;
     }
     return 0;

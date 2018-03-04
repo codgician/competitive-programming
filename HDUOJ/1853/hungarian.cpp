@@ -46,7 +46,7 @@ bool canFind(int srcId)
     return false;
 }
 
-int hungarain()
+int hungarian()
 {
     memset(destMatch, -1, sizeof(destMatch));
     memset(destEx, 0, sizeof(destEx));
@@ -127,7 +127,7 @@ int main()
                 arr[from][to] = -length;
         }
 
-        int ans = hungarain();
+        int ans = hungarian();
         cout << -ans << endl;
     }
     return 0;

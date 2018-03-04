@@ -45,7 +45,7 @@ bool canFind(int houseId)
     return false;
 }
 
-int hungarain()
+int hungarian()
 {
     memset(buyerMatch, -1, sizeof(buyerMatch));
     memset(buyerEx, 0, sizeof(buyerEx));
@@ -114,7 +114,7 @@ int main()
                 cin >> arr[i][j];
             }
         }
-        int ans = hungarain();
+        int ans = hungarian();
         cout << ans << endl;
     }
     return 0;

@@ -34,7 +34,7 @@ bool canFind(int stuId)
     return false;
 }
 
-int hungarain()
+int hungarian()
 {
     memset(partnerMatch, -1, sizeof(partnerMatch));
     int ans = 0;
@@ -64,7 +64,7 @@ int main()
             }
         }
 
-        int ans = hungarain();
+        int ans = hungarian();
         printf("%d\n", stuNum - (ans >> 1));
     }
     return 0;

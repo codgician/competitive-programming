@@ -53,7 +53,7 @@ bool canFind(int blockId)
     return false;
 }
 
-int hungarain()
+int hungarian()
 {
     memset(partnerMatch, -1, sizeof(partnerMatch));
     int ans = 0;
@@ -117,7 +117,7 @@ int main()
             }
         }
 
-        int ans = hungarain();
+        int ans = hungarian();
         cout << ans << endl;
         for (int i = 0; i < cntId; i++)
         {

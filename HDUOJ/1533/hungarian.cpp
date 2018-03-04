@@ -48,7 +48,7 @@ bool canFind(int manId)
     return false;
 }
 
-int hungarain()
+int hungarian()
 {
     memset(houseMatch, -1, sizeof(houseMatch));
     memset(houseEx, 0, sizeof(houseEx));
@@ -150,7 +150,7 @@ int main()
             }
         }
 
-        int ans = -hungarain();
+        int ans = -hungarian();
         cout << ans << endl;
     }
 }
