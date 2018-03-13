@@ -18,7 +18,6 @@ typedef struct _Edge
 {
     int to;
     int capacity;
-    int rev;
     int next;
 } Edge;
 
@@ -28,11 +27,10 @@ bool hasVisited[VERTEX_SIZE];
 
 void addEdge(int from, int to, int capacity)
 {
-    arr[arrPt] = {to, capacity, arrPt + 1, head[from]};
-    arr[arrPt + 1] = {from, 0, arrPt, head[to]};
-    head[from] = arrPt;
-    head[to] = arrPt + 1;
-    arrPt += 2;
+    arr[arrPt] = {to, capacity, head[from]};
+    head[from] = arrPt++;
+    arr[arrPt] = {from, 0, head[to]};
+    head[to] = arrPt++;
 }
 
 int findAguPath(int cntPt, int endPt, int cntFlow)
@@ -53,7 +51,7 @@ int findAguPath(int cntPt, int endPt, int cntFlow)
             if (flowInc > 0)
             {
                 arr[edgePt].capacity -= flowInc;
-                arr[arr[edgePt].rev].capacity += flowInc;
+                arr[edgePt ^ 1].capacity += flowInc;
                 return flowInc;
             }
         }
