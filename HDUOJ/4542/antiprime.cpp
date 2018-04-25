@@ -23,68 +23,68 @@ long long int zeroAns;
 
 void init()
 {
-	for (int i = 1; i < SIZE; i++)
-		oneAnsArr[i] = i;
+    for (int i = 1; i < SIZE; i++)
+        oneAnsArr[i] = i;
 
-	for (int i = 1; i < SIZE; i++)
-	{
-		for (int j = i; j < SIZE; j += i)
-			oneAnsArr[j]--;
+    for (int i = 1; i < SIZE; i++)
+    {
+        for (int j = i; j < SIZE; j += i)
+            oneAnsArr[j]--;
 
-		if (oneAnsArr[oneAnsArr[i]] == 0)
-			oneAnsArr[oneAnsArr[i]] = i;
+        if (oneAnsArr[oneAnsArr[i]] == 0)
+            oneAnsArr[oneAnsArr[i]] = i;
 
-		oneAnsArr[i] = 0;
-	}
+        oneAnsArr[i] = 0;
+    }
 }
 
 
 void dfs(int depth, long long int cnt, int factorNum, int upperLimit)
 {
     if (factorNum > upperLimit)
-    	return;
+        return;
 
     if (factorNum == upperLimit)
-    	zeroAns = min(zeroAns, cnt);
+        zeroAns = min(zeroAns, cnt);
 
     for (int i = 1; factorNum * (i + 1) <= upperLimit; i++)
     {
         if (zeroAns / primeArr[depth] < cnt)
-        	break;
+            break;
 
-       	cnt *= primeArr[depth];
-       	if (upperLimit % (factorNum * (i + 1)) == 0)
-       		dfs(depth + 1, cnt, factorNum * (i + 1), upperLimit);
+        cnt *= primeArr[depth];
+        if (upperLimit % (factorNum * (i + 1)) == 0)
+            dfs(depth + 1, cnt, factorNum * (i + 1), upperLimit);
     }
 }
 
 int main()
 {
-	init();
-	int caseNum;
-	cin >> caseNum;
-	for (int t = 1; t <= caseNum; t++)
-	{
-		int typeId, num;
-		scanf("%d%d", &typeId, &num);
+    init();
+    int caseNum;
+    cin >> caseNum;
+    for (int t = 1; t <= caseNum; t++)
+    {
+        int typeId, num;
+        scanf("%d%d", &typeId, &num);
 
-		printf("Case %d: ", t);
-		if (typeId == 0)
-		{
-			zeroAns = INF;
-			dfs(0, 1, 1, num);
-			if (zeroAns >= INF)
-				printf("INF\n");
-			else
-				printf("%lld\n", zeroAns);
-		}
-		else
-		{
-			if (oneAnsArr[num] == 0)
-				printf("Illegal\n");
-			else
-				printf("%d\n", oneAnsArr[num]);
-		}
-	}
-	return 0;
+        printf("Case %d: ", t);
+        if (typeId == 0)
+        {
+            zeroAns = INF;
+            dfs(0, 1, 1, num);
+            if (zeroAns >= INF)
+                printf("INF\n");
+            else
+                printf("%lld\n", zeroAns);
+        }
+        else
+        {
+            if (oneAnsArr[num] == 0)
+                printf("Illegal\n");
+            else
+                printf("%d\n", oneAnsArr[num]);
+        }
+    }
+    return 0;
 }

@@ -24,17 +24,17 @@ int main()
     int ans = 0;
     if (decVal >= factor)
     {
-    	ans = msgNum * initVal;
+        ans = msgNum * initVal;
     }
     else
     {
-    	for (int i = 0; i < msgNum; i++)
-    	{
-    		int cnt;
-    		cin >> cnt;
-    		ans += (timeLimit - cnt) * (factor - decVal);
-    	}
-    	ans += msgNum * initVal;
+        for (int i = 0; i < msgNum; i++)
+        {
+            int cnt;
+            cin >> cnt;
+            ans += (timeLimit - cnt) * (factor - decVal);
+        }
+        ans += msgNum * initVal;
     }
     cout << ans << endl;
     return 0;

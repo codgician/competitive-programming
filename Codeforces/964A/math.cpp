@@ -18,8 +18,8 @@ using namespace std;
 int main()
 {
     ios::sync_with_stdio(false);
-   	int n;
-   	cin >> n;
-   	cout << (n >> 1) + 1 << endl;
+    int n;
+    cin >> n;
+    cout << (n >> 1) + 1 << endl;
     return 0;
 }
