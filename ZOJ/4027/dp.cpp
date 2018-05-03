@@ -25,7 +25,7 @@ typedef struct _Node
 } Node;
 
 Node arr[SIZE];
-int leftId[SIZE], leftRightId[SIZE];
+int leftPos[SIZE], leftRightId[SIZE];
 long long int rightSum[SIZE];
 long long int dp[SIZE][SIZE];
 
@@ -38,7 +38,7 @@ int main()
         int len;
         cin >> len;
 
-        int leftPt = 0, rightPt = 0;
+        int leftNum = 0, rightNum = 0;
         for (int i = 1; i <= len; i++)
         {
             char ch;
@@ -46,60 +46,51 @@ int main()
             if (ch == '(')
             {
                 arr[i].typeId = LEFT;
-                leftPt++;
-                leftId[leftPt] = i;
-                leftRightId[leftPt] = rightPt;
+                leftNum++;
+                leftPos[leftNum] = i;
+                leftRightId[leftNum] = rightNum;
             }
             else
             {
                 arr[i].typeId = RIGHT;
-                rightPt++;
+                rightNum++;
             }
         }
 
         rightSum[0] = 0;
-        rightPt = 0;
+        rightNum = 0;
         for (int i = 1; i <= len; i++)
         {
             cin >> arr[i].val;
             if (arr[i].typeId == RIGHT)
             {
-                rightPt++;
-                rightSum[rightPt] = rightSum[rightPt - 1] + arr[i].val;
+                rightNum++;
+                rightSum[rightNum] = rightSum[rightNum - 1] + arr[i].val;
             }
         }
 
         memset(dp, 0, sizeof(dp));
         long long int ans = 0;
-        for (int i = leftPt; i >= 1; i--)
+        for (int i = leftNum; i >= 1; i--)
         {
-            int cntFinishedLeft = leftPt - i;
-            for (int j = len - cntFinishedLeft; j >= leftId[i]; j--)
+            int cntFinishedLeft = leftNum - i;
+            for (int j = len - cntFinishedLeft; j >= leftPos[i]; j--)
             {
                 int cntFinishedRight = len - j - cntFinishedLeft;
                 if (j == len - cntFinishedLeft)
                 {
-                    dp[i][j] = dp[i + 1][j + 1] + arr[leftId[i]].val * (rightSum[rightPt - cntFinishedRight] - rightSum[leftRightId[i]]);
+                    dp[i][j] = dp[i + 1][j + 1] + arr[leftPos[i]].val * (rightSum[rightNum - cntFinishedRight] - rightSum[leftRightId[i]]);
                 }
                 else
                 {
-                    dp[i][j] = max(dp[i + 1][j + 1] + arr[leftId[i]].val * (rightSum[rightPt - cntFinishedRight] - rightSum[leftRightId[i]]), dp[i][j + 1]);
+                    dp[i][j] = max(dp[i + 1][j + 1] + arr[leftPos[i]].val * (rightSum[rightNum - cntFinishedRight] - rightSum[leftRightId[i]]), dp[i][j + 1]);
                 }
-
-                if (i == 1)
-                {
-                    ans = max(ans, dp[i][j]);
-                }
+                ans = max(ans, dp[i][j]);
             }
 
-            for (int j = leftId[i] - 1; j >= leftId[i - 1]; j--)
+            for (int j = leftPos[i] - 1; j >= leftPos[i - 1]; j--)
             {
                 dp[i][j] = dp[i][j + 1];
-
-                if (i == 1)
-                {
-                    ans = max(ans, dp[i][j]);
-                }
             }
         }
 
