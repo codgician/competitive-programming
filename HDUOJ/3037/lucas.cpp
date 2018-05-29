@@ -33,18 +33,18 @@ long long int quickPow(long long int a, long long int n)
     return ans;
 }
 
-long long int getComb(long long int m, long long int n)
+long long int getComb(long long int n, long long int m)
 {
     if (m > n)
         return 0;
     return factorialArr[n] * quickPow(factorialArr[m], mod - 2) % mod * quickPow(factorialArr[n - m], mod - 2) % mod;
 }
 
-long long int lucas(long long int m, long long int n)
+long long int lucas(long long int n, long long int m)
 {
     if (n == 0)
         return 1;
-    return getComb(m % mod, n % mod) * lucas(m / mod, n / mod) % mod;
+    return getComb(n % mod, m % mod) * lucas(n / mod, m / mod) % mod;
 }
 
 int main()
@@ -62,7 +62,7 @@ int main()
             factorialArr[i] = factorialArr[i - 1] * i % mod;
         }
 
-        cout << lucas(saveNum, saveNum + treeNum) << endl;
+        cout << lucas(saveNum + treeNum, saveNum) << endl;
     }
     return 0;
 }

@@ -129,7 +129,7 @@ long long int calc(long long int n, long long int prime, long long int mod)
     return ans * calc(n / prime, prime, mod) % mod;
 }
 
-inline long long int multiLucas(long long int m, long long int n, long long int prime, long long int mod)
+inline long long int multiLucas(long long int n, long long int m, long long int prime, long long int mod)
 {
     long long int pNum = 0;
     for (int i = n; i > 0; i /= prime)
@@ -142,7 +142,7 @@ inline long long int multiLucas(long long int m, long long int n, long long int 
     return quickPow(prime, pNum, mod) * calc(n, prime, mod) % mod * getInverse(calc(m, prime, mod), mod) % mod * getInverse(calc(n - m, prime, mod), mod) % mod;
 }
 
-inline long long int extLucas(long long int m, long long int n, long long int mod)
+inline long long int extLucas(long long int n, long long int m, long long int mod)
 {
     equNum = 0;
     long long int modTmp = mod;
@@ -158,7 +158,7 @@ inline long long int extLucas(long long int m, long long int n, long long int mo
                 modTmp /= primeArr[i];
             }
 
-            cstArr[equNum] = multiLucas(m, n, primeArr[i], modArr[equNum]);
+            cstArr[equNum] = multiLucas(n, m, primeArr[i], modArr[equNum]);
             equNum++;
         }
     }
@@ -200,7 +200,7 @@ int main()
         long long int n, m, k;
         cin >> n >> k >> m;
 
-        long long int ans = extLucas(k, n, m);
+        long long int ans = extLucas(n, k, m);
         ans = ans * getDearrange(n - k, m) % m;
         cout << "Case " << t << ": " << ans << endl;
     }
