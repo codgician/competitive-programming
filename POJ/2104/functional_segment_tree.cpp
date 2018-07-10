@@ -62,14 +62,29 @@ void add(int & segPt, int prevPt, int leftPt, int rightPt, int pos, int val)
 
 int query(int leftPt, int rightPt, int qLeftPt, int qRightPt, int k)
 {
-    if (leftPt == rightPt)
-        return leftPt;
+    if (leftPt > rightPt)
+        swap(leftPt, rightPt);
 
-    int midPt = (leftPt + rightPt) >> 1;
-    int leftDelta = segTree[segTree[qRightPt].leftSon].sum - segTree[segTree[qLeftPt].leftSon].sum;
-    if (k <= leftDelta)
-        return query(leftPt, midPt, segTree[qLeftPt].leftSon, segTree[qRightPt].leftSon, k);
-    return query(midPt + 1, rightPt, segTree[qLeftPt].rightSon, segTree[qRightPt].rightSon, k - leftDelta);
+    while (leftPt < rightPt)
+    {
+        int midPt = (leftPt + rightPt) >> 1;
+        int leftDelta = segTree[segTree[qRightPt].leftSon].sum - segTree[segTree[qLeftPt].leftSon].sum;
+        if (k <= leftDelta)
+        {
+            qLeftPt = segTree[qLeftPt].leftSon;
+            qRightPt = segTree[qRightPt].leftSon;
+            rightPt = midPt;
+        }
+        else
+        {
+            qLeftPt = segTree[qLeftPt].rightSon;
+            qRightPt = segTree[qRightPt].rightSon;
+            k -= leftDelta;
+            leftPt = midPt + 1;
+        }
+    }
+
+    return leftPt;
 }
 
 int main()
