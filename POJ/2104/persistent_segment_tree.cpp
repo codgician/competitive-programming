@@ -62,9 +62,6 @@ void add(int & segPt, int prevPt, int leftPt, int rightPt, int pos, int val)
 
 int query(int leftPt, int rightPt, int qLeftPt, int qRightPt, int k)
 {
-    if (leftPt > rightPt)
-        swap(leftPt, rightPt);
-
     while (leftPt < rightPt)
     {
         int midPt = (leftPt + rightPt) >> 1;
