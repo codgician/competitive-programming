@@ -354,6 +354,7 @@ $RECYCLE.BIN/
 *.out
 *.txt
 *.bat
+*.sh
 test.cpp
 std.cpp
 chk.cpp
