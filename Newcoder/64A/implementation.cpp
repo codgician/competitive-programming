@@ -93,16 +93,16 @@ int main()
         getchar();
         cnti--;
         cntj--;
-        int shit;
+        int dir;
         if (ch == 'U')
-            shit = UP;
+            dir = UP;
         else if (ch == 'D')
-            shit = DOWN;
+            dir = DOWN;
         else if (ch == 'L')
-            shit = LEFT;
+            dir = LEFT;
         else if (ch == 'R')
-            shit = RIGHT;
-        if ((ans[cnti][cntj] & shit) > 0)
+            dir = RIGHT;
+        if ((ans[cnti][cntj] & dir) > 0)
             printf("YES\n");
         else
             printf("NO\n");

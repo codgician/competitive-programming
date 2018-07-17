@@ -16,7 +16,6 @@ typedef struct _Chocolate {
 } chocolate;
 
 chocolate arr[SIZE];
-int dp[SIZE];
 
 bool cmpRule(chocolate a, chocolate b)
 {
