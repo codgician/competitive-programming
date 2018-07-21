@@ -141,7 +141,7 @@ int main()
         }
     }
 
-    for (int i = 0; i < arrPt[0]; i++)
+    for (int i = 0; i < arrPt[0]; i += 2)
     {
         int from = arr[0][i ^ 1].to;
         int to = arr[0][i].to;
