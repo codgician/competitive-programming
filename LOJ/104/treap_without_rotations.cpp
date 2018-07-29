@@ -20,7 +20,7 @@ using namespace std;
 typedef struct _TreapNode
 {
     int value;
-    int weight;
+    int key;
     int size;
     int leftSon, rightSon;
 } TreapNode;
@@ -38,7 +38,7 @@ int newNode(int val)
     treapPt++;
     treap[treapPt].size = 1;
     treap[treapPt].value = val;
-    treap[treapPt].weight = rand();
+    treap[treapPt].key = rand();
     treap[treapPt].leftSon = 0;
     treap[treapPt].rightSon = 0;
     return treapPt;
@@ -51,7 +51,7 @@ int merge(int fst, int snd)
     if (!snd)
         return fst;
 
-    if (treap[fst].weight < treap[snd].weight)
+    if (treap[fst].key < treap[snd].key)
     {
         treap[fst].rightSon = merge(treap[fst].rightSon, snd);
         update(fst);
