@@ -97,12 +97,12 @@ int main()
 
         for (int t = 0; t < BLOCK_SIZE; t++)
         {
-            multiply(fstArr[t], dis, tmp);
+            multiply(sndArr[t], dis, tmp);
             for (int i = 0; i < vertexNum; i++)
             {
                 for (int j = 0; j < vertexNum; j++)
                 {
-                    fstArr[t][i][j] = tmp[i][j];
+                    sndArr[t][i][j] = tmp[i][j];
                 }
             }
         }
