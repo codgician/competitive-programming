@@ -1,0 +1,5 @@
+*.c -crlf
+*.cpp -crlf
+*.java -crlf
+*.md -crlf
+*.txt -crlf
