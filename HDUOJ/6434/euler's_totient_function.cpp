@@ -15,10 +15,10 @@
 #include <iterator>
 using namespace std;
 
-#define SIZE 40000010
+#define SIZE 20000010
 
-int factorArr[SIZE], primeArr[SIZE >> 2], phi[SIZE];
-long long int ans[SIZE >> 1];
+int factorArr[SIZE], primeArr[SIZE >> 1], phi[SIZE];
+long long int ans[SIZE];
 int primePt;
 
 void initEuler()
@@ -54,7 +54,7 @@ int main()
     ans[1] = 0;
     for (int i = 2; i <= 20000000; i++)
     {
-        ans[i] = ans[i - 1] + ((phi[i << 1] + 1) >> 1);
+        ans[i] = ans[i - 1] + ((phi[i]) >> (i & 1));
     }
 
     int caseNum;
