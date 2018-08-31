@@ -59,7 +59,7 @@ int getLowbit(int n)
 
 void clear(int pos)
 {
-    for (int i = pos; i <= num; i += getLowbit(i))
+    for (int i = pos; i < SIZE; i += getLowbit(i))
     {
         bitArr[i] = {0, 0};
     }
@@ -67,7 +67,7 @@ void clear(int pos)
 
 void update(int pos, const Ans & val)
 {
-    for (int i = pos; i <= num; i += getLowbit(i))
+    for (int i = pos; i < SIZE; i += getLowbit(i))
     {
         bitArr[i].update(val);
     }
