@@ -21,8 +21,8 @@ using namespace std;
 
 typedef struct _Node
 {
-	int startPt, endPt;
-	int val;
+    int startPt, endPt;
+    int val;
 } Node;
 
 Node nodeArr[PROD_SIZE];
@@ -57,7 +57,7 @@ bool isFullFlow(int startPt, int endPt)
 {
     for (int i = 0; i < vertexNum; i++)
     {
-    	inQueue[i] = false;
+        inQueue[i] = false;
         dis[i] = INT_MAX;
     }
     dis[startPt] = 0;
@@ -152,40 +152,40 @@ int main()
     cin >> caseNum;
     while (caseNum--)
     {
-    	memset(head, -1, sizeof(head));
-    	arrPt = 0;
-    	dscPt = 0;
-    	int len, lim, prodNum;
-    	cin >> len >> lim >> prodNum;
+        memset(head, -1, sizeof(head));
+        arrPt = 0;
+        dscPt = 0;
+        int len, lim, prodNum;
+        cin >> len >> lim >> prodNum;
 
-    	for (int i = 0; i < prodNum; i++)
-    	{
-    		cin >> nodeArr[i].startPt >> nodeArr[i].endPt >> nodeArr[i].val;
-    		nodeArr[i].endPt++;
-    		dscArr[dscPt++] = nodeArr[i].startPt;
-    		dscArr[dscPt++] = nodeArr[i].endPt;
-    	}
+        for (int i = 0; i < prodNum; i++)
+        {
+            cin >> nodeArr[i].startPt >> nodeArr[i].endPt >> nodeArr[i].val;
+            nodeArr[i].endPt++;
+            dscArr[dscPt++] = nodeArr[i].startPt;
+            dscArr[dscPt++] = nodeArr[i].endPt;
+        }
 
-    	sort(dscArr + 0, dscArr + dscPt);
-    	dscPt = unique(dscArr + 0, dscArr + dscPt) - dscArr;
+        sort(dscArr + 0, dscArr + dscPt);
+        dscPt = unique(dscArr + 0, dscArr + dscPt) - dscArr;
 
-    	int startPt = dscPt, endPt = dscPt + 1;
-    	vertexNum = endPt + 1;
-    	addEdge(startPt, 0, lim, 0);
-    	addEdge(dscPt - 1, endPt, lim, 0);
-    	for (int i = 0; i < dscPt - 1; i++)
-    	{
-    		addEdge(i, i + 1, INT_MAX, 0);
-    	}
+        int startPt = dscPt, endPt = dscPt + 1;
+        vertexNum = endPt + 1;
+        addEdge(startPt, 0, lim, 0);
+        addEdge(dscPt - 1, endPt, lim, 0);
+        for (int i = 0; i < dscPt - 1; i++)
+        {
+            addEdge(i, i + 1, INT_MAX, 0);
+        }
 
-    	for (int i = 0; i < prodNum; i++)
-    	{
-    		int from = lower_bound(dscArr + 0, dscArr + dscPt, nodeArr[i].startPt) - dscArr;
-    		int to = lower_bound(dscArr + 0, dscArr + dscPt, nodeArr[i].endPt) - dscArr;
-    		addEdge(from, to, 1, -nodeArr[i].val);
-    	}
+        for (int i = 0; i < prodNum; i++)
+        {
+            int from = lower_bound(dscArr + 0, dscArr + dscPt, nodeArr[i].startPt) - dscArr;
+            int to = lower_bound(dscArr + 0, dscArr + dscPt, nodeArr[i].endPt) - dscArr;
+            addEdge(from, to, 1, -nodeArr[i].val);
+        }
 
-    	int flow = 0, cost = 0;
+        int flow = 0, cost = 0;
         zkw(startPt, endPt, flow, cost);
         cout << -cost << endl;
     }

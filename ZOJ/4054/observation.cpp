@@ -25,44 +25,44 @@ int main()
     cin >> caseNum;
     while (caseNum--)
     {
-    	string str;
-    	cin >> str;
+        string str;
+        cin >> str;
 
-    	int len = str.size();
-    	long long int ans = 0;
+        int len = str.size();
+        long long int ans = 0;
 
-    	// Base
-    	for (int i = 1; i <= ((len + 1) >> 1); i++)
-    	{
-    		ans += ((long long int)i * (len - i + 1)) << 1;
-    	}
-    	if (len & 1)
-    		ans -= (long long int)((len + 1) >> 1) * ((len + 1) >> 1);
+        // Base
+        for (int i = 1; i <= ((len + 1) >> 1); i++)
+        {
+            ans += ((long long int)i * (len - i + 1)) << 1;
+        }
+        if (len & 1)
+            ans -= (long long int)((len + 1) >> 1) * ((len + 1) >> 1);
 
-    	// Conflicts
-    	int cntPt = 0;
-		for (auto it = str.begin(); it != str.end(); ++it)
-		{
-			if (*it == '0')
-			{
-				// Contribute to seqs that start from here
-				ans += len - cntPt;
-				if (it != str.begin() && *prev(it) == '0')
-				{
-					ans += (long long int)cntPt * (len - cntPt);
-				}
-			}
-			else if (*it == '1')
-			{
-				if (it != str.begin() && *prev(it) == '1')
-				{
-					ans += (long long int)cntPt * (len - cntPt);
-				}
-			}
-			cntPt++;
-		}    	
+        // Conflicts
+        int cntPt = 0;
+        for (auto it = str.begin(); it != str.end(); ++it)
+        {
+            if (*it == '0')
+            {
+                // Contribute to seqs that start from here
+                ans += len - cntPt;
+                if (it != str.begin() && *prev(it) == '0')
+                {
+                    ans += (long long int)cntPt * (len - cntPt);
+                }
+            }
+            else if (*it == '1')
+            {
+                if (it != str.begin() && *prev(it) == '1')
+                {
+                    ans += (long long int)cntPt * (len - cntPt);
+                }
+            }
+            cntPt++;
+        }       
 
-    	cout << ans << endl;
+        cout << ans << endl;
     }
 
     return 0;

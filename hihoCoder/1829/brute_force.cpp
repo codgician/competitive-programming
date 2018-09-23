@@ -27,55 +27,55 @@ int main()
     int num;
     while (cin >> num)
     {
-    	ansMp.clear();
-   		for (int i = 0; i < num; i++)
-   		{
-   			string str;
-   			cin >> str;
+        ansMp.clear();
+        for (int i = 0; i < num; i++)
+        {
+            string str;
+            cin >> str;
 
-   			int len = str.size();
-   			str = str + str;
+            int len = str.size();
+            str = str + str;
 
-   			usedMp.clear();
+            usedMp.clear();
 
-   			for (int startPt = 0; startPt < len; startPt++)
-   			{
-				for (int j = 1; j < (1 << len); j++)
-	   			{
-	   				string cnt = "";
-	   				for (int k = 0; k < len; k++)
-	   				{
-	   					if (j & (1 << k))
-	   					{
-	   						cnt += str[startPt + k];
-	   					}
-	   				}
+            for (int startPt = 0; startPt < len; startPt++)
+            {
+                for (int j = 1; j < (1 << len); j++)
+                {
+                    string cnt = "";
+                    for (int k = 0; k < len; k++)
+                    {
+                        if (j & (1 << k))
+                        {
+                            cnt += str[startPt + k];
+                        }
+                    }
 
-	   				if (usedMp[cnt] == false)
-	   				{
-	   					ansMp[cnt]++;
-	   					usedMp[cnt] = true;
-	   				}
-	   			}
-   			}
-   		}
+                    if (usedMp[cnt] == false)
+                    {
+                        ansMp[cnt]++;
+                        usedMp[cnt] = true;
+                    }
+                }
+            }
+        }
 
-   		string ans = "";
-   		for (auto it = ansMp.begin(); it != ansMp.end(); ++it)
-   		{
-   			if (it -> second == num)
-   			{
-   				if (it -> first.size() > ans.size())
-   				{
-   					ans = it -> first;
-   				}
-   			}
-   		}
+        string ans = "";
+        for (auto it = ansMp.begin(); it != ansMp.end(); ++it)
+        {
+            if (it -> second == num)
+            {
+                if (it -> first.size() > ans.size())
+                {
+                    ans = it -> first;
+                }
+            }
+        }
 
-   		if (ans.empty())
-   			cout << 0 << endl;
-   		else
-   			cout << ans << endl;
+        if (ans.empty())
+            cout << 0 << endl;
+        else
+            cout << ans << endl;
     }
 
     return 0;

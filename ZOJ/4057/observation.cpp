@@ -38,8 +38,8 @@ int main()
     while (caseNum--)
     {
         memset(arr, 0, sizeof(arr));
-    	int num;
-    	scanf("%d", &num);
+        int num;
+        scanf("%d", &num);
 
         int ans = 0;
         for (int i = 0; i < num; i++)
@@ -50,7 +50,7 @@ int main()
             ans = max(ans, ++arr[cat]);
         }
 
-    	printf("%d\n", ans);
+        printf("%d\n", ans);
     }
     return 0;
 }

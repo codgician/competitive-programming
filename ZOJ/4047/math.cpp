@@ -25,37 +25,37 @@ int main()
     cin >> caseNum;
     while (caseNum--)
     {
-    	int len, perfectNum;
-    	cin >> len >> perfectNum;
+        int len, perfectNum;
+        cin >> len >> perfectNum;
 
-    	cout << perfectNum << " ";
+        cout << perfectNum << " ";
 
-    	if (perfectNum <= (len + 1) >> 1)
-    	{
-    		if (perfectNum == 0)
-    			cout << 0 << endl;
-    		else
-    			cout << 1 << endl;
-    	}
-    	else
-    	{
-    		int nonPerfectNum = len - perfectNum;
+        if (perfectNum <= (len + 1) >> 1)
+        {
+            if (perfectNum == 0)
+                cout << 0 << endl;
+            else
+                cout << 1 << endl;
+        }
+        else
+        {
+            int nonPerfectNum = len - perfectNum;
 
-    		if (nonPerfectNum == 0)
-    			cout << perfectNum << endl;
-    		else
-    		{
-    			int dscPerfectNum = nonPerfectNum + 1;
-	    		if (perfectNum % dscPerfectNum == 0)
-	    		{
-	    			cout << perfectNum / dscPerfectNum << endl;
-	    		}
-	    		else
-	    		{
-	    			cout << perfectNum / dscPerfectNum + 1 << endl;
-	    		}
-    		}	
-    	}
+            if (nonPerfectNum == 0)
+                cout << perfectNum << endl;
+            else
+            {
+                int dscPerfectNum = nonPerfectNum + 1;
+                if (perfectNum % dscPerfectNum == 0)
+                {
+                    cout << perfectNum / dscPerfectNum << endl;
+                }
+                else
+                {
+                    cout << perfectNum / dscPerfectNum + 1 << endl;
+                }
+            }   
+        }
     }
 
     return 0;

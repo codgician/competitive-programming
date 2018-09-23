@@ -98,40 +98,40 @@ int main()
     int personNum;
     while (cin >> personNum)
     {
-    	memset(head, -1, sizeof(head));
-    	memset(isFriend, false, sizeof(isFriend));
-    	arrPt = 0;
-    	vertexNum = personNum << 1;
-    	for (int i = 0; i < personNum; i++)
-    	{
-    		int cntId;
-    		isFriend[i][i] = true;
-    		while (true)
-    		{
-    			cin >> cntId;
-    			if (cntId == 0)
-    				break;
-    			cntId--;
-    			isFriend[i][cntId] = true;
-    		}
+        memset(head, -1, sizeof(head));
+        memset(isFriend, false, sizeof(isFriend));
+        arrPt = 0;
+        vertexNum = personNum << 1;
+        for (int i = 0; i < personNum; i++)
+        {
+            int cntId;
+            isFriend[i][i] = true;
+            while (true)
+            {
+                cin >> cntId;
+                if (cntId == 0)
+                    break;
+                cntId--;
+                isFriend[i][cntId] = true;
+            }
 
-    		for (int j = 0; j < personNum; j++)
-    		{
-    			if (!isFriend[i][j])
-    			{
-    				addEdge(i << 1, j << 1 | 1);
-    				addEdge(i << 1 | 1, j << 1);
+            for (int j = 0; j < personNum; j++)
+            {
+                if (!isFriend[i][j])
+                {
+                    addEdge(i << 1, j << 1 | 1);
+                    addEdge(i << 1 | 1, j << 1);
 
-    				addEdge(j << 1, i << 1 | 1);
-    				addEdge(j << 1 | 1, i << 1);
-    			}
-    		}
-    	}
+                    addEdge(j << 1, i << 1 | 1);
+                    addEdge(j << 1 | 1, i << 1);
+                }
+            }
+        }
 
-    	if (twoSat())
-    		cout << "YES" << endl;
-    	else
-    		cout << "NO" << endl;
+        if (twoSat())
+            cout << "YES" << endl;
+        else
+            cout << "NO" << endl;
     }
 
     return 0;

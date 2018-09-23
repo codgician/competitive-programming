@@ -24,10 +24,10 @@ int main()
     int arr[3];
     while (cin >> arr[0] >> arr[1] >> arr[2])
     {
-    	if ((arr[0] & 1) && (arr[1] & 1) && (arr[2] & 1))
-    		cout << "No" << endl;
-    	else
-    		cout << "Yes" << endl;
+        if ((arr[0] & 1) && (arr[1] & 1) && (arr[2] & 1))
+            cout << "No" << endl;
+        else
+            cout << "Yes" << endl;
     }
 
     return 0;

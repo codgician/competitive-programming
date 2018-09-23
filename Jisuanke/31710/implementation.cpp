@@ -17,11 +17,11 @@ using namespace std;
 
 void convert(string & str)
 {
-	for (auto it = str.begin(); it != str.end(); it++)
-	{
-		if (*it >= 'A' && *it <= 'Z')
-			*it = 'a' + *it - 'A';
-	}
+    for (auto it = str.begin(); it != str.end(); it++)
+    {
+        if (*it >= 'A' && *it <= 'Z')
+            *it = 'a' + *it - 'A';
+    }
 }
 
 int main()
@@ -33,17 +33,17 @@ int main()
     int qNum;
     while (cin >> qNum)
     {
-    	while (qNum--)
-    	{
-    		string name;
-	    	cin >> name;
-	    	convert(name);
+        while (qNum--)
+        {
+            string name;
+            cin >> name;
+            convert(name);
 
-	    	if (name == "jessie")
-	    		cout << "Good guy!" << endl;
-	    	else
-	    		cout << "Dare you say that again?" << endl;
-    	}
+            if (name == "jessie")
+                cout << "Good guy!" << endl;
+            else
+                cout << "Dare you say that again?" << endl;
+        }
     }
 
     return 0;
