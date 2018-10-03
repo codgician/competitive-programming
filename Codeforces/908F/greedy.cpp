@@ -137,7 +137,7 @@ int main()
                 maxBlueInterval = max(maxBlueInterval, arr[i].distance - arr[prevBlue].distance);
                 prevBlue = i;
             }
-            else if (arr[i].color = GREEN)
+            else if (arr[i].color == GREEN)
             {
                 maxRedInterval = max(maxRedInterval, arr[i].distance - arr[prevRed].distance);
                 maxBlueInterval = max(maxBlueInterval, arr[i].distance - arr[prevBlue].distance);
