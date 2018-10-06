@@ -43,14 +43,14 @@ bool isFullFlow(int startPt, int endPt)
         dis[i] = INT_MAX;
     memset(inQueue, false, sizeof(inQueue));
     dis[startPt] = 0;
-    queue<int> q;
-    q.push(startPt);
+    deque<int> dq;
+    dq.push_back(startPt);
     inQueue[startPt] = true;
 
-    while (!q.empty())
+    while (!dq.empty())
     {
-        int cntPt = q.front();
-        q.pop();
+        int cntPt = dq.front();
+        dq.pop_front();
         inQueue[cntPt] = false;
 
         for (int i = head[cntPt]; i != -1; i = arr[i].next)
@@ -61,8 +61,11 @@ bool isFullFlow(int startPt, int endPt)
                 dis[nextPt] = dis[cntPt] - arr[i].cost;
                 if (!inQueue[nextPt])
                 {
-                    inQueue[nextPt] = true;
-                    q.push(nextPt);
+                    inQueue[nextPt] = true; 
+                    if (!dq.empty() && dis[nextPt] < dis[dq.front()])
+                        dq.push_front(nextPt);
+                    else
+                        dq.push_back(nextPt);
                 }
             }
         }

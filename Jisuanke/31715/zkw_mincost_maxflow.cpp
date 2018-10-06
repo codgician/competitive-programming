@@ -56,19 +56,17 @@ void addEdge(int from, int to, int capacity, int cost)
 bool isFullFlow(int startPt, int endPt)
 {
     for (int i = 0; i < vertexNum; i++)
-    {
-        inQueue[i] = false;
         dis[i] = INT_MAX;
-    }
+    memset(inQueue, false, sizeof(inQueue));
     dis[startPt] = 0;
-    deque<int> dq;
-    dq.push_back(startPt);
+    queue<int> q;
+    q.push(startPt);
     inQueue[startPt] = true;
 
-    while (!dq.empty())
+    while (!q.empty())
     {
-        int cntPt = dq.front();
-        dq.pop_front();
+        int cntPt = q.front();
+        q.pop();
         inQueue[cntPt] = false;
 
         for (int i = head[cntPt]; i != -1; i = arr[i].next)
@@ -79,11 +77,8 @@ bool isFullFlow(int startPt, int endPt)
                 dis[nextPt] = dis[cntPt] - arr[i].cost;
                 if (!inQueue[nextPt])
                 {
-                    inQueue[nextPt] = true; 
-                    if (!dq.empty() && dis[nextPt] < dis[dq.front()])
-                        dq.push_front(nextPt);
-                    else
-                        dq.push_back(nextPt);
+                    inQueue[nextPt] = true;
+                    q.push(nextPt);
                 }
             }
         }
