@@ -45,7 +45,7 @@ void dijkstra(bool graphId, int startPt)
         dis[i] = LLONG_MAX;
 
     dis[startPt] = 0;
-    priority_queue<pair<int, int> > pq;
+    priority_queue<pair<long long int, int> > pq;
     pq.push(make_pair(0, startPt));
 
     while (!pq.empty())

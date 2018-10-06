@@ -10,82 +10,86 @@
 #include <queue>
 #include <set>
 #include <map>
-#define SIZE 201
-#define INF 100000001
+#define NODE_SIZE 101
+#define PATH_SIZE 20010
+#define INF 10000001
 using namespace std;
 
-int arr[SIZE][SIZE];
-int dis[SIZE];
-bool isShortest[SIZE];
+typedef struct _EdgeNode
+{
+    int to;
+    int length;
+    int next;
+} EdgeNode;
+
+EdgeNode arr[PATH_SIZE];
+int head[NODE_SIZE], dis[NODE_SIZE];
+bool isShortest[NODE_SIZE];
+int nodeNum, pathNum;
+int arrPt = 0;
+
+priority_queue<pair<int, int> > pq;
+// dis[i], i
+
+void addEdge(int from, int to, int length)
+{
+    arr[arrPt].to = to;
+    arr[arrPt].length = length;
+    arr[arrPt].next = head[from];
+    head[from] = arrPt;
+    arrPt++;
+}
+
+void dijkstra(int startPt)
+{
+    memset(isShortest, false, sizeof(isShortest));
+    for (int i = 0; i < nodeNum; i++)
+        dis[i] = INF;
+    dis[startPt] = 0;
+    pq.push(make_pair(0, startPt));
+
+    while (!pq.empty())
+    {
+        int cntNode = pq.top().second;
+        pq.pop();
+        if (isShortest[cntNode])
+            continue;
+        isShortest[cntNode] = true;
+
+        for (int i = head[cntNode]; i != -1; i = arr[i].next)
+        {
+            if (dis[arr[i].to] > dis[cntNode] + arr[i].length)
+            {
+                dis[arr[i].to] = dis[cntNode] + arr[i].length;
+                pq.push(make_pair(-dis[arr[i].to], arr[i].to));
+            }
+        }
+    }
+}
 
 int main()
 {
     ios::sync_with_stdio(false);
-    int townNum, roadNum;
-    while (cin >> townNum >> roadNum)
+    while (cin >> nodeNum >> pathNum)
     {
-        if (townNum == 0 && roadNum == 0)
+        if (nodeNum == 0 && pathNum == 0)
             break;
 
-        for (int i = 0; i < townNum; i++)
-        {
-            for (int j = 0; j < townNum; j++)
-            {
-                if (i == j)
-                    arr[i][j] = 0;
-                else
-                    arr[i][j] = INF;
-            }
-        }
+        arrPt = 0;
+        memset(head, -1, sizeof(head));
 
-        for (int i = 0; i < roadNum; i++)
+        for (int i = 0; i < pathNum; i++)
         {
-            int from, to, len;
-            cin >> from >> to >> len;
+            int from, to, length;
+            cin >> from >> to >> length;
             from--;
             to--;
-            if (len < arr[from][to])
-            {
-                arr[from][to] = len;
-                arr[to][from] = len;
-            }
+            addEdge(from, to, length);
+            addEdge(to, from, length);
         }
 
-        int startPt = 0, endPt = townNum - 1;
-
-        memset(isShortest, false, sizeof(isShortest));
-        isShortest[startPt] = true;
-        for (int i = 0; i < townNum; i++)
-        {
-            dis[i] = arr[startPt][i];
-        }
-
-        for (int t = 0; t < townNum - 1; t++)
-        {
-            int minLen = INF, minPt = -1;
-            for (int i = 0; i < townNum; i++)
-            {
-                if (!isShortest[i] && dis[i] < minLen)
-                {
-                    minLen = dis[i];
-                    minPt = i;
-                }
-            }
-
-            if (minPt == -1)
-                break;
-
-            isShortest[minPt] = true;
-            for (int i = 0; i < townNum; i++)
-            {
-                if (arr[minPt][i] != INF)
-                {
-                    dis[i] = min(dis[i], dis[minPt] + arr[minPt][i]);
-                }
-            }
-        }
-
-            cout << dis[endPt] << endl;
+        dijkstra(0);
+        cout << dis[nodeNum - 1] << endl;
     }
     return 0;
 }
