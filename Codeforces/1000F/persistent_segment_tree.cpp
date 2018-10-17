@@ -15,6 +15,8 @@
 #include <iterator>
 using namespace std;
 
+#define LSON(x) segTree[x].leftSon
+#define RSON(x) segTree[x].rightSon
 #define SIZE 500010
 
 typedef struct _Node
@@ -40,15 +42,15 @@ void build(int & segPt, int leftPt, int rightPt)
     }
 
     int midPt = (leftPt + rightPt) >> 1;
-    build(segTree[segPt].leftSon, leftPt, midPt);
-    build(segTree[segPt].rightSon, midPt + 1, rightPt);
+    build(LSON(segPt), leftPt, midPt);
+    build(RSON(segPt), midPt + 1, rightPt);
 }
 
 void update(int & segPt, int prevPt, int leftPt, int rightPt, int pos, int val)
 {
     segPt = ++cntPt;
-    segTree[segPt].leftSon = segTree[prevPt].leftSon;
-    segTree[segPt].rightSon = segTree[prevPt].rightSon;
+    LSON(segPt) = LSON(prevPt);
+    RSON(segPt) = RSON(prevPt);
 
     if (leftPt == rightPt)
     {
@@ -58,10 +60,10 @@ void update(int & segPt, int prevPt, int leftPt, int rightPt, int pos, int val)
 
     int midPt = (leftPt + rightPt) >> 1;
     if (pos <= midPt)
-        update(segTree[segPt].leftSon, segTree[prevPt].leftSon, leftPt, midPt, pos, val);
+        update(LSON(segPt), LSON(prevPt), leftPt, midPt, pos, val);
     else
-        update(segTree[segPt].rightSon, segTree[prevPt].rightSon, midPt + 1, rightPt, pos, val);
-    segTree[segPt].minPt = min(segTree[segTree[segPt].leftSon].minPt, segTree[segTree[segPt].rightSon].minPt);
+        update(RSON(segPt), RSON(prevPt), midPt + 1, rightPt, pos, val);
+    segTree[segPt].minPt = min(segTree[LSON(segPt)].minPt, segTree[RSON(segPt)].minPt);
 }
 
 pair<int, int> query(int segPt, int leftPt, int rightPt, int qLeftPt, int qRightPt)
@@ -74,9 +76,9 @@ pair<int, int> query(int segPt, int leftPt, int rightPt, int qLeftPt, int qRight
     pair<int, int> ans = make_pair(INT_MAX, 0);
     int midPt = (leftPt + rightPt) >> 1;
     if (qLeftPt <= midPt)
-        ans = min(ans, query(segTree[segPt].leftSon, leftPt, midPt, qLeftPt, qRightPt));
+        ans = min(ans, query(LSON(segPt), leftPt, midPt, qLeftPt, qRightPt));
     if (qRightPt > midPt)
-        ans = min(ans, query(segTree[segPt].rightSon, midPt + 1, rightPt, qLeftPt, qRightPt));
+        ans = min(ans, query(RSON(segPt), midPt + 1, rightPt, qLeftPt, qRightPt));
     return ans;
 }
 

@@ -73,7 +73,7 @@ void rangeAdd(int & segPt, int prevPt, int leftPt, int rightPt, int qLeftPt, int
     pushUp(segPt, rightPt - leftPt + 1);
 }
 
-long long int querySum(int segPt, int leftPt, int rightPt, int qLeftPt, int qRightPt, long long int lazy)
+long long int querySum(int segPt, int leftPt, int rightPt, int qLeftPt, int qRightPt, long long int lazy = 0)
 {
     if (leftPt >= qLeftPt && rightPt <= qRightPt)
     {
@@ -112,7 +112,7 @@ int main()
             {
                 int qLeftPt, qRightPt;
                 scanf("%d%d", &qLeftPt, &qRightPt);
-                printf("%lld\n", querySum(root[cntTime], 1, len, qLeftPt, qRightPt, 0));
+                printf("%lld\n", querySum(root[cntTime], 1, len, qLeftPt, qRightPt));
             }
             else if (opr[0] == 'C')
             {
@@ -125,7 +125,7 @@ int main()
             {
                 int qLeftPt, qRightPt, hstTime;
                 scanf("%d%d%d", &qLeftPt, &qRightPt, &hstTime);
-                printf("%lld\n", querySum(root[hstTime], 1, len, qLeftPt, qRightPt, 0));
+                printf("%lld\n", querySum(root[hstTime], 1, len, qLeftPt, qRightPt));
             }
             else if (opr[0] == 'B')
             {
