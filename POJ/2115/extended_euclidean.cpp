@@ -16,7 +16,7 @@
 #define UPPER_LIMIT ((long long int)1 << k)
 using namespace std;
 
-long long int extEuclid(long long int a, long long int b, long long int &x, long long int &y)
+long long int extEuclidean(long long int a, long long int b, long long int &x, long long int &y)
 {
     if (b == 0)
     {
@@ -25,7 +25,7 @@ long long int extEuclid(long long int a, long long int b, long long int &x, long
         return a;
     }
 
-    long long int gcd = extEuclid(b, a % b, x, y);
+    long long int gcd = extEuclidean(b, a % b, x, y);
     long long int tmp = x;
     x = y;
     y = tmp - y * (a / b);
@@ -43,7 +43,7 @@ int main()
             break;
 
         long long int x, y;
-        long long int gcd = extEuclid(c, UPPER_LIMIT, x, y);
+        long long int gcd = extEuclidean(c, UPPER_LIMIT, x, y);
 
         if ((b - a) % gcd != 0)
         {

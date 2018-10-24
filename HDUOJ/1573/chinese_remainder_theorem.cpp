@@ -18,7 +18,7 @@ using namespace std;
 
 int mod[SIZE], cst[SIZE];
 
-int extEuclid(int a, int b, int &x, int &y)
+int extEuclidean(int a, int b, int &x, int &y)
 {
     if (b == 0)
     {
@@ -27,7 +27,7 @@ int extEuclid(int a, int b, int &x, int &y)
         return a;
     }
 
-    int gcd = extEuclid(b, a % b, x, y);
+    int gcd = extEuclidean(b, a % b, x, y);
     int tmp = x;
     x = y;
     y = tmp - y * (a / b);
@@ -59,7 +59,7 @@ int main()
         {
             int x, y;
             int a = modProd, b = mod[i], c = cst[i] - prevAns;
-            int gcd = extEuclid(a, b, x, y);
+            int gcd = extEuclidean(a, b, x, y);
 
             if (c % gcd != 0)
             {

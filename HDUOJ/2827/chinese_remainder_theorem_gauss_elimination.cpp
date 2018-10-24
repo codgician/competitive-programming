@@ -47,7 +47,7 @@ void initPrime()
     }
 }
 
-long long int extEuclid(long long int a, long long int b, long long int &x, long long int &y)
+long long int extEuclidean(long long int a, long long int b, long long int &x, long long int &y)
 {
     if (b == 0)
     {
@@ -56,7 +56,7 @@ long long int extEuclid(long long int a, long long int b, long long int &x, long
         return a;
     }
 
-    long long int gcd = extEuclid(b, a % b, x, y);
+    long long int gcd = extEuclidean(b, a % b, x, y);
     long long int tmp = x;
     x = y;
     y = tmp - y * (a / b);
@@ -72,7 +72,7 @@ long long int crt()
     {
         long long int x, y;
         long long int a = modProd, b = mod[i], c = cst[i] - prevAns;
-        long long int gcd = extEuclid(a, b, x, y);
+        long long int gcd = extEuclidean(a, b, x, y);
 
         if (c % gcd != 0)
             return -1;

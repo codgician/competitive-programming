@@ -58,7 +58,7 @@ inline long long int quickPow(long long int a, long long int n, long long int mo
     return ans;
 }
 
-long long int extEuclid(long long int a, long long int b, long long int &x, long long int &y)
+long long int extEuclidean(long long int a, long long int b, long long int &x, long long int &y)
 {
     if (b == 0)
     {
@@ -67,7 +67,7 @@ long long int extEuclid(long long int a, long long int b, long long int &x, long
         return a;
     }
 
-    long long int gcd = extEuclid(b, a % b, x, y);
+    long long int gcd = extEuclidean(b, a % b, x, y);
     long long int tmp = x;
     x = y;
     y = tmp - y * (a / b);
@@ -86,7 +86,7 @@ inline long long int crt(long long int mod)
     for (int i = 0; i < equNum; i++)
     {
         long long int x, y;
-        long long int gcd = extEuclid(modProduct / modArr[i], modArr[i], x, y);
+        long long int gcd = extEuclidean(modProduct / modArr[i], modArr[i], x, y);
         long long int tmp = x / gcd;
         ans += cstArr[i] * (modProduct / modArr[i]) * tmp;
     }
@@ -101,7 +101,7 @@ inline long long int crt(long long int mod)
 inline long long int getInverse(long long int a, long long int mod)
 {
     long long int x, y;
-    extEuclid(a, mod, x, y);
+    extEuclidean(a, mod, x, y);
     return (x + mod) % mod;
 }
 

@@ -18,7 +18,7 @@ using namespace std;
 
 long long int mod[SIZE], cst[SIZE];
 
-long long int extEuclid(long long int a, long long int b, long long int &x, long long int &y)
+long long int extEuclidean(long long int a, long long int b, long long int &x, long long int &y)
 {
     if (b == 0)
     {
@@ -27,7 +27,7 @@ long long int extEuclid(long long int a, long long int b, long long int &x, long
         return a;
     }
 
-    long long int gcd = extEuclid(b, a % b, x, y);
+    long long int gcd = extEuclidean(b, a % b, x, y);
     long long int tmp = x;
     x = y;
     y = tmp - y * (a / b);
@@ -56,7 +56,7 @@ int main()
         {
             long long int x, y;
             long long int a = modProd, b = mod[i], c = cst[i] - prevAns;
-            long long int gcd = extEuclid(a, b, x, y);
+            long long int gcd = extEuclidean(a, b, x, y);
 
             long long int cntAns = c / gcd * x;
             if (cntAns < 0)

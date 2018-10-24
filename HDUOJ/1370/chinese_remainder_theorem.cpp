@@ -19,7 +19,7 @@ using namespace std;
 int arr[3], mod[3] = {23, 28, 33};
 const int modProduct = mod[0] * mod[1] * mod[2];
 
-int extEuclid(int a, int b, int &x, int &y)
+int extEuclidean(int a, int b, int &x, int &y)
 {
     if (b == 0)
     {
@@ -28,7 +28,7 @@ int extEuclid(int a, int b, int &x, int &y)
         return a;
     }
 
-    int gcd = extEuclid(b, a % b, x, y);
+    int gcd = extEuclidean(b, a % b, x, y);
     int tmp = x;
     x = y;
     y = tmp - y * (a / b);
@@ -57,7 +57,7 @@ int main()
             for (int i = 0; i < 3; i++)
             {
                 int x, y;
-                int gcd = extEuclid(modProduct / mod[i], mod[i], x, y);
+                int gcd = extEuclidean(modProduct / mod[i], mod[i], x, y);
                 int tmp = x / gcd;
                 ans += arr[i] * (modProduct / mod[i]) * tmp;
             }
