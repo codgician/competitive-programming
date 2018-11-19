@@ -6,6 +6,7 @@
 #include <cstring>
 #include <iomanip>
 #include <climits>
+#include <cfloat>
 #include <stack>
 #include <queue>
 #include <vector>
@@ -15,14 +16,15 @@
 #include <iterator>
 using namespace std;
 
-#define SIZE 20000010
+#define SIZE 40010
 
-int factorArr[SIZE], primeArr[SIZE >> 1], phi[SIZE];
-long long int ans[SIZE];
+int factorArr[SIZE], primeArr[SIZE], phi[SIZE];
+int phiPrefixSum[SIZE];
 int primePt;
 
-void initEuler()
+void initPhi()
 {
+    phi[1] = 1;
     memset(factorArr, 0, sizeof(factorArr));
     primePt = 0;
     for (int i = 2; i < SIZE; i++)
@@ -39,7 +41,7 @@ void initEuler()
             if (primeArr[j] > factorArr[i] || primeArr[j] > (SIZE - 1) / i)
                 break;
             factorArr[i * primeArr[j]] = primeArr[j];
-            phi[i * primeArr[j]] = phi[i] * (i % primeArr[j] == 0 ? primeArr[j] : primeArr[j] - 1);
+            phi[i * primeArr[j]] = phi[i] * (primeArr[j] - (factorArr[i] != primeArr[j]));
         }
     }
 }
@@ -47,23 +49,21 @@ void initEuler()
 int main()
 {
     ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    initEuler();
-    ans[0] = 0;
-    ans[1] = 0;
-    for (int i = 2; i <= 20000000; i++)
+    initPhi();
+    phiPrefixSum[1] = 0;
+    for (int i = 2; i < SIZE; i++)
     {
-        ans[i] = ans[i - 1] + ((phi[i]) >> (i & 1));
+        phiPrefixSum[i] = phiPrefixSum[i - 1] + phi[i];
     }
 
     int caseNum;
     cin >> caseNum;
-    while (caseNum--)
+    for (int t = 1; t <= caseNum; t++)
     {
-        int lim;
-        cin >> lim;
-        cout << ans[lim] << endl;
+        int len;
+        cin >> len;
+        int ans = (phiPrefixSum[len] << 1) + 3;
+        cout << t << " " << len << " " << ans << endl;
     }
     return 0;
 }
