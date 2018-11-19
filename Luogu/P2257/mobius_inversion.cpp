@@ -86,7 +86,7 @@ int main()
         long long int ans = 0;
         for (int i = 1, j; i <= n; i = j + 1)
         {
-            if (n / i == 0)
+            if (n / i == 0 || m / i == 0)
                 break;
             j = min(n / (n / i), m / (m / i));
             ans += (long long int)(sumArr[j] - sumArr[i - 1]) * (n / i) * (m / i);
