@@ -23,7 +23,7 @@ typedef struct _Edge
     int to, len, next;
 } Edge;
 
-Edge arr[SIZE];
+Edge arr[SIZE << 1];
 int head[SIZE], arrPt;
 
 int okNum[SIZE], maxLen[SIZE];
@@ -38,20 +38,24 @@ void addEdge(int from, int to, int len)
     head[from] = arrPt++;
 }
 
-void dfs(int cntPt)
+void dfs(int cntPt, int fatherPt)
 {
     for (int i = head[cntPt]; i != -1; i = arr[i].next)
     {
         int nextPt = arr[i].to;
-
-        dfs(nextPt);
+        if (nextPt == fatherPt)
+            continue;
+        dfs(nextPt, cntPt);
     }
 
+    mst.clear();
     okNum[cntPt] = 0;
     maxLen[cntPt] = 0;
     for (int i = head[cntPt]; i != -1; i = arr[i].next)
     {
         int nextPt = arr[i].to;
+        if (nextPt == fatherPt)
+            continue;
 
         okNum[cntPt] += okNum[nextPt];
         int cntLen = maxLen[nextPt] + arr[i].len;
@@ -79,10 +83,9 @@ void dfs(int cntPt)
     }
 }
 
-bool check(int cnt)
+bool check()
 {
-    cntLim = cnt;
-    dfs(0);
+    dfs(0, -1);
     if (okNum[0] < pathNum)
         return false;
     return true;
@@ -96,7 +99,7 @@ int main()
 
     memset(head, -1, sizeof(head));
     arrPt = 0;
-    
+
     cin >> vertexNum >> pathNum;
 
     int leftPt = INT_MAX, rightPt = 0;
@@ -105,9 +108,8 @@ int main()
         int from, to, len;
         cin >> from >> to >> len;
         from--, to--;
-        if (from > to)
-            swap(from, to);
         addEdge(from, to, len);
+        addEdge(to, from, len);
 
         leftPt = min(leftPt, len);
         rightPt += len;
@@ -118,7 +120,9 @@ int main()
     while (leftPt <= rightPt)
     {
         int midPt = (leftPt + rightPt) >> 1;
-        if (check(midPt))
+        cntLim = midPt;
+
+        if (check())
         {
             leftPt = midPt + 1;
             ans = midPt;
@@ -130,5 +134,6 @@ int main()
     }
 
     cout << ans << endl;
+
     return 0;
 }

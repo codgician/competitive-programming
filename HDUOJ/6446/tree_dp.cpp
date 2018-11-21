@@ -15,8 +15,7 @@
 #include <iterator>
 using namespace std;
 
-#define EDGE_SIZE 100010
-#define VERTEX_SIZE 100010
+#define SIZE 100010
 
 const int mod = 1e9 + 7;
 
@@ -27,12 +26,12 @@ typedef struct _Edge
     int next;
 } Edge;
 
-Edge arr[EDGE_SIZE];
-int head[VERTEX_SIZE], arrPt;
+Edge arr[SIZE << 1];
+int head[SIZE], arrPt;
 int vertexNum;
 
-long long int factorialArr[VERTEX_SIZE];
-long long int dp[VERTEX_SIZE], ans;
+long long int factorialArr[SIZE];
+long long int dp[SIZE], ans;
 
 void addEdge(int from, int to, int len)
 {
@@ -43,17 +42,19 @@ void addEdge(int from, int to, int len)
 void initFactorial()
 {
     factorialArr[0] = 1;
-    for (int i = 1; i < VERTEX_SIZE; i++)
+    for (int i = 1; i < SIZE; i++)
         factorialArr[i] = factorialArr[i - 1] * i % mod;
 }
 
-void dfs(int cntPt)
+void dfs(int cntPt, int parentPt)
 {
     dp[cntPt] = 1;
     for (int i = head[cntPt]; i != -1; i = arr[i].next)
     {
         int nextPt = arr[i].to;
-        dfs(nextPt);
+        if (nextPt == parentPt)
+            continue;
+        dfs(nextPt, cntPt);
         dp[cntPt] += dp[nextPt];
         if (dp[cntPt] >= mod)
             dp[cntPt] %= mod;
@@ -79,13 +80,12 @@ int main()
             cin >> from >> to >> len;
             from--;
             to--;
-            if (from > to)
-                swap(from, to);
             addEdge(from, to, len);
+            addEdge(to, from, len);
         }
 
         ans = 0;
-        dfs(0);
+        dfs(0, -1);
 
         ans = (ans << 1) % mod * factorialArr[vertexNum - 1] % mod;
         cout << ans << endl; 
