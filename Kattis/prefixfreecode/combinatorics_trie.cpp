@@ -123,13 +123,6 @@ void initInvFactorial()
         invFactorialArr[i] = invFactorialArr[i + 1] * (i + 1) % mod;
 }
 
-long long int getPermu(int n, int m)
-{
-    if (m > n)
-        return 0;
-    return factorialArr[n] * invFactorialArr[m] % mod;
-}
-
 int main()
 {
     ios::sync_with_stdio(false);
@@ -163,7 +156,7 @@ int main()
         {
             int unusedNum = getPrefixSum(arr[i]);
             add(arr[i] + 1, -1);
-            ans += unusedNum * getPermu(num - i - 1, num - k) % mod;
+            ans += unusedNum * factorialArr[num - i - 1] % mod * invFactorialArr[num - k] % mod;
             ans %= mod;
         }
         cout << ans << endl;
