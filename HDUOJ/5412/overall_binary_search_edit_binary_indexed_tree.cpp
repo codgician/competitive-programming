@@ -26,13 +26,13 @@ typedef struct _Opr
 } Opr;
 
 // len + (qNum << 1)
-Opr oprArr[SIZE * 3], fstQueue[SIZE * 3], sndQueue[SIZE * 3];
+Opr oprArr[SIZE * 3], fstBkt[SIZE * 3], sndBkt[SIZE * 3];
 
 int arr[SIZE], ans[SIZE];
 
 int bitArr[SIZE];
 
-int len, qNum;
+int len;
 
 int getLowbit(int n)
 {
@@ -47,7 +47,7 @@ void add(int pos, int val)
     }
 }
 
-int getPrefixSum(int pos)
+int prefixSum(int pos)
 {
     int ans = 0;
     for (int i = pos; i > 0; i -= getLowbit(i))
@@ -63,7 +63,7 @@ void divideConquer(int headPt, int tailPt, int leftPt, int rightPt)
     {
         for (int i = headPt; i <= tailPt; i++)
         {
-            if (oprArr[i].id == -1)
+            if (oprArr[i].k == 0)
                 continue;
             ans[oprArr[i].id] = rightPt;
         }
@@ -72,74 +72,53 @@ void divideConquer(int headPt, int tailPt, int leftPt, int rightPt)
 
     int midPt = (leftPt + rightPt) >> 1;
 
-    // Update BIT
     for (int i = headPt; i <= tailPt; i++)
     {
-        if (oprArr[i].k > 0)
-        {
-            // query
-            oprArr[i].cntNum = getPrefixSum(oprArr[i].qRightPt + 1) - getPrefixSum(oprArr[i].qLeftPt);
-        }
-        else if (oprArr[i].qRightPt <= midPt)
-        {
-            // modify && val <= midPt
+        if (oprArr[i].k > 0)    // query
+            oprArr[i].cntNum = prefixSum(oprArr[i].qRightPt + 1) - prefixSum(oprArr[i].qLeftPt);
+        else if (oprArr[i].qRightPt <= midPt)   // modify
             add(oprArr[i].qLeftPt + 1, oprArr[i].cntNum);
-        }
     }
 
-    // Restore BIT
     for (int i = headPt; i <= tailPt; i++)
     {
         if (oprArr[i].k == 0 && oprArr[i].qRightPt <= midPt)
-        {
             add(oprArr[i].qLeftPt + 1, -oprArr[i].cntNum);
-        }
     }
 
-    int fstQPt = 0, sndQPt = 0;
+    int fstPt = 0, sndPt = 0;
     for (int i = headPt; i <= tailPt; i++)
     {
         if (oprArr[i].k > 0)
         {
             // query
             if (oprArr[i].k <= oprArr[i].cntNum)
-            {
-                fstQueue[fstQPt++] = oprArr[i];
-            }
+                fstBkt[fstPt++] = oprArr[i];
             else
             {
                 oprArr[i].k -= oprArr[i].cntNum;
-                sndQueue[sndQPt++] = oprArr[i];
+                sndBkt[sndPt++] = oprArr[i];
             }
         }
         else
         {
             // modify
             if (oprArr[i].qRightPt <= midPt)
-            {
-                fstQueue[fstQPt++] = oprArr[i];
-            }
+                fstBkt[fstPt++] = oprArr[i];
             else
-            {
-                sndQueue[sndQPt++] = oprArr[i];
-            }
+                sndBkt[sndPt++] = oprArr[i];
         }
     }
 
-    int cntPt = headPt;
-    for (int i = 0; i < fstQPt; i++)
-    {
-        oprArr[cntPt++] = fstQueue[i];
-    }
-    for (int i = 0; i < sndQPt; i++)
-    {
-        oprArr[cntPt++] = sndQueue[i];
-    }
+    for (int i = 0; i < fstPt; i++)
+        oprArr[headPt + i] = fstBkt[i];
+    for (int i = 0; i < sndPt; i++)
+        oprArr[headPt + fstPt + i] = sndBkt[i];
 
-    if (fstQPt > 0)
-        divideConquer(headPt, headPt + fstQPt - 1, leftPt, midPt);
-    if (headPt + fstQPt <= tailPt)
-        divideConquer(headPt + fstQPt, tailPt, midPt + 1, rightPt);
+    if (fstPt > 0)
+        divideConquer(headPt, headPt + fstPt - 1, leftPt, midPt);
+    if (sndPt > 0)
+        divideConquer(headPt + fstPt, tailPt, midPt + 1, rightPt);
 }
 
 int main()
@@ -150,12 +129,14 @@ int main()
     while (cin >> len)
     {
         memset(bitArr, 0, sizeof(bitArr));
-        int oprNum = 0, maxVal = INT_MIN;
+        int qNum, oprPt = 0, qPt = 0, minVal = INT_MAX, maxVal = 0;
         for (int i = 0; i < len; i++)
         {
+            // treat original array as insertions
             cin >> arr[i];
-            oprArr[oprNum++] = {i, arr[i], 0, -1, 1};
+            minVal = min(minVal, arr[i]);
             maxVal = max(maxVal, arr[i]);
+            oprArr[oprPt++] = {i, arr[i], 0, -1, 1};
         }
 
         cin >> qNum;
@@ -166,18 +147,16 @@ int main()
             cin >> opr;
             if (opr == 1)
             {
-                // change
                 int pos, val;
                 cin >> pos >> val;
                 pos--;
-
-                // delete original
-                oprArr[oprNum++] = {pos, arr[pos], 0, -1, -1};
-                // insert new
-                oprArr[oprNum++] = {pos, val, 0, -1, 1};
+                // delete
+                oprArr[oprPt++] = {pos, arr[i], 0, -1, -1};
+                // insert
+                oprArr[oprPt++] = {pos, val, 0, -1, 1};
                 arr[pos] = val;
+                minVal = min(minVal, val);
                 maxVal = max(maxVal, val);
-                ans[i] = -1;
             }
             else
             {
@@ -186,18 +165,15 @@ int main()
                 cin >> qLeftPt >> qRightPt >> k;
                 qLeftPt--;
                 qRightPt--;
-                oprArr[oprNum++] = {qLeftPt, qRightPt, k, i, 0};
+                oprArr[oprPt++] = {qLeftPt, qRightPt, k, qPt++, 0};
             }
         }
 
-        divideConquer(0, oprNum - 1, 1, maxVal);
+        divideConquer(0, oprPt - 1, minVal, maxVal);
 
-        for (int i = 0; i < qNum; i++)
+        for (int i = 0; i < qPt; i++)
         {
-            if (ans[i] != -1)
-            {
-                cout << ans[i] << endl;
-            }
+            cout << ans[i] << endl;
         }
     }
     return 0;
