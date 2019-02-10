@@ -34,6 +34,8 @@ void addEdge(int from, int to, long long int capacity)
 {
     arr[arrPt] = {to, capacity, head[from]};
     head[from] = arrPt++;
+    arr[arrPt] = {from, 0, head[to]};
+    head[to] = arrPt++;
 }
 
 bool updateDepth(int startPt, int endPt)
@@ -103,7 +105,7 @@ long long int dinic(int startPt, int endPt)
         for (int i = 0; i < vertexNum; i++)
             lastVisitedEdge[i] = head[i];
 
-        long long int flowInc =  findAguPath(startPt, endPt, LLONG_MAX);
+        long long int flowInc = findAguPath(startPt, endPt, LLONG_MAX);
         if (flowInc == 0)
             break;
         ans += flowInc;
@@ -130,7 +132,6 @@ int main()
         from--;
         to--;
         addEdge(from, to, capacity);
-        addEdge(to, from, -capacity);
     }
 
     long long int ans = dinic(startPt, endPt);
