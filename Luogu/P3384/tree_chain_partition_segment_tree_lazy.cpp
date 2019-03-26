@@ -59,8 +59,6 @@ void build(int segPt, int leftPt, int rightPt) {
 }
 
 void rangeAdd(int segPt, int qLeftPt, int qRightPt, int val) {
-    if (qLeftPt > qRightPt)
-        swap(qLeftPt, qRightPt);
     val %= mod;
     if (segTree[segPt].leftPt >= qLeftPt && segTree[segPt].rightPt <= qRightPt) {
         segTree[segPt].sum += val * (segTree[segPt].rightPt - segTree[segPt].leftPt + 1) % mod;
@@ -79,9 +77,6 @@ void rangeAdd(int segPt, int qLeftPt, int qRightPt, int val) {
 }
 
 int querySum(int segPt, int qLeftPt, int qRightPt) {
-    if (qLeftPt > qRightPt)
-        swap(qLeftPt, qRightPt);
-
     if (segTree[segPt].leftPt >= qLeftPt && segTree[segPt].rightPt <= qRightPt) {
         return segTree[segPt].sum;
     }
@@ -110,7 +105,7 @@ void dfs1(int cntPt) {
         depth[nextPt] = depth[cntPt] + 1;
         dfs1(nextPt);
         siz[cntPt] += siz[nextPt];
-        if (siz[nextPt] > siz[hson[cntPt]])
+        if (hson[cntPt] == -1 || siz[nextPt] > siz[hson[cntPt]])
             hson[cntPt] = nextPt;
     }
 }
@@ -131,7 +126,7 @@ void dfs2(int cntPt, int cntTop) {
     }
 }
 
-int queryChain(int fstPt, int sndPt) {
+int queryRoute(int fstPt, int sndPt) {
     int ans = 0;
     while (top[fstPt] != top[sndPt]) {
         if (depth[top[fstPt]] < depth[top[sndPt]])
@@ -148,7 +143,7 @@ int queryChain(int fstPt, int sndPt) {
     return ans;
 }
 
-void updateChain(int fstPt, int sndPt, int val) {
+void updateRoute(int fstPt, int sndPt, int val) {
     val %= mod;
     while (top[fstPt] != top[sndPt]) {
         if (depth[top[fstPt]] < depth[top[sndPt]])
@@ -206,12 +201,12 @@ int main() {
             int to, val;
             cin >> to >> val;
             to--;
-            updateChain(from, to, val);
+            updateRoute(from, to, val);
         } else if (opr == 2) {
             int to;
             cin >> to;
             to--;
-            cout << queryChain(from, to) << endl;
+            cout << queryRoute(from, to) << endl;
         } else if (opr == 3) {
             int val;
             cin >> val;

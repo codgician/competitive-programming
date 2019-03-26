@@ -60,8 +60,6 @@ void update(int segPt, int cntPt, int val) {
 }
 
 long long int querySum(int segPt, int qLeftPt, int qRightPt) {
-    if (qLeftPt > qRightPt)
-        swap(qLeftPt, qRightPt);
     if (segTree[segPt].leftPt >= qLeftPt && segTree[segPt].rightPt <= qRightPt)
         return segTree[segPt].sum;
 
@@ -75,8 +73,6 @@ long long int querySum(int segPt, int qLeftPt, int qRightPt) {
 }
 
 int queryMax(int segPt, int qLeftPt, int qRightPt) {
-    if (qLeftPt > qRightPt)
-        swap(qLeftPt, qRightPt);
     if (segTree[segPt].leftPt >= qLeftPt && segTree[segPt].rightPt <= qRightPt)
         return segTree[segPt].maxVal;
 
@@ -104,7 +100,7 @@ void dfs1(int cntPt) {
         depth[nextPt] = depth[cntPt] + 1;
         dfs1(nextPt);
         siz[cntPt] += siz[nextPt];
-        if (siz[nextPt] > siz[hson[cntPt]])
+        if (hson[cntPt] == -1 || siz[nextPt] > siz[hson[cntPt]])
             hson[cntPt] = nextPt;
     }
 }
@@ -125,7 +121,7 @@ void dfs2(int cntPt, int cntTop) {
     }
 }
 
-long long int queryChainSum(int fstPt, int sndPt) {
+long long int queryRouteSum(int fstPt, int sndPt) {
     long long int ans = 0;
     while (top[fstPt] != top[sndPt]) {
         if (depth[top[fstPt]] < depth[top[sndPt]])
@@ -140,7 +136,7 @@ long long int queryChainSum(int fstPt, int sndPt) {
     return ans;
 }
 
-int queryChainMax(int fstPt, int sndPt) {
+int queryRouteMax(int fstPt, int sndPt) {
     int ans = INT_MIN;
     while (top[fstPt] != top[sndPt]) {
         if (depth[top[fstPt]] < depth[top[sndPt]])
@@ -190,10 +186,10 @@ int main() {
             update(1, id[from - 1], to);
         } else if (opr[1] == 'M') {
             // QMAX
-            cout << queryChainMax(from - 1, to - 1) << endl;
+            cout << queryRouteMax(from - 1, to - 1) << endl;
         } else {
             // QSUM
-            cout << queryChainSum(from - 1, to - 1) << endl;
+            cout << queryRouteSum(from - 1, to - 1) << endl;
         }
     }
     return 0;
