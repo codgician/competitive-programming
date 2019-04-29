@@ -46,7 +46,7 @@ typedef struct _Matrix
 } Matrix;
 
 
-Matrix matrixQuickPow(Matrix matrix, int n)
+Matrix matrixFastPow(Matrix matrix, int n)
 {
     Matrix ans;
     for (int i = 0; i < SIZE; i++)
@@ -82,7 +82,7 @@ int main()
             }
         }
         ans.arr[1][1] = 0;
-        ans = matrixQuickPow(ans, n);
+        ans = matrixFastPow(ans, n);
         cout << ans.arr[0][1] << endl;
     }
     return 0;

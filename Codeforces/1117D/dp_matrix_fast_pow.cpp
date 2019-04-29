@@ -72,7 +72,7 @@ typedef struct _Matrix
 
 } Matrix;
 
-Matrix matrixQuickPow(Matrix matrix, long long int n)
+Matrix matrixFastPow(Matrix matrix, long long int n)
 {
     // assert(matrix.row == matrix.column);
     Matrix ans(matrix.row, matrix.column);
@@ -87,7 +87,7 @@ Matrix matrixQuickPow(Matrix matrix, long long int n)
     return ans;
 }
 
-long long int quickPow(long long int a, long long int n)
+long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -110,7 +110,7 @@ void initFactorial()
 
 void initInvFactorial()
 {
-    invFactorialArr[SIZE - 1] = quickPow(factorialArr[SIZE - 1], mod - 2);
+    invFactorialArr[SIZE - 1] = fastPow(factorialArr[SIZE - 1], mod - 2);
     for (int i = SIZE - 2; i >= 0; i--)
         invFactorialArr[i] = invFactorialArr[i + 1] * (i + 1) % mod;
 }
@@ -158,7 +158,7 @@ int main() {
     for (int i = 1; i < num; i++)
         trans.arr[i][i - 1] = 1; 
 
-    Matrix res = matrixQuickPow(trans, len - num) * base;
+    Matrix res = matrixFastPow(trans, len - num) * base;
     cout << res.arr[0][0] << endl;
     return 0;
 }

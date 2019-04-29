@@ -30,7 +30,7 @@ inline void initFactorial()
     }
 }
 
-inline long long int quickPow(long long int a, long long int n)
+inline long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -48,7 +48,7 @@ inline long long int getComb(long long int n, long long int m)
 {
     if (n < m)
         return 0;
-    return factorialArr[n] * quickPow(factorialArr[m], mod - 2) % mod * quickPow(factorialArr[n - m], mod - 2) % mod;
+    return factorialArr[n] * fastPow(factorialArr[m], mod - 2) % mod * fastPow(factorialArr[n - m], mod - 2) % mod;
 }
 
 int main()
@@ -67,10 +67,10 @@ int main()
         {
             for (int j = 2; j <= column; j++)
             {
-                dp[i][j] = dp[i][j - 1] * ((quickPow(2, i) - 1 + mod) % mod) % mod;
+                dp[i][j] = dp[i][j - 1] * ((fastPow(2, i) - 1 + mod) % mod) % mod;
                 for (int k = 1; k < i; k++)
                 {
-                    dp[i][j] += dp[i - k][j - 1] * getComb(i, k) % mod * quickPow(2, i - k) % mod;
+                    dp[i][j] += dp[i - k][j - 1] * getComb(i, k) % mod * fastPow(2, i - k) % mod;
                     dp[i][j] %= mod;
                 }
             }

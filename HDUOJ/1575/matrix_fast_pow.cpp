@@ -45,7 +45,7 @@ typedef struct _Matrix
     }
 } Matrix;
 
-Matrix matrixQuickPow(Matrix matrix, int n)
+Matrix matrixFastPow(Matrix matrix, int n)
 {
     Matrix ans;
     for (int i = 0; i < SIZE; i++)
@@ -81,7 +81,7 @@ int main()
                 cin >> mat.arr[i][j];
             }
         }
-        mat = matrixQuickPow(mat, k);
+        mat = matrixFastPow(mat, k);
         int ans = 0;
         for (int i = 0; i < n; i++)
         {

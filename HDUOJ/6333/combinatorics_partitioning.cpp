@@ -26,7 +26,7 @@ long long int factorialArr[SIZE], invFactorialArr[SIZE];
 long long int dp[SIZE][BLOCK_NUM];
 int n, m;
 
-inline long long int quickPow(long long int a, long long int n)
+inline long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     while (n > 0)
@@ -58,7 +58,7 @@ inline void initFactorial()
 
 inline void initInvFactorial()
 {
-    invFactorialArr[SIZE - 1] = quickPow(factorialArr[SIZE - 1], mod - 2);
+    invFactorialArr[SIZE - 1] = fastPow(factorialArr[SIZE - 1], mod - 2);
     for (int i = SIZE - 2; i >= 0; i--)
     {
         invFactorialArr[i] = invFactorialArr[i + 1] * (i + 1);

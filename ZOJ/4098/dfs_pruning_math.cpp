@@ -9,7 +9,7 @@ long long int weight[SIZE], sqrSum, sum, num;
 pair<int, int> deg[SIZE];
 int vis[SIZE], vertexNum, edgeNum;
 
-long long int quickPow(long long int a, long long int n) {
+long long int fastPow(long long int a, long long int n) {
     long long int ans = 1;
     a %= mod;
     while (n > 0) {
@@ -96,7 +96,7 @@ int main() {
                 vis[deg[j].second]--;
     }
 
-    long long int numInv = quickPow(num, mod - 2);
+    long long int numInv = fastPow(num, mod - 2);
     long long int ans = (sqrSum * numInv % mod - sum * sum % mod * numInv % mod * numInv % mod + mod) % mod;
     cout << ans << endl;
 

@@ -22,7 +22,7 @@ long long int dp[SIZE];
 
 const long long int mod = 1e9 + 7;
 
-long long int quickPow(long long int a, long long int n)
+long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -48,7 +48,7 @@ int main()
         int n, k;
         cin >> n >> k;
 
-        long long int twoPowK = quickPow(2, k);
+        long long int twoPowK = fastPow(2, k);
         long long int fac1 = (twoPowK - 1 + mod) % mod, fac2 = (twoPowK - 2 + mod) % mod;
 
         fac1Pow[0] = 1;

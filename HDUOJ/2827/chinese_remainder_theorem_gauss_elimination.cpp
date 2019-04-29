@@ -90,7 +90,7 @@ long long int crt()
     return prevAns % modProd;
 }
 
-long long int quickPow(long long int a, long long int n, long long int mod)
+long long int fastPow(long long int a, long long int n, long long int mod)
 {
     long long int ans = 1;
     a %= mod;
@@ -128,7 +128,7 @@ long long int gauss(long long int mod)
                     swap(x, y);
                     continue;
                 }
-                long long int rev = quickPow(cntArr[y][i], mod - 2, mod);
+                long long int rev = fastPow(cntArr[y][i], mod - 2, mod);
                 long long int multi = (cntArr[x][i] % mod) * rev % mod;
                 for (int k = i; k < n; k++)
                 {

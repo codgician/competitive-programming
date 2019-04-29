@@ -23,7 +23,7 @@ long long int mod;
 vector<pair<int, int> > facArr;
 vector<int> facArr2;
 
-long long int quickPow(long long int a, long long int n)
+long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     while (n > 0)
@@ -36,7 +36,7 @@ long long int quickPow(long long int a, long long int n)
     return ans;
 }
 
-long long int quickPowMod(long long int a, long long int n)
+long long int fastPowMod(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -119,7 +119,7 @@ typedef struct _Matrix
 
 } Matrix;
 
-Matrix matrixQuickPow(Matrix matrix, int n)
+Matrix matrixFastPow(Matrix matrix, int n)
 {
     assert(matrix.row == matrix.column);
 
@@ -156,13 +156,13 @@ long long int getFibo(int n)
     trans.arr[1][0] = 1;
     trans.arr[1][1] = 0;
 
-    Matrix res = matrixQuickPow(trans, n - 1) * base;
+    Matrix res = matrixFastPow(trans, n - 1) * base;
     return res.arr[0][0] % mod;
 }
 
 bool checkQuadRes(int n)
 {
-    return quickPowMod(n, (mod - 1) >> 1) == 1;
+    return fastPowMod(n, (mod - 1) >> 1) == 1;
 }
 
 int main()
@@ -238,7 +238,7 @@ int main()
 
         assert(primeLoop != INT_MAX);
 
-        long long int cntLoop = primeLoop * quickPow(cntPrime, cntExp - 1);
+        long long int cntLoop = primeLoop * fastPow(cntPrime, cntExp - 1);
         ans = ans / __gcd(ans, cntLoop) * cntLoop;
     }
 

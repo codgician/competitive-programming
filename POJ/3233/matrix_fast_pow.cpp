@@ -77,7 +77,7 @@ void printMatrix(Matrix matrix)
     }
 }
 
-Matrix matrixQuickPow(Matrix matrix, long long int n)
+Matrix matrixFastPow(Matrix matrix, long long int n)
 {
     Matrix ans;
     for (int i = 0; i < matrixSize; i++)
@@ -104,12 +104,12 @@ Matrix solve(Matrix a, long long int k)
     Matrix ans, tmp1 = solve(a, k >> 1);
     if (k & 1)
     {
-        Matrix tmp2 = matrixQuickPow(a, (k + 1) >> 1);
+        Matrix tmp2 = matrixFastPow(a, (k + 1) >> 1);
         return tmp1 + tmp2 + tmp1 * tmp2;
     }
     else
     {
-        Matrix tmp2 = matrixQuickPow(a, k >> 1);
+        Matrix tmp2 = matrixFastPow(a, k >> 1);
         return tmp1 + tmp1 * tmp2;
     }
 }

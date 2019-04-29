@@ -22,7 +22,7 @@ const long long int mod = 1e9 + 7;
 long long int invArr[SIZE];
 long long int combArr[SIZE];
 
-long long int quickPow(long long int a, long long int n)
+long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -68,7 +68,7 @@ int main()
         long long int ans = 0;
         for (int i = k; i >= 1; i--)
         {
-            ans = (ans + ((combArr[i] * i % mod * quickPow(i - 1, n - 1) % mod) * sgn + mod) % mod) % mod;
+            ans = (ans + ((combArr[i] * i % mod * fastPow(i - 1, n - 1) % mod) * sgn + mod) % mod) % mod;
             sgn = -sgn;
         }
 

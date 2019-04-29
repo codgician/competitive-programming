@@ -30,7 +30,7 @@ long long int F[2][SIZE], f[2][SIZE], ansArr[2];
 int mulNum[SIZE];
 int num;
 
-long long int quickPow(long long int a, long long int n)
+long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -81,7 +81,7 @@ void initFactorial()
 
 void initInvFactorial()
 {
-    invFactorialArr[SIZE - 1] = quickPow(factorialArr[SIZE - 1], mod - 2);
+    invFactorialArr[SIZE - 1] = fastPow(factorialArr[SIZE - 1], mod - 2);
     for (int i = SIZE - 2; i >= 0; i--)
         invFactorialArr[i] = invFactorialArr[i + 1] * (i + 1) % mod;
 }

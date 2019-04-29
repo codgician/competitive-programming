@@ -103,7 +103,7 @@ typedef struct _Matrix
     }
 } Matrix;
 
-Matrix matrixQuickPow(Matrix matrix, long long int n)
+Matrix matrixFastPow(Matrix matrix, long long int n)
 {
     assert(matrix.row == matrix.column);
 
@@ -161,7 +161,7 @@ int main()
             continue;
         }
 
-        Matrix ret = matrixQuickPow(trans, len - 2);
+        Matrix ret = matrixFastPow(trans, len - 2);
 
         long long int ans = 0;
         for (int i = 0; i < 9; i++)

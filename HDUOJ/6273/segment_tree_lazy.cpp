@@ -31,7 +31,7 @@ SegTree segTree[SIZE << 2];
 
 const long long int mod = 998244353;
 
-long long int quickPow(long long int a, int n)
+long long int fastPow(long long int a, int n)
 {
     long long int ans = 1;
     ans %= mod;
@@ -183,7 +183,7 @@ int main()
 
         int twoAns = query(0, 0, seqLen - 1, UPD_TWO);
         int threeAns = query(0, 0, seqLen - 1, UPD_THREE);
-        long long int ans = (quickPow(2, twoAns) * quickPow(3, threeAns)) % mod;
+        long long int ans = (fastPow(2, twoAns) * fastPow(3, threeAns)) % mod;
 
         cout << ans << endl;
     }

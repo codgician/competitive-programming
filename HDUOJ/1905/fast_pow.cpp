@@ -20,7 +20,7 @@ bool isPrime(long long int n)
     return true;
 }
 
-long long int quickPow(long long int a, long long int n)
+long long int fastPow(long long int a, long long int n)
 {
     int ans = 1;
     a %= mod;
@@ -45,7 +45,7 @@ int main()
         if (p == 0 && a == 0)
             break;
         mod = p;
-        if (!isPrime(p) && quickPow(a, p) % p == a)
+        if (!isPrime(p) && fastPow(a, p) % p == a)
             cout << "yes" << endl;
         else
             cout << "no" << endl;

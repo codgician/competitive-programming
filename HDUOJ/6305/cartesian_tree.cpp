@@ -31,7 +31,7 @@ TreeNode treeArr[SIZE];
 
 long long int invArr[SIZE];
 
-long long int quickPow(long long int a, long long int n)
+long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;

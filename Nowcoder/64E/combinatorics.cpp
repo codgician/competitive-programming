@@ -10,7 +10,7 @@ using namespace std;
 
 const long long int mod = 1000000007;
 
-long long int quickPow(long long int a, long long int n)
+long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -28,8 +28,8 @@ int main()
     ios::sync_with_stdio(false);
     long long int blockNum, colorNum;
     cin >> blockNum >> colorNum;
-    long long int tot = quickPow(colorNum, blockNum) % mod;
-    long long int noSame = ((colorNum % mod) * quickPow(colorNum - 1, blockNum - 1)) % mod;
+    long long int tot = fastPow(colorNum, blockNum) % mod;
+    long long int noSame = ((colorNum % mod) * fastPow(colorNum - 1, blockNum - 1)) % mod;
     long long int ans = tot - noSame;
     if (ans < 0)
         ans += mod;

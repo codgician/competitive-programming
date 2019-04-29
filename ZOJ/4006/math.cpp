@@ -15,7 +15,7 @@ using namespace std;
 const int mod = 1e9 + 7;
 long long int sec, pos;
 
-long long int quickPow(long long int a, long long int n)
+long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -36,14 +36,14 @@ long long int getComb(long long int n, long long int m)
     {
         long long int a = (m + i - n) % mod;
         long long int b = i % mod;
-        ans = ans * (a * quickPow(b, mod - 2) % mod) % mod;
+        ans = ans * (a * fastPow(b, mod - 2) % mod) % mod;
     }
     return ans;
 }
 
 long long int getAns(long long int p, long long int q)
 {
-    return p * quickPow(q, mod - 2) % mod;
+    return p * fastPow(q, mod - 2) % mod;
 }
 
 int main()
@@ -61,7 +61,7 @@ int main()
             cout << getAns(0, 1) << endl;
             continue;
         }
-        cout << getAns(getComb(pos + sec, (sec << 1)), quickPow(4, sec)) << endl;
+        cout << getAns(getComb(pos + sec, (sec << 1)), fastPow(4, sec)) << endl;
     }
     return 0;
 }

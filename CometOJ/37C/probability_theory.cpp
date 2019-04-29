@@ -7,7 +7,7 @@ const int mod = 998244353;
 
 long long int factorialArr[SIZE], invFactorialArr[SIZE];
 
-long long int quickPow(long long int a, long long int n) {
+long long int fastPow(long long int a, long long int n) {
     long long int ans = 1;
     a %= mod;
     while (n > 0) {
@@ -27,7 +27,7 @@ void initFactorial() {
 }
 
 void initInvFactorial() {
-    invFactorialArr[SIZE - 1] = quickPow(factorialArr[SIZE - 1], mod - 2);
+    invFactorialArr[SIZE - 1] = fastPow(factorialArr[SIZE - 1], mod - 2);
     for (int i = SIZE - 2; i >= 0; i--) {
         invFactorialArr[i] = invFactorialArr[i + 1] * (i + 1) % mod;
     }
@@ -52,7 +52,7 @@ int main() {
     for (int i = 0; i <= num; i++) {
         // For each vertex set of size i, iff all edges are erased should it be a independent set
         long long int edgeNum = 1ll * i * (i - 1) / 2;
-        ans += getComb(num, i) * quickPow(x, edgeNum) % mod * quickPow(quickPow(y, edgeNum), mod - 2) % mod;
+        ans += getComb(num, i) * fastPow(x, edgeNum) % mod * fastPow(fastPow(y, edgeNum), mod - 2) % mod;
         ans %= mod;
     }
     cout << ans << endl;

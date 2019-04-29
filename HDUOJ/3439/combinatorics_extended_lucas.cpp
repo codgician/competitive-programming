@@ -44,7 +44,7 @@ inline void initPrime()
     }
 }
 
-inline long long int quickPow(long long int a, long long int n, long long int mod)
+inline long long int fastPow(long long int a, long long int n, long long int mod)
 {
     long long int ans = 1;
     a %= mod;
@@ -118,7 +118,7 @@ long long int calc(long long int n, long long int prime, long long int mod)
             ans = ans * i % mod;
         }
     }
-    ans = quickPow(ans, n / mod, mod);
+    ans = fastPow(ans, n / mod, mod);
     for (int i = n / mod * mod + 1; i <= n; i++)
     {
         if (i % prime != 0)
@@ -139,7 +139,7 @@ inline long long int multiLucas(long long int n, long long int m, long long int 
     for (int i = n - m; i > 0; i /= prime)
         pNum -= i / prime;
 
-    return quickPow(prime, pNum, mod) * calc(n, prime, mod) % mod * getInverse(calc(m, prime, mod), mod) % mod * getInverse(calc(n - m, prime, mod), mod) % mod;
+    return fastPow(prime, pNum, mod) * calc(n, prime, mod) % mod * getInverse(calc(m, prime, mod), mod) % mod * getInverse(calc(n - m, prime, mod), mod) % mod;
 }
 
 inline long long int extLucas(long long int n, long long int m, long long int mod)

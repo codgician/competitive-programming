@@ -19,7 +19,7 @@ using namespace std;
 
 const long long int mod = 1e9 + 7;
 
-long long int quickPow(long long int a, long long int n)
+long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -58,7 +58,7 @@ int main()
                 expnt %= mod - 1;
         }
         expnt = (expnt - 1 + mod - 1) % (mod - 1);
-        cout << quickPow(2, expnt) << endl;
+        cout << fastPow(2, expnt) << endl;
     }
 
     return 0;

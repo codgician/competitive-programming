@@ -24,7 +24,7 @@ const long long int mod = 1e9 + 7;
 int arr[SIZE], valArr[SIZE], tmpNum[SIZE];
 long long int blockAns[BLOCK_SIZE][BLOCK_SIZE], sfxNum[BLOCK_SIZE][SIZE];
 
-long long int quickPow(long long int a, long long int n)
+long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -94,7 +94,7 @@ int main()
                 }
                 else
                 {
-                    blockAns[blockPt][j / blockSize] += quickPow(valArr[arr[j]], sfxNum[blockPt][arr[j]]) * (valArr[arr[j]] - 1) % mod;
+                    blockAns[blockPt][j / blockSize] += fastPow(valArr[arr[j]], sfxNum[blockPt][arr[j]]) * (valArr[arr[j]] - 1) % mod;
                     blockAns[blockPt][j / blockSize] %= mod;
                 }
 
@@ -127,7 +127,7 @@ int main()
                     if (tmpNum[arr[i]] == 0)
                         ans += valArr[arr[i]];
                     else
-                        ans += quickPow(valArr[arr[i]], tmpNum[arr[i]]) * (valArr[arr[i]] - 1) % mod;
+                        ans += fastPow(valArr[arr[i]], tmpNum[arr[i]]) * (valArr[arr[i]] - 1) % mod;
                     ans %= mod;
                     tmpNum[arr[i]]++;
                 }
@@ -147,7 +147,7 @@ int main()
                     if (tmpNum[arr[i]] == 0)
                         ans += valArr[arr[i]];
                     else
-                        ans += quickPow(valArr[arr[i]], tmpNum[arr[i]]) * (valArr[arr[i]] - 1) % mod;
+                        ans += fastPow(valArr[arr[i]], tmpNum[arr[i]]) * (valArr[arr[i]] - 1) % mod;
                     ans %= mod;
                     tmpNum[arr[i]]++;
                 }
@@ -157,7 +157,7 @@ int main()
                     if (tmpNum[arr[i]] == 0)
                         ans += valArr[arr[i]];
                     else
-                        ans += quickPow(valArr[arr[i]], tmpNum[arr[i]]) * (valArr[arr[i]] - 1) % mod;
+                        ans += fastPow(valArr[arr[i]], tmpNum[arr[i]]) * (valArr[arr[i]] - 1) % mod;
                     ans %= mod;
                     tmpNum[arr[i]]++;
                 }

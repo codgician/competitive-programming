@@ -25,7 +25,7 @@ bool cmpRule(letter a, letter b)
     return a.weight > b.weight;
 }
 
-unsigned long long int quickPow(unsigned long long int a, unsigned long long int n)
+unsigned long long int fastPow(unsigned long long int a, unsigned long long int n)
 {
     unsigned long long int ans = 1;
     while (n > 0)
@@ -57,7 +57,7 @@ int main()
         {
             if (j == 0)
                 canBeZero[strArr[i][j] - 'a'] = false;
-            letterArr[strArr[i][j] - 'a'].weight += quickPow(10, strArr[i].length() - j - 1);
+            letterArr[strArr[i][j] - 'a'].weight += fastPow(10, strArr[i].length() - j - 1);
         }
     }
 
@@ -83,7 +83,7 @@ int main()
     {
         for (int j = 0; j < strArr[i].length(); j++)
         {
-            sum += quickPow(10, strArr[i].length() - j - 1) * mapping[strArr[i][j] - 'a'];
+            sum += fastPow(10, strArr[i].length() - j - 1) * mapping[strArr[i][j] - 'a'];
         }
     }
     cout << sum << endl;

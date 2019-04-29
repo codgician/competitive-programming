@@ -23,7 +23,7 @@ const int mod = 998244353;
 int bitArr[SIZE];
 int arr[SIZE], unkArr[SIZE], len;
 
-long long int quickPow(long long int a, int n)
+long long int fastPow(long long int a, int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -82,7 +82,7 @@ int main()
     for (int i = 1; i < len; i++)
         unkArr[i] += unkArr[i - 1];
 
-    long long int ans = 1ll * unkNum * (unkNum - 1) % mod * quickPow(4, mod - 2) % mod;
+    long long int ans = 1ll * unkNum * (unkNum - 1) % mod * fastPow(4, mod - 2) % mod;
     for (int i = len - 1; i >= 0; i--)
     {
         if (arr[i] == -1)
@@ -92,7 +92,7 @@ int main()
         add(arr[i], 1);
     }
 
-    long long int inv = quickPow(unkNum, mod - 2);
+    long long int inv = fastPow(unkNum, mod - 2);
     for (int i = 0; i < len; i++)
     {
         if (arr[i] == -1)

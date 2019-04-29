@@ -35,7 +35,7 @@ void initInv()
         invArr[i] = (mod - mod / i) * invArr[mod % i] % mod;
 }
 
-long long int quickPow(long long int a, int n)
+long long int fastPow(long long int a, int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -90,9 +90,9 @@ void pushDown(int segPt)
     if (segTree[segPt].bstLazy.none())
         return;
 
-    segTree[LEFT_SON].prod = segTree[LEFT_SON].prod * quickPow(segTree[segPt].prodLazy, segTree[LEFT_SON].rightPt - segTree[LEFT_SON].leftPt + 1) % mod;
+    segTree[LEFT_SON].prod = segTree[LEFT_SON].prod * fastPow(segTree[segPt].prodLazy, segTree[LEFT_SON].rightPt - segTree[LEFT_SON].leftPt + 1) % mod;
     segTree[LEFT_SON].bst |= segTree[segPt].bstLazy;
-    segTree[RIGHT_SON].prod = segTree[RIGHT_SON].prod * quickPow(segTree[segPt].prodLazy, segTree[RIGHT_SON].rightPt - segTree[RIGHT_SON].leftPt + 1) % mod;
+    segTree[RIGHT_SON].prod = segTree[RIGHT_SON].prod * fastPow(segTree[segPt].prodLazy, segTree[RIGHT_SON].rightPt - segTree[RIGHT_SON].leftPt + 1) % mod;
     segTree[RIGHT_SON].bst |= segTree[segPt].bstLazy;
 
 
@@ -129,7 +129,7 @@ void rangeMultiply(int segPt, int qLeftPt, int qRightPt, int val)
 {
     if (segTree[segPt].leftPt >= qLeftPt && segTree[segPt].rightPt <= qRightPt)
     {
-        segTree[segPt].prod = segTree[segPt].prod * quickPow(val, segTree[segPt].rightPt - segTree[segPt].leftPt + 1) % mod;
+        segTree[segPt].prod = segTree[segPt].prod * fastPow(val, segTree[segPt].rightPt - segTree[segPt].leftPt + 1) % mod;
         segTree[segPt].prodLazy = segTree[segPt].prodLazy * val % mod;
         segTree[segPt].bst |= bstArr[val];
         segTree[segPt].bstLazy |= bstArr[val];

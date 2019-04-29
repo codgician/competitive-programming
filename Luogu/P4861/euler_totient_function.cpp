@@ -15,7 +15,7 @@
 #include <iterator>
 using namespace std;
 
-long long int quickPow(long long int a, long long int n, long long int mod)
+long long int fastPow(long long int a, long long int n, long long int mod)
 {
     long long int ans = 1;
     a %= mod;
@@ -75,13 +75,13 @@ int main()
     {
         if (phi % i == 0)
         {
-            if (quickPow(k, i, m) == 1)
+            if (fastPow(k, i, m) == 1)
             {
                 ans = min(ans, i);
                 break;
             }
 
-            if (quickPow(k, phi / i, m) == 1)
+            if (fastPow(k, phi / i, m) == 1)
                 ans = min(ans, phi / i);
         }
     }

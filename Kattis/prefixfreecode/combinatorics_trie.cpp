@@ -95,7 +95,7 @@ int getPrefixSum(int pos)
     return ans;
 }
 
-long long int quickPow(long long int a, long long int n)
+long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -118,7 +118,7 @@ void initFactorial()
 
 void initInvFactorial()
 {
-    invFactorialArr[SIZE - 1] = quickPow(factorialArr[SIZE - 1], mod - 2);
+    invFactorialArr[SIZE - 1] = fastPow(factorialArr[SIZE - 1], mod - 2);
     for (int i = SIZE - 2; i >= 0; i--)
         invFactorialArr[i] = invFactorialArr[i + 1] * (i + 1) % mod;
 }

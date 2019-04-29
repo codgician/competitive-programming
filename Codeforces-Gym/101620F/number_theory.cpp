@@ -20,7 +20,7 @@ using namespace std;
 long long int factorialArr[SIZE], invFactorialArr[SIZE];
 long long int n, mod, rem;
 
-inline long long int quickPow(long long int a, long long int n)
+inline long long int fastPow(long long int a, long long int n)
 {
     long long int ans = 1;
     a %= mod;
@@ -43,7 +43,7 @@ inline void initFactorial(int initSize)
 
 inline void initInvFactorial(int initSize)
 {
-    invFactorialArr[initSize - 1] = quickPow(factorialArr[initSize - 1], mod - 2);
+    invFactorialArr[initSize - 1] = fastPow(factorialArr[initSize - 1], mod - 2);
     for (int i = initSize - 2; i >= 0; i--)
         invFactorialArr[i] = invFactorialArr[i + 1] * (i + 1) % mod;
 }
