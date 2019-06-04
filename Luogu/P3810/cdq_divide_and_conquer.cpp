@@ -1,87 +1,55 @@
-#include <iostream>
-#include <cstdio>
-#include <algorithm>
-#include <cmath>
-#include <string>
-#include <cstring>
-#include <iomanip>
-#include <climits>
-#include <stack>
-#include <queue>
-#include <vector>
-#include <set>
-#include <map>
-#include <functional>
-#include <iterator>
-#include <cassert>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define SIZE 100010
 #define VAL_SIZE 200020
 
-typedef struct _Node
-{
+typedef struct _Node {
     int a, b, c;
     int num, ans;
 
-    bool operator == (const struct _Node & snd) const
-    {
+    bool operator == (const struct _Node & snd) const {
         return a == snd.a && b == snd.b && c == snd.c;
     }
 } Node;
 
 Node arr[SIZE];
-int ansArr[SIZE];
+int ans[SIZE], bit[VAL_SIZE], siz;
 
-int bitArr[VAL_SIZE], siz;
-
-bool cmpSnd(Node & fst, Node & snd)
-{
+bool cmpSnd(Node & fst, Node & snd) {
     if (fst.b != snd.b)
         return fst.b < snd.b;
     return fst.c < snd.c;
 }
 
-bool cmpFst(Node & fst, Node & snd)
-{
+bool cmpFst(Node & fst, Node & snd) {
     if (fst.a != snd.a)
         return fst.a < snd.a;
     return cmpSnd(fst, snd);
 }
 
-int getLowbit(int n)
-{
+int lowbit(int n) {
     return n & -n;
 }
 
-void add(int pos, int val)
-{
-    for (int i = pos; i <= siz; i += getLowbit(i))
-    {
-        bitArr[i] += val;
-    }
+void add(int pos, int val) {
+    for (int i = pos; i <= siz; i += lowbit(i))
+        bit[i] += val;
 }
 
-void clear(int pos)
-{
-    for (int i = pos; i <= siz; i += getLowbit(i))
-    {
-        bitArr[i] = 0;
-    }
+void clear(int pos) {
+    for (int i = pos; i <= siz; i += lowbit(i))
+        bit[i] = 0;
 }
 
-int prefixSum(int pos)
-{
-    int ans = 0;
-    for (int i = pos; i > 0; i -= getLowbit(i))
-    {
-        ans += bitArr[i];
-    }
-    return ans;
+int prefixSum(int pos) {
+    int ret = 0;
+    for (int i = pos; i > 0; i -= lowbit(i))
+        ret += bit[i];
+    return ret;
 }
 
-void divideConquer(int headPt, int tailPt)
-{
+void divideConquer(int headPt, int tailPt) {
     if (headPt == tailPt)
         return;
 
@@ -96,12 +64,9 @@ void divideConquer(int headPt, int tailPt)
     sort(arr + midPt + 1, arr + tailPt + 1, cmpSnd);
 
     int j = headPt;
-    for (int i = midPt + 1; i <= tailPt; i++)
-    {
+    for (int i = midPt + 1; i <= tailPt; i++) {
         for (; j <= midPt && arr[j].b <= arr[i].b; j++)
-        {
             add(arr[j].c, arr[j].num);
-        }
         arr[i].ans += prefixSum(arr[i].c);
     }
 
@@ -109,28 +74,23 @@ void divideConquer(int headPt, int tailPt)
         clear(arr[i].c);
 }
 
-int main()
-{
+int main() {
     ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-    memset(ansArr, 0, sizeof(ansArr));
-    memset(bitArr, 0, sizeof(bitArr));
+    cin.tie(0); cout.tie(0);
+    memset(ans, 0, sizeof(ans));
+    memset(bit, 0, sizeof(bit));
 
     int num;
     cin >> num >> siz;
-    for (int i = 0; i < num; i++)
-    {
+    for (int i = 0; i < num; i++) {
         cin >> arr[i].a >> arr[i].b >> arr[i].c;
-        arr[i].num = 1;
-        arr[i].ans = 0;
+        arr[i].num = 1; arr[i].ans = 0;
     }
 
     sort(arr + 0, arr + num, cmpFst);
 
     int ovrPt = 0, cntPt = 1;
-    while (cntPt < num)
-    {
+    while (cntPt < num) {
         if (arr[ovrPt] == arr[cntPt])
             arr[ovrPt].num += arr[cntPt].num;
         else
@@ -140,15 +100,11 @@ int main()
     ovrPt++;
 
     divideConquer(0, ovrPt - 1);
-
-    for (int i = 0; i < ovrPt; i++)
-    {
+    for (int i = 0; i < ovrPt; i++) {
         arr[i].ans += arr[i].num - 1;
-        ansArr[arr[i].ans] += arr[i].num;
+        ans[arr[i].ans] += arr[i].num;
     }
-
     for (int i = 0; i < num; i++)
-        cout << ansArr[i] << '\n';
-
+        cout << ans[i] << '\n';
     return 0;
 }

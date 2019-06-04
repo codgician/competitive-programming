@@ -32,9 +32,7 @@ double getSlope(Dot & fst, Dot & snd) {
 
 int main() {
     ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-
+    cin.tie(0); cout.tie(0);
     int num;
     while (cin >> num) {
         for (int i = 0; i < num; i++) {
@@ -42,6 +40,8 @@ int main() {
             rnkArr[i] = i;
         }
         sort(rnkArr + 0, rnkArr + num, [](const int fst, const int snd) {
+            if (arr[fst].x == arr[snd].x)
+                return arr[fst].y > arr[snd].y;
             return arr[fst].x < arr[snd].x;
         });
         for (int i = 0; i < num; i++) {
