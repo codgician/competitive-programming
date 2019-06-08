@@ -1,232 +1,130 @@
-#include <iostream>
-#include <cstdio>
-#include <algorithm>
-#include <cmath>
-#include <string>
-#include <cstring>
-#include <iomanip>
-#include <climits>
-#include <stack>
-#include <queue>
-#include <vector>
-#include <set>
-#include <map>
-#include <functional>
-#include <iterator>
-#include <cassert>
+#include <bits/stdc++.h>
 using namespace std;
 
 #define SIZE 50010
 
-#define LEFT false
-#define RIGHT true
+#define LEFT 0
+#define RIGHT 1
 
-typedef struct _Node
-{
+typedef struct _Node {
     int val[5];
-    bool flag[2];
-
-    bool operator == (const struct _Node & snd) const
-    {
-        for (int i = 0; i < 5; i++)
-            if (val[i] != snd.val[i])
-                return false;
-        return true;
-    }
+    bool type[2];
 } Node;
 
-bool cmpFor(const Node & fst, const Node & snd)
-{
+bool cmpFor(const Node & fst, const Node & snd) {
     if (fst.val[3] != snd.val[3])
         return fst.val[3] < snd.val[3];
     return fst.val[4] < snd.val[4];
 }
 
-bool cmpThd(const Node & fst, const Node & snd)
-{
+bool cmpThd(const Node & fst, const Node & snd) {
     if (fst.val[2] != snd.val[2])
         return fst.val[2] < snd.val[2];
     return cmpFor(fst, snd);
 }
 
-bool cmpSnd(const Node & fst, const Node & snd)
-{
+bool cmpSnd(const Node & fst, const Node & snd) {
     if (fst.val[1] != snd.val[1])
         return fst.val[1] < snd.val[1];
     return cmpThd(fst, snd);
 }
 
-Node arr[SIZE], tmp[SIZE];
-int bitArr[SIZE], siz, ans;
+Node arr[SIZE], tmp1[SIZE], tmp2[SIZE];
+int bit[SIZE], ans;
 
-int getLowbit(int n)
-{
+int lowbit(int n) {
     return n & -n;
 }
 
-void add(int pos, int val)
-{
-    for (int i = pos; i <= siz; i += getLowbit(i))
-        bitArr[i] += val;
+void add(int pos, int val) {
+    for (int i = pos; i < SIZE; i += lowbit(i))
+        bit[i] += val;
 }
 
-void clear(int pos)
-{
-    for (int i = pos; i <= siz; i += getLowbit(i))
-    {
-        bitArr[i] = 0;
-    }
+int prefixSum(int pos) {
+    int ret = 0;
+    for (int i = pos; i > 0; i -= lowbit(i))
+        ret += bit[i];
+    return ret;
 }
 
-int prefixSum(int pos)
-{
-    int ans = 0;
-    for (int i = pos; i > 0; i -= getLowbit(i))
-        ans += bitArr[i];
-    return ans;
-}
-
-void divideConquer2D(int headPt, int tailPt)
-{
-    if (headPt >= tailPt)
+void divideConquer2D(int headPt, int tailPt) {
+    if (headPt == tailPt)
         return;
-
     int midPt = (headPt + tailPt) >> 1;
-
     divideConquer2D(headPt, midPt);
     divideConquer2D(midPt + 1, tailPt);
 
-    sort(arr + headPt, arr + midPt + 1, cmpFor);
-    sort(arr + midPt + 1, arr + tailPt + 1, cmpFor);
-
     int j = headPt;
-    for (int i = midPt + 1; i <= tailPt; i++)
-    {
+    for (int i = midPt + 1; i <= tailPt; i++) {
+        if (arr[i].type[0] == LEFT || arr[i].type[1] == LEFT)
+            continue;
         for (; j <= midPt && arr[j].val[3] < arr[i].val[3]; j++)
-            if (arr[j].flag[0] == LEFT && arr[j].flag[1] == LEFT)
+            if (arr[j].type[0] == LEFT && arr[j].type[1] == LEFT)
                 add(arr[j].val[4], 1);
-        if (arr[i].flag[0] == RIGHT && arr[i].flag[1] == RIGHT)
-            ans += prefixSum(arr[i].val[4]);
+        ans += prefixSum(arr[i].val[4]);
     }
 
     for (int i = headPt; i < j; i++)
-        if (arr[i].flag[0] == LEFT && arr[i].flag[1] == LEFT)
-            clear(arr[i].val[4]);
+        if (arr[i].type[0] == LEFT && arr[i].type[1] == LEFT)
+            add(arr[i].val[4], -1);
+
+    inplace_merge(arr + headPt, arr + midPt + 1, arr + tailPt + 1, cmpFor);
 }
 
-void divideConquer3D(int headPt, int tailPt)
-{
-    if (headPt >= tailPt)
+void divideConquer3D(int headPt, int tailPt) {
+    if (headPt == tailPt)
         return;
-
     int midPt = (headPt + tailPt) >> 1;
-
     divideConquer3D(headPt, midPt);
     divideConquer3D(midPt + 1, tailPt);
 
-    sort(arr + headPt, arr + midPt + 1, cmpThd);
-    sort(arr + midPt + 1, arr + tailPt + 1, cmpThd);
+    for (int i = headPt; i <= midPt; i++)
+        arr[i].type[1] = LEFT;
+    for (int i = midPt + 1; i <= tailPt; i++)
+        arr[i].type[1] = RIGHT;
 
-    int leftPt = headPt, rightPt = midPt + 1, tmpPt = 0;
-    while (leftPt <= midPt && rightPt <= tailPt)
-    {
-        if (arr[leftPt].val[2] < arr[rightPt].val[2])
-        {
-            tmp[tmpPt] = arr[leftPt++];
-            tmp[tmpPt++].flag[1] = LEFT;
-        }
-        else
-        {
-            tmp[tmpPt] = arr[rightPt++];
-            tmp[tmpPt++].flag[1] = RIGHT;
-        }
-    }
-    while (leftPt <= midPt)
-    {
-        tmp[tmpPt] = arr[leftPt++];
-        tmp[tmpPt++].flag[1] = LEFT;
-    }
-    while (rightPt <= tailPt)
-    {
-        tmp[tmpPt] = arr[rightPt++];
-        tmp[tmpPt++].flag[1] = RIGHT;
-    }
-
-    for (int i = 0; i < tmpPt; i++)
-        arr[headPt + i] = tmp[i];
+    inplace_merge(arr + headPt, arr + midPt + 1, arr + tailPt + 1, cmpThd);
+    copy(arr + headPt, arr + tailPt + 1, tmp2 + headPt);
     divideConquer2D(headPt, tailPt);
+    copy(tmp2 + headPt, tmp2 + tailPt + 1, arr + headPt);
 }
 
-void divideConquer4D(int headPt, int tailPt)
-{
-    if (headPt >= tailPt)
+void divideConquer4D(int headPt, int tailPt) {
+    if (headPt == tailPt)
         return;
-
     int midPt = (headPt + tailPt) >> 1;
-
     divideConquer4D(headPt, midPt);
     divideConquer4D(midPt + 1, tailPt);
 
-    sort(arr + headPt, arr + midPt + 1, cmpSnd);
-    sort(arr + midPt + 1, arr + tailPt + 1, cmpSnd);
+    for (int i = headPt; i <= midPt; i++)
+        arr[i].type[0] = LEFT;
+    for (int i = midPt + 1; i <= tailPt; i++)
+        arr[i].type[0] = RIGHT;
 
-    int leftPt = headPt, rightPt = midPt + 1, tmpPt = 0;
-    while (leftPt <= midPt && rightPt <= tailPt)
-    {
-        if (arr[leftPt].val[1] < arr[rightPt].val[1])
-        {
-            tmp[tmpPt] = arr[leftPt++];
-            tmp[tmpPt++].flag[0] = LEFT;
-        }
-        else
-        {
-            tmp[tmpPt] = arr[rightPt++];
-            tmp[tmpPt++].flag[0] = RIGHT;
-        }
-    }
-    while (leftPt <= midPt)
-    {
-        tmp[tmpPt] = arr[leftPt++];
-        tmp[tmpPt++].flag[0] = LEFT;
-    }
-    while (rightPt <= tailPt)
-    {
-        tmp[tmpPt] = arr[rightPt++];
-        tmp[tmpPt++].flag[0] = RIGHT;
-    }
-
-    for (int i = 0; i < tmpPt; i++)
-        arr[headPt + i] = tmp[i];
+    inplace_merge(arr + headPt, arr + midPt + 1, arr + tailPt + 1, cmpSnd);
+    copy(arr + headPt, arr + tailPt + 1, tmp1 + headPt);
     divideConquer3D(headPt, tailPt);
+    copy(tmp1 + headPt, tmp1 + tailPt + 1, arr + headPt);
 }
 
-int main()
-{
+int main() {
     ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
-
+    cin.tie(0); cout.tie(0);
     freopen("partial_order_two.in", "r", stdin);
     freopen("partial_order_two.out", "w", stdout);
-    
-    memset(bitArr, 0, sizeof(bitArr));
-    siz = 0, ans = 0;
 
-    int num;
+    memset(bit, 0, sizeof(bit));
+    int num; ans = 0;
     cin >> num;
-    for (int j = 1; j < 5; j++)
-    {
-        for (int i = 0; i < num; i++)
-        {
+    for (int j = 1; j < 5; j++) {
+        for (int i = 0; i < num; i++) {
             cin >> arr[i].val[j];
             arr[i].val[0] = i;
-            siz = max(siz, arr[i].val[j]);
         }
     }
 
     divideConquer4D(0, num - 1);
-
     cout << ans << '\n';
-
     return 0;
 }

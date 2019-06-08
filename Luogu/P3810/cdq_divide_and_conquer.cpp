@@ -1,3 +1,4 @@
+// luogu-judger-enable-o2
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -16,13 +17,13 @@ typedef struct _Node {
 Node arr[SIZE];
 int ans[SIZE], bit[VAL_SIZE], siz;
 
-bool cmpSnd(Node & fst, Node & snd) {
+bool cmpSnd(const Node & fst, const Node & snd) {
     if (fst.b != snd.b)
         return fst.b < snd.b;
     return fst.c < snd.c;
 }
 
-bool cmpFst(Node & fst, Node & snd) {
+bool cmpFst(const Node & fst, const Node & snd) {
     if (fst.a != snd.a)
         return fst.a < snd.a;
     return cmpSnd(fst, snd);
@@ -37,11 +38,6 @@ void add(int pos, int val) {
         bit[i] += val;
 }
 
-void clear(int pos) {
-    for (int i = pos; i <= siz; i += lowbit(i))
-        bit[i] = 0;
-}
-
 int prefixSum(int pos) {
     int ret = 0;
     for (int i = pos; i > 0; i -= lowbit(i))
@@ -52,16 +48,9 @@ int prefixSum(int pos) {
 void divideConquer(int headPt, int tailPt) {
     if (headPt == tailPt)
         return;
-
     int midPt = (headPt + tailPt) >> 1;
-
-    if (headPt < midPt)
-        divideConquer(headPt, midPt);
-    if (midPt + 1 < tailPt)
-        divideConquer(midPt + 1, tailPt);
-
-    sort(arr + headPt, arr + midPt + 1, cmpSnd);
-    sort(arr + midPt + 1, arr + tailPt + 1, cmpSnd);
+    divideConquer(headPt, midPt);
+    divideConquer(midPt + 1, tailPt);
 
     int j = headPt;
     for (int i = midPt + 1; i <= tailPt; i++) {
@@ -71,7 +60,9 @@ void divideConquer(int headPt, int tailPt) {
     }
 
     for (int i = headPt; i < j; i++)
-        clear(arr[i].c);
+        add(arr[i].c, -arr[i].num);
+
+    inplace_merge(arr + headPt, arr + midPt + 1, arr + tailPt + 1, cmpSnd);
 }
 
 int main() {
