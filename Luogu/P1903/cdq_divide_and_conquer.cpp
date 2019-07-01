@@ -121,9 +121,7 @@ int main() {
         } else {    // Query
             y--;
             qArr[qPt++] = {0, y, x - 1, ansPt};
-            qArr[qPt++] = {0, x - 1, -2, ansPt};
             qArr[qPt++] = {1, x - 1, x - 1, ansPt};
-            qArr[qPt++] = {1, y, -2, ansPt};
             ansPt++;
         }
     }

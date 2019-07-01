@@ -1,4 +1,3 @@
-// Got TLE on Luogu even with -O2
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -66,9 +65,7 @@ int main() {
         int x, y; cin >> x >> y;
         x--; y--;
         qArr[qPt++] = {i, 1, y, x - 1};
-        qArr[qPt++] = {i, 1, x - 1, -2};
         qArr[qPt++] = {i, -1, x - 1, x - 1};
-        qArr[qPt++] = {i, -1, y, -2};
     }
     sort(qArr + 0, qArr + qPt, cmpFst);
 
