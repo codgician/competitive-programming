@@ -1,142 +1,92 @@
-#include <iostream>
-#include <cstdio>
-#include <algorithm>
-#include <cmath>
-#include <string>
-#include <cstring>
-#include <iomanip>
-#include <climits>
-#include <stack>
-#include <queue>
-#include <vector>
-#include <set>
-#include <map>
-#include <functional>
-#include <iterator>
+#include <bits/stdc++.h>
 using namespace std;
 
-#define SIZE 100100
+#define SIZE 100010
 
-typedef struct _Node
-{
-    int x, y, z;
-    int id;
+typedef struct _Node {
+    int id, x, y, z;
 } Node;
 
-Node arr[SIZE], tmp[SIZE];
+Node arr[SIZE];
+int ans[SIZE], bit[SIZE], len;
 
-int dp[SIZE];
-int num;
-int bitArr[SIZE];
-
-int getLowbit(int n)
-{
+int lowbit(int n) {
     return n & -n;
 }
 
-void clear(int pos)
-{
-    for (int i = pos; i < SIZE; i += getLowbit(i))
-    {
-        bitArr[i] = 0;
-    }
+void add(int pos, int val) {
+    pos++;
+    for (int i = pos; i < SIZE; i += lowbit(i))
+        bit[i] += val;
 }
 
-void add(int pos, int val)
-{
-    for (int i = pos; i < SIZE; i += getLowbit(i))
-    {
-        bitArr[i] += val;
-    }
+int prefixSum(int pos) {
+    int ret = 0; pos++;
+    for (int i = pos; i > 0; i -= lowbit(i))
+        ret += bit[i];
+    return ret;
 }
 
-int getPrefixSum(int pos)
-{
-    int ans = 0;
-    for (int i = pos; i > 0; i -= getLowbit(i))
-    {
-        ans += bitArr[i];
-    }
-    return ans;
+bool cmpSnd(const Node & fst, const Node & snd) {
+    if (fst.y != snd.y)
+        return fst.y < snd.y;
+    return fst.z < snd.z;
 }
 
-bool cmpY(Node & fst, Node & snd)
-{
-    if (fst.y == snd.y)
-        return fst.z < snd.z;
-    return fst.y < snd.y;
-}
-
-bool cmpX(Node & fst, Node & snd)
-{
+bool cmpFst(Node & fst, Node & snd) {
     if (fst.x == snd.x)
-        return cmpY(fst, snd);
+        return cmpSnd(fst, snd);
     return fst.x < snd.x;
 }
 
-void divideConquer(int leftPt, int rightPt)
-{
-    if (leftPt == rightPt)
+void divideConquer(int headPt, int tailPt) {
+    if (headPt == tailPt)
         return;
 
-    int midPt = (leftPt + rightPt) >> 1;
-    divideConquer(leftPt, midPt);
-    
-    sort(arr + leftPt, arr + midPt + 1, cmpY);
-    sort(arr + midPt + 1, arr + rightPt + 1, cmpY);
+    int midPt = (headPt + tailPt) >> 1;
+    divideConquer(headPt, midPt);
+    divideConquer(midPt + 1, tailPt);
 
-    int j = leftPt;
-    for (int i = midPt + 1; i <= rightPt; i++)
-    {
+    int j = headPt;
+    for (int i = midPt + 1; i <= tailPt; i++) {
         for (; j <= midPt && arr[j].y <= arr[i].y; j++)
-        {
-            add(arr[j].z + 1, 1);
-        }
-
-        dp[arr[i].id] += getPrefixSum(arr[i].z + 1);
+            add(arr[j].z, 1);
+        ans[arr[i].id] += prefixSum(arr[i].z);
     }
 
-    for (int i = leftPt; i <= j; i++)
-        clear(arr[i].z + 1);
+    for (int i = headPt; i < j; i++)
+        add(arr[i].z, -1);
 
-    sort(arr + midPt + 1, arr + rightPt + 1, cmpX);
-    divideConquer(midPt + 1, rightPt);
+    inplace_merge(arr + headPt, arr + midPt + 1, arr + tailPt + 1, cmpSnd);
 }
 
-int main()
-{
+int main() {
     ios::sync_with_stdio(false);
-    cin.tie(0);
-    cout.tie(0);
+    cin.tie(0); cout.tie(0);
 
-    int caseNum;
-    cin >> caseNum;
-    while (caseNum--)
-    {
-        cin >> num;
-        for (int i = 0; i < num; i++)
-        {
-            cin >> arr[i].x >> arr[i].y >> arr[i].z;
+    int caselen; cin >> caselen;
+    while (caselen--) {
+        memset(ans, 0, sizeof(ans));
+        memset(bit, 0, sizeof(bit));
+
+        cin >> len;
+        for (int i = 0; i < len; i++) {
             arr[i].id = i;
+            cin >> arr[i].x >> arr[i].y >> arr[i].z;
         }
-        sort(arr + 0, arr + num, cmpX);
 
-        memset(dp, 0, sizeof(dp));
-        memset(bitArr, 0, sizeof(bitArr));
+        sort(arr + 0, arr + len, cmpFst);
+        divideConquer(0, len - 1);
 
-        divideConquer(0, num - 1);
-        for (int i = num - 2; i >= 0; i--)
-        {
-            if (arr[i].x == arr[i + 1].x && arr[i].y == arr[i + 1].y && arr[i].z == arr[i + 1].z)
-            {
-                dp[arr[i].id] = dp[arr[i + 1].id];
+        sort(arr + 0, arr + len, cmpFst);
+        for (int i = len - 2; i >= 0; i--) {
+            if (arr[i].x == arr[i + 1].x && arr[i].y == arr[i + 1].y && arr[i].z == arr[i + 1].z) {
+                ans[arr[i].id] = ans[arr[i + 1].id];
             }
         }
 
-        for (int i = 0; i < num; i++)
-        {
-            cout << dp[i] << endl;
-        }
+        for (int i = 0; i < len; i++)
+            cout << ans[i] << '\n';
     }
 
     return 0;
