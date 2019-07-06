@@ -50,7 +50,7 @@ bool isFullFlow(int startPt, int endPt) {
     return dis[endPt] != INT_MAX;
 }
 
-int findAguPath(int cntPt, int endPt, int minCap, int & cost) {
+int findAugPath(int cntPt, int endPt, int minCap, int & cost) {
     if (cntPt == endPt) {
         hasVisited[endPt] = true;
         return minCap;
@@ -62,7 +62,7 @@ int findAguPath(int cntPt, int endPt, int minCap, int & cost) {
         if (hasVisited[nextPt])
             continue;
         if (dis[cntPt] - edge[i].cost == dis[nextPt] && edge[i].capacity > 0) {
-            int flowInc = findAguPath(nextPt, endPt, min(minCap - cntFlow, edge[i].capacity), cost);
+            int flowInc = findAugPath(nextPt, endPt, min(minCap - cntFlow, edge[i].capacity), cost);
             if (flowInc != 0) {
                 cost += flowInc * edge[i].cost;
                 edge[i].capacity -= flowInc;
@@ -82,7 +82,7 @@ void zkw(int startPt, int endPt, int & flow, int & cost) {
         hasVisited[endPt] = true;
         while (hasVisited[endPt]) {
             memset(hasVisited, false, sizeof(hasVisited));
-            flow += findAguPath(startPt, endPt, INT_MAX, cost);
+            flow += findAugPath(startPt, endPt, INT_MAX, cost);
         }
     }
 }

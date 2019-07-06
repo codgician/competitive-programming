@@ -69,7 +69,7 @@ bool updateDepth(int startPt, int endPt)
     return false;
 }
 
-int findAguPath(int cntPt, int endPt, int minCap)
+int findAugPath(int cntPt, int endPt, int minCap)
 {
     if (cntPt == endPt)
         return minCap;
@@ -80,7 +80,7 @@ int findAguPath(int cntPt, int endPt, int minCap)
         int nextPt = arr[i].to;
         if (depth[nextPt] == depth[cntPt] + 1 && arr[i].capacity > 0)
         {
-            int flowInc = findAguPath(nextPt, endPt, min(minCap - cntFlow, arr[i].capacity));
+            int flowInc = findAugPath(nextPt, endPt, min(minCap - cntFlow, arr[i].capacity));
             if (flowInc == 0)
             {
                 depth[nextPt] = -1;
@@ -106,7 +106,7 @@ int dinic(int startPt, int endPt)
         for (int i = 0; i < vertexNum; i++)
             lastVisitedEdge[i] = head[i];
 
-        int flowInc =  findAguPath(startPt, endPt, INT_MAX);
+        int flowInc =  findAugPath(startPt, endPt, INT_MAX);
         if (flowInc == 0)
             break;
         ans += flowInc;

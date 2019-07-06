@@ -47,7 +47,7 @@ void updateCapacity(int startPt, int endPt, int flowInc)
     }
 }
 
-int findAguPath(int startPt, int endPt)
+int findAugPath(int startPt, int endPt)
 {
     memset(hasVisited, false, sizeof(hasVisited));
     queue<int> q;
@@ -88,7 +88,7 @@ long long int edmondsKarp(int startPt, int endPt)
     long long int ans = 0;
     while (true)
     {
-        int flowInc = findAguPath(startPt, endPt);
+        int flowInc = findAugPath(startPt, endPt);
         if (flowInc == 0)
             break;
         ans += flowInc;

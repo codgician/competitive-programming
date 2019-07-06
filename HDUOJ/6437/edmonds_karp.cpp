@@ -61,7 +61,7 @@ void updateCapacity(int startPt, int endPt)
     }
 }
 
-bool findAguPath(int startPt, int endPt)
+bool findAugPath(int startPt, int endPt)
 {
     for (int i = 0; i < vertexNum; i++)
         dis[i] = INT_MAX;
@@ -105,7 +105,7 @@ bool findAguPath(int startPt, int endPt)
 
 void edmondsKarp(int startPt, int endPt, int &flow, int &cost)
 {
-    while (findAguPath(startPt, endPt))
+    while (findAugPath(startPt, endPt))
     {
         updateCapacity(startPt, endPt);
         flow += minCapacity[endPt];

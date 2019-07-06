@@ -33,7 +33,7 @@ void addEdge(int from, int to, int capacity)
     head[to] = arrPt++;
 }
 
-int findAguPath(int cntPt, int endPt, int cntFlow)
+int findAugPath(int cntPt, int endPt, int cntFlow)
 {
     if (cntPt == endPt)
     {
@@ -47,7 +47,7 @@ int findAguPath(int cntPt, int endPt, int cntFlow)
     {
         if (!hasVisited[arr[edgePt].to] && arr[edgePt].capacity > 0)
         {
-            int flowInc = findAguPath(arr[edgePt].to, endPt, min(cntFlow, arr[edgePt].capacity));
+            int flowInc = findAugPath(arr[edgePt].to, endPt, min(cntFlow, arr[edgePt].capacity));
             if (flowInc > 0)
             {
                 arr[edgePt].capacity -= flowInc;
@@ -67,7 +67,7 @@ int fordFulkerson(int startPt, int endPt)
     while (true)
     {
         memset(hasVisited, false, sizeof(hasVisited));
-        int flowInc = findAguPath(startPt, endPt, INT_MAX);
+        int flowInc = findAugPath(startPt, endPt, INT_MAX);
         if (flowInc == 0)
             break;
 
