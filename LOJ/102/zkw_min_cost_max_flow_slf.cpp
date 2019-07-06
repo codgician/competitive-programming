@@ -1,68 +1,46 @@
-#include <iostream>
-#include <cstdio>
-#include <algorithm>
-#include <cmath>
-#include <string>
-#include <cstring>
-#include <iomanip>
-#include <climits>
-#include <vector>
-#include <queue>
-#include <deque>
-#include <set>
-#include <map>
-#define VERTEX_SIZE 401
-#define EDGE_SIZE 31000
+#include <bits/stdc++.h>
 using namespace std;
 
-typedef struct _Edge
-{
-    int to;
-    int capacity;
-    int cost;
-    int next;
+#define VERTEX_SIZE 401
+#define EDGE_SIZE 31000
+
+typedef struct _Edge {
+    int to, next;
+    int cap, cost;
 } Edge;
 
-Edge arr[EDGE_SIZE];
-int head[VERTEX_SIZE], arrPt;
-int dis[VERTEX_SIZE];
+Edge edge[EDGE_SIZE];
+int head[VERTEX_SIZE], edgePt;
+int dist[VERTEX_SIZE], lastVisitedEdge[VERTEX_SIZE]; 
 bool inQueue[VERTEX_SIZE], hasVisited[VERTEX_SIZE];
-int vertexNum;
+int vertexNum, edgeNum;
 
-void addEdge(int from, int to, int capacity, int cost)
-{
-    arr[arrPt] = {to, capacity, cost, head[from]};
-    head[from] = arrPt++;
-    arr[arrPt] = {from, 0, -cost, head[to]};
-    head[to] = arrPt++;
+void addEdge(int from, int to, int cap, int cost) {
+    edge[edgePt] = {to, head[from], cap, cost};
+    head[from] = edgePt++;
+    edge[edgePt] = {from, head[to], 0, -cost};
+    head[to] = edgePt++;
 }
 
-bool isFullFlow(int startPt, int endPt)
-{
+bool isFullFlow(int startPt, int endPt) {
     for (int i = 0; i < vertexNum; i++)
-        dis[i] = INT_MAX;
-    memset(inQueue, false, sizeof(inQueue));
-    dis[startPt] = 0;
-    deque<int> dq;
-    dq.push_back(startPt);
+        dist[i] = INT_MAX, inQueue[i] = false;
+    dist[startPt] = 0;
+    deque<int> dq; dq.push_back(startPt);
     inQueue[startPt] = true;
 
-    while (!dq.empty())
-    {
+    while (!dq.empty()) {
         int cntPt = dq.front();
         dq.pop_front();
         inQueue[cntPt] = false;
 
-        for (int i = head[cntPt]; i != -1; i = arr[i].next)
-        {
-            int nextPt = arr[i].to;
-            if (arr[i ^ 1].capacity != 0 && dis[nextPt] > dis[cntPt] - arr[i].cost)
-            {
-                dis[nextPt] = dis[cntPt] - arr[i].cost;
-                if (!inQueue[nextPt])
-                {
+        for (int i = head[cntPt]; i != -1; i = edge[i].next) {
+            int nextPt = edge[i].to;
+            if (edge[i ^ 1].cap != 0 && dist[nextPt] > dist[cntPt] - edge[i].cost) {
+                dist[nextPt] = dist[cntPt] - edge[i].cost;
+                if (!inQueue[nextPt]) {
                     inQueue[nextPt] = true; 
-                    if (!dq.empty() && dis[nextPt] < dis[dq.front()])
+                    if (!dq.empty() && dist[nextPt] < dist[dq.front()])
                         dq.push_front(nextPt);
                     else
                         dq.push_back(nextPt);
@@ -70,74 +48,59 @@ bool isFullFlow(int startPt, int endPt)
             }
         }
     }
-    return dis[endPt] != INT_MAX;
+    return dist[endPt] != INT_MAX;
 }
 
-int findAguPath(int cntPt, int endPt, int minCap, int & cost)
-{
-    if (cntPt == endPt)
-    {
+int findAguPath(int cntPt, int endPt, int minCap, int & cost) {
+    if (cntPt == endPt) {
         hasVisited[endPt] = true;
         return minCap;
     }
 
     int cntFlow = 0;
     hasVisited[cntPt] = true;
-    for (int i = head[cntPt]; i != -1; i = arr[i].next)
-    {
-        int nextPt = arr[i].to;
+    for (int & i = lastVisitedEdge[cntPt]; i != -1; i = edge[i].next) {
+        int nextPt = edge[i].to;
         if (hasVisited[nextPt])
             continue;
-
-        if (dis[cntPt] - arr[i].cost == dis[nextPt] && arr[i].capacity > 0)
-        {
-            // Can be augmented
-            int flowInc = findAguPath(nextPt, endPt, min(minCap - cntFlow, arr[i].capacity), cost);
-            if (flowInc != 0)
-            {
-                cost += flowInc * arr[i].cost;
-                arr[i].capacity -= flowInc;
-                arr[i ^ 1].capacity += flowInc;
+        if (dist[cntPt] - edge[i].cost == dist[nextPt] && edge[i].cap > 0) {
+            int flowInc = findAguPath(nextPt, endPt, min(minCap - cntFlow, edge[i].cap), cost);
+            if (flowInc != 0) {
+                cost += flowInc * edge[i].cost;
+                edge[i].cap -= flowInc;
+                edge[i ^ 1].cap += flowInc;
                 cntFlow += flowInc;
             }
-
             if (cntFlow == minCap)
                 break;
         }
     }
-
     return cntFlow;
 }
 
-void zkw(int startPt, int endPt, int & flow, int & cost)
-{
-    flow = 0;
-    cost = 0;
-    while (isFullFlow(endPt, startPt))
-    {
+void zkw(int startPt, int endPt, int & flow, int & cost) {
+    flow = 0, cost = 0;
+    while (isFullFlow(endPt, startPt)) {
         hasVisited[endPt] = true;
-        while (hasVisited[endPt])
-        {
-            memset(hasVisited, false, sizeof(hasVisited));
+        while (hasVisited[endPt]) {
+            for (int i = 0; i < vertexNum; i++)
+                lastVisitedEdge[i] = head[i], hasVisited[i] = false;
             flow += findAguPath(startPt, endPt, INT_MAX, cost);
         }
     }
 }
 
-int main()
-{
+int main() {
     ios::sync_with_stdio(false);
-    arrPt = 0;
+    cin.tie(0); cout.tie(0);
     memset(head, -1, sizeof(head));
-    int edgeNum;
+    edgePt = 0;
     cin >> vertexNum >> edgeNum;
-    for (int i = 0; i < edgeNum; i++)
-    {
-        int from, to, length, cost;
-        cin >> from >> to >> length >> cost;
-        from--;
-        to--;
-        addEdge(from, to, length, cost);
+    for (int i = 0; i < edgeNum; i++) {
+        int from, to, cap, cost;
+        cin >> from >> to >> cap >> cost;
+        from--; to--;
+        addEdge(from, to, cap, cost);
     }
 
     int flow = 0, cost = 0;
