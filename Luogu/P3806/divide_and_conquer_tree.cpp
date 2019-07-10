@@ -42,7 +42,7 @@ void getDist(int cntPt, int fatherPt) {
     rem[remPt++] = dist[cntPt];
     for (int i = head[cntPt]; i != -1; i = edge[i].next) {
         int nextPt = edge[i].to;
-        if (nextPt == fatherPt || vis[cntPt])
+        if (nextPt == fatherPt || vis[nextPt])
             continue;
         dist[nextPt] = dist[cntPt] + edge[i].len;
         getDist(nextPt, cntPt);
