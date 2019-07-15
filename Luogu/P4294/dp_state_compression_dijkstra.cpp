@@ -13,13 +13,17 @@ bool canMove(int x, int y) {
     return x >= 0 && x < row && y >= 0 && y < column;
 }
 
-priority_queue<pair<int, pair<int, int> >> pq;
+priority_queue<
+    pair<int, pair<int, int> >,
+    vector<pair<int, pair<int, int> > >,
+    greater<pair<int, pair<int, int> > >
+> pq;
 
 void dijkstra(int st) {
     while (!pq.empty()) {
-        pair<int, pair<int, int> > cntTop = pq.top();
-        pq.pop();
-        int x = cntTop.second.first, y = cntTop.second.second;
+        auto p = pq.top(); int x = p.second.first, y = p.second.second; pq.pop();
+        if (p.first > dp[st][x][y])
+            continue;
         for (int i = 0; i < 4; i++) {
             int x1 = x + dir[0][i], y1 = y + dir[1][i];
             if (!canMove(x1, y1) || dp[st][x][y] == INT_MAX)
@@ -27,7 +31,7 @@ void dijkstra(int st) {
             if (dp[st][x1][y1] > dp[st][x][y] + arr[x1][y1]) {
                 dp[st][x1][y1] = dp[st][x][y] + arr[x1][y1];
                 pre[st][x1][y1] = make_pair(st, make_pair(x, y));
-                pq.push(make_pair(-dp[st][x1][y1], make_pair(x1, y1)));
+                pq.push(make_pair(dp[st][x1][y1], make_pair(x1, y1)));
             }
         }
     }
@@ -46,6 +50,7 @@ void storAns(int x, int y, int st) {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
+    
     cin >> row >> column; keyPt = 0; int xr = -1, yr = -1;
     for (int i = 0; i < row; i++) {
         for (int j = 0; j < column; j++) {
@@ -72,7 +77,7 @@ int main() {
                     }
                 }
                 if (dp[st][i][j] != INT_MAX) {
-                    pq.push(make_pair(-dp[st][i][j], make_pair(i, j)));
+                    pq.push(make_pair(dp[st][i][j], make_pair(i, j)));
                 }
             }
         }
