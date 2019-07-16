@@ -135,18 +135,9 @@ int queryRoute(int fstPt, int sndPt) {
     if (depth[fstPt] > depth[sndPt])
         swap(fstPt, sndPt);
 
-    ans += querySum(1, id[fstPt], id[sndPt]);
+    if (id[fstPt] + 1 <= id[sndPt] )
+        ans += querySum(1, id[fstPt] + 1, id[sndPt]);
     return ans;
-}
-
-int getLca(int fstPt, int sndPt) {
-    while (top[fstPt] != top[sndPt]) {
-        if (depth[top[fstPt]] >= depth[top[sndPt]])
-            fstPt = father[top[fstPt]];
-        else
-            sndPt = father[top[sndPt]];
-    }
-    return depth[fstPt] < depth[sndPt] ? fstPt : sndPt;
 }
 
 int main() {
@@ -171,8 +162,7 @@ int main() {
     }
 
     father[0] = 0, depth[0] = 0, val[0] = -1;
-    dfs1(0);
-    dfs2(0, 0);
+    dfs1(0); dfs2(0, 0);
 
     for (int i = 0; i < qNum; i++) {
         qArr[i].id = i;
@@ -208,8 +198,6 @@ int main() {
 
         // Query answer
         ans[qArr[i].id] = queryRoute(qArr[i].from, qArr[i].to);
-        int lca = getLca(qArr[i].from, qArr[i].to);
-        ans[qArr[i].id] -= querySum(1, id[lca], id[lca]);
     }
 
     for (int i = 0; i < qNum; i++)
