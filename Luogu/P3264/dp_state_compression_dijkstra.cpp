@@ -41,9 +41,9 @@ void dijkstra(int st) {
     }
 }
 
-bool check(int st1, int st2) {
+bool check(int st) {
     for (const auto & p : mp)
-        if ((st1 & p.second) != p.second && (st2 & p.second) != p.second)
+        if ((st & p.second) != p.second && (st & p.second) != 0)
             return false;
     return true;
 }
@@ -87,7 +87,7 @@ int main() {
             dp1[st] = min(dp1[st], dp[st][i]);
     for (int st = 0; st < (1 << keyNum); st++)
         for (int subst = st & (st - 1); subst > 0; subst = st & (subst - 1)) 
-            if (check(subst, st ^ subst) && dp1[subst] != INT_MAX && dp1[st ^ subst] != INT_MAX)
+            if (dp1[subst] != INT_MAX && dp1[st ^ subst] != INT_MAX && check(subst) && check(st ^ subst))
                 dp1[st] = min(dp1[st], dp1[subst] + dp1[st ^ subst]);
 
     cout << dp1[(1 << keyNum) - 1] << '\n';
