@@ -81,7 +81,7 @@ void divideConquer(int cntPt) {
         if (vis[nextPt])
             continue;
         cntSiz = siz[nextPt];
-        cntRoot = 0;
+        cntRoot = vertexNum;
         mx[cntRoot] = INT_MAX;
         findCore(nextPt, -1);
         divideConquer(cntRoot);
@@ -107,7 +107,8 @@ int main() {
     for (int i = 0; i < qNum; i++)
         cin >> qArr[i];
 
-    mx[0] = vertexNum;
+    cntRoot = vertexNum; 
+    mx[vertexNum] = INT_MAX;
     cntSiz = vertexNum;
     findCore(0, -1);
     divideConquer(cntRoot);

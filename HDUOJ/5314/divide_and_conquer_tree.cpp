@@ -81,7 +81,7 @@ void divideConquer(int cntPt) {
         if (vis[nextPt])
             continue;
         cntSiz = siz[nextPt];
-        cntRoot = 0;
+        cntRoot = vertexNum;
         mx[cntRoot] = INT_MAX;
         findCore(nextPt, -1);
         divideConquer(cntRoot);
@@ -104,10 +104,10 @@ int main() {
             addEdge(from, to); addEdge(to, from);
         }
 
-        mx[0] = vertexNum;
+        cntRoot = vertexNum;
+        mx[cntRoot] = INT_MAX;
         cntSiz = vertexNum;
         findCore(0, -1);
-
         divideConquer(cntRoot);
 
         cout << ans * 2 << '\n';
