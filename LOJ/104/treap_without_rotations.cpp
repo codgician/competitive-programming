@@ -1,188 +1,136 @@
-#include <iostream>
-#include <cstdio>
-#include <algorithm>
-#include <cmath>
-#include <string>
-#include <cstring>
-#include <iomanip>
-#include <climits>
-#include <stack>
-#include <queue>
-#include <vector>
-#include <set>
-#include <map>
-#include <functional>
-#include <iterator>
+#include <bits/stdc++.h>
 using namespace std;
 
-#define SIZE 100100
+#define SIZE 100010
 
-typedef struct _TreapNode
-{
-    int value;
-    int key;
-    int size;
+typedef struct _TreapNode {
+    int val, key, siz;
     int leftSon, rightSon;
 } TreapNode;
 
-TreapNode treap[SIZE];
-int treapPt, rootPt;
+TreapNode treap[SIZE]; int treapPt;
 
-void update(int cntPt)
-{
-    treap[cntPt].size = treap[treap[cntPt].leftSon].size + treap[treap[cntPt].rightSon].size + 1;
+void update(int cntPt) {
+    treap[cntPt].siz = treap[treap[cntPt].leftSon].siz + treap[treap[cntPt].rightSon].siz + 1;
 }
 
-int newNode(int val)
-{
-    treapPt++;
-    treap[treapPt].size = 1;
-    treap[treapPt].value = val;
-    treap[treapPt].key = rand();
-    treap[treapPt].leftSon = 0;
-    treap[treapPt].rightSon = 0;
+int newNode(int val) {
+    treap[++treapPt] = {val, rand(), 1, 0, 0};
     return treapPt;
 }
 
-int merge(int fst, int snd)
-{
-    if (!fst)
-        return snd;
-    if (!snd)
-        return fst;
+int merge(int fstRt, int sndRt) {
+    if (fstRt == 0)
+        return sndRt;
+    if (sndRt == 0)
+        return fstRt;
 
-    if (treap[fst].key < treap[snd].key)
-    {
-        treap[fst].rightSon = merge(treap[fst].rightSon, snd);
-        update(fst);
-        return fst;
+    if (treap[fstRt].key < treap[sndRt].key) {
+        treap[fstRt].rightSon = merge(treap[fstRt].rightSon, sndRt);
+        update(fstRt); return fstRt;
     }
-    else
-    {
-        treap[snd].leftSon = merge(fst, treap[snd].leftSon);
-        update(snd);
-        return snd;
-    }
+
+    treap[sndRt].leftSon = merge(fstRt, treap[sndRt].leftSon);
+    update(sndRt); return sndRt;
 }
 
-void split(int cntPt, int val, int & fst, int & snd)
-{
-    if (!cntPt)
-    {
-        fst = 0;
-        snd = 0;
+void split(int cntPt, int val, int& fstRt, int& sndRt) {
+    if (!cntPt) {
+        fstRt = 0; sndRt = 0;
         return;
     }
 
-    if (treap[cntPt].value <= val)
-    {
-        fst = cntPt;
-        split(treap[cntPt].rightSon, val, treap[cntPt].rightSon, snd);
+    if (treap[cntPt].val <= val) {
+        fstRt = cntPt;
+        split(treap[cntPt].rightSon, val, treap[cntPt].rightSon, sndRt);
+    } else {
+        sndRt = cntPt;
+        split(treap[cntPt].leftSon, val, fstRt, treap[cntPt].leftSon);
     }
-    else
-    {
-        snd = cntPt;
-        split(treap[cntPt].leftSon, val, fst, treap[cntPt].leftSon);
-    }
+
     update(cntPt);
 }
 
-int findValByRank(int cntPt, int rnk)
-{
-    while (true)
-    {
-        if (rnk <= treap[treap[cntPt].leftSon].size)
-            cntPt = treap[cntPt].leftSon;
-        else if (rnk == treap[treap[cntPt].leftSon].size + 1)
+int findValByRank(int cntPt, int rnk) {
+    while (true) {
+        if (rnk == treap[treap[cntPt].leftSon].siz + 1)
             return cntPt;
-        else
-        {
-            rnk -= treap[treap[cntPt].leftSon].size + 1;
+        if (rnk <= treap[treap[cntPt].leftSon].siz) {
+            cntPt = treap[cntPt].leftSon;
+        } else {
+            rnk -= treap[treap[cntPt].leftSon].siz + 1;
             cntPt = treap[cntPt].rightSon;
         }
     }
 }
 
-void insertNode(int val)
-{
-    int fst = 0, snd = 0;
-    split(rootPt, val, fst, snd);
-    rootPt = merge(merge(fst, newNode(val)), snd);
+void insertNode(int & cntRt, int val) {
+    int fstRt = 0, sndRt = 0;
+    split(cntRt, val, fstRt, sndRt);
+    cntRt = merge(merge(fstRt, newNode(val)), sndRt);
 }
 
-void deleteNodeAll(int val)
-{
-    int fst = 0, snd = 0, thd = 0;
-    split(rootPt, val, fst, snd);
-    split(fst, val - 1, fst, thd);
-    rootPt = merge(fst, snd);
+void deleteNodeAll(int & cntRt, int val) {
+    int fstRt = 0, sndRt = 0, thdRt = 0;
+    split(cntRt, val, fstRt, sndRt);
+    split(fstRt, val - 1, fstRt, thdRt);
+    cntRt = merge(fstRt, sndRt);
 }
 
-void deleteNode(int val)
-{
-    int fst = 0, snd = 0, thd = 0;
-    split(rootPt, val, fst, snd);
-    split(fst, val - 1, fst, thd);
-    thd = merge(treap[thd].leftSon, treap[thd].rightSon);
-    rootPt = merge(merge(fst, thd), snd);
+void deleteNode(int & cntRt, int val) {
+    int fstRt = 0, sndRt = 0, thdRt = 0;
+    split(cntRt, val, fstRt, sndRt);
+    split(fstRt, val - 1, fstRt, thdRt);
+    thdRt = merge(treap[thdRt].leftSon, treap[thdRt].rightSon);
+    cntRt = merge(merge(fstRt, thdRt), sndRt);
 }
 
-int queryRank(int val)
-{
-    int fst = 0, snd = 0;
-    split(rootPt, val - 1, fst, snd);
-    int ans = treap[fst].size + 1;
-    rootPt = merge(fst, snd);
-    return ans;
+int queryRank(int & cntRt, int val) {
+    int fstRt = 0, sndRt = 0;
+    split(cntRt, val - 1, fstRt, sndRt);
+    int ret = treap[fstRt].siz + 1;
+    cntRt = merge(fstRt, sndRt);
+    return ret;
 }
 
-int queryPrev(int val)
-{
-    int fst = 0, snd = 0;
-    split(rootPt, val - 1, fst, snd);
-    int ans = treap[findValByRank(fst, treap[fst].size)].value;
-    rootPt = merge(fst, snd);
-    return ans;
+int queryPrev(int & cntRt, int val) {
+    int fstRt = 0, sndRt = 0;
+    split(cntRt, val - 1, fstRt, sndRt);
+    int ret = treap[findValByRank(fstRt, treap[fstRt].siz)].val;
+    cntRt = merge(fstRt, sndRt);
+    return ret;
 }
 
-int queryNext(int val)
-{
-    int fst = 0, snd = 0;
-    split(rootPt, val, fst, snd);
-    int ans = treap[findValByRank(snd, 1)].value;
-    rootPt = merge(fst, snd);
-    return ans;
+int queryNext(int & cntRt, int val) {
+    int fstRt = 0, sndRt = 0;
+    split(cntRt, val, fstRt, sndRt);
+    int ret = treap[findValByRank(sndRt, 1)].val;
+    cntRt = merge(fstRt, sndRt);
+    return ret;
 }
 
-int main()
-{
+int main() {
     ios::sync_with_stdio(false);
-    srand(time(NULL));
-    rootPt = 0;
-    treapPt = 0;
+    cin.tie(0); cout.tie(0); srand(time(NULL));
+    int cntRt = 0; treapPt = 0;
 
-    // Initialize blank node
-    memset(&treap[0], 0, sizeof(TreapNode));
+    treap[0] = {0, 0, 0, 0, 0};
 
-    int qNum;
-    cin >> qNum;
-    while (qNum--)
-    {
-        int opr, cnt;
-        cin >> opr >> cnt;
-
-        if (opr == 1)
-            insertNode(cnt);
-        else if (opr == 2)
-            deleteNode(cnt);
-        else if (opr == 3)
-            cout << queryRank(cnt) << endl;
-        else if (opr == 4)
-            cout << treap[findValByRank(rootPt, cnt)].value << endl;
-        else if (opr == 5)
-            cout << queryPrev(cnt) << endl;
-        else if (opr == 6)
-            cout << queryNext(cnt) << endl; 
+    int qNum; cin >> qNum;
+    while (qNum--) {
+        int op, cnt; cin >> op >> cnt;
+        if (op == 1)
+            insertNode(cntRt, cnt);
+        else if (op == 2)
+            deleteNode(cntRt, cnt);
+        else if (op == 3)
+            cout << queryRank(cntRt, cnt) << '\n';
+        else if (op == 4)
+            cout << treap[findValByRank(cntRt, cnt)].val << '\n';
+        else if (op == 5)
+            cout << queryPrev(cntRt, cnt) << '\n';
+        else if (op == 6)
+            cout << queryNext(cntRt, cnt) << '\n';
     }
     return 0;
 }
