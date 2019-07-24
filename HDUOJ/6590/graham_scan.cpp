@@ -44,16 +44,31 @@ void graham(vector<Vertex> & cnt, int which) {
     }
 }
 
+int sgn(long long int val) {
+    return (val > 0 ? 1 : val < 0 ? -1 : 0);
+} 
+
 bool segIntersect(const Seg & fst, const Seg & snd) {
     long long int cp1 = crossedProd(vtxMinus(fst.endPt, fst.startPt), vtxMinus(snd.startPt, fst.startPt));
     long long int cp2 = crossedProd(vtxMinus(fst.endPt, fst.startPt), vtxMinus(snd.endPt, fst.startPt));
     long long int cp3 = crossedProd(vtxMinus(snd.endPt, snd.startPt), vtxMinus(fst.startPt, snd.startPt));
     long long int cp4 = crossedProd(vtxMinus(snd.endPt, snd.startPt), vtxMinus(fst.endPt, snd.startPt));
-    return cp1 * cp2 <= 0 && cp3 * cp4 <= 0
+    return sgn(cp1) * sgn(cp2) <= 0 && sgn(cp3) * sgn(cp4) <= 0
         && max(snd.startPt.x, snd.endPt.x) >= min(fst.startPt.x, fst.endPt.x) 
         && max(fst.startPt.x, fst.endPt.x) >= min(snd.startPt.x, snd.endPt.x)
         && max(snd.startPt.y, snd.endPt.y) >= min(fst.startPt.y, fst.endPt.y) 
         && max(fst.startPt.y, fst.endPt.y) >= min(snd.startPt.y, snd.endPt.y);
+}
+
+long long int area2(Vertex fst, Vertex snd, Vertex thd) {
+    return crossedProd(vtxMinus(snd, fst), vtxMinus(thd, fst));
+}
+
+bool isConvexHull(vector<Vertex> & vertices) {
+    for (int i = 2; i < (int)vertices.size(); i++)
+        if (area2(vertices[0], vertices[i], vertices[i - 1]) != 0)
+            return true;
+    return false;
 }
 
 bool convexHullIntersect(vector<Vertex> & fst, vector<Vertex> & snd) {
@@ -66,6 +81,26 @@ bool convexHullIntersect(vector<Vertex> & fst, vector<Vertex> & snd) {
                 return true;
         }
     }
+
+    if (isConvexHull(fst)) {
+        for (int i = 0; i < fstLen; i++) {
+            int i1 = (i + 1) % fstLen;
+            for (int j = 0; j < sndLen; j++)
+                if (crossedProd(vtxMinus(fst[i1], fst[i]), vtxMinus(snd[j], fst[i])) > 0)
+                    return false;
+        }
+    }
+
+    if (isConvexHull(snd)) {
+        for (int i = 0; i < fstLen; i++) {
+            for (int j = 0; j < sndLen; j++) {
+                int j1 = (j + 1) % sndLen;
+                if (crossedProd(vtxMinus(snd[j1], snd[j]), vtxMinus(fst[i], snd[j])) > 0)
+                    return false;
+            }
+        }
+    }
+
     return false;
 }
 
