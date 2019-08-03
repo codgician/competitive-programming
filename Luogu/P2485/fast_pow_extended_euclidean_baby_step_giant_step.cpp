@@ -30,24 +30,60 @@ long long int linCon(long long int a, long long int b, long long int p) { // ax 
     return (ret % p + p) % p;
 }
 
-long long int hiCon(long long int a, long long int b, long long int p) {  // a ^ x = b (mod p)
+long long int phi(long long int num) {
+    long long int ret = num;
+    for (int i = 2; i * i <= num; i++) {
+        if (num % i != 0)
+            continue;
+        ret -= ret / i;
+        while (num % i == 0)
+            num /= i;
+    }
+    if (num > 1)
+        ret -= ret / num;
+    return ret;
+}
+
+long long int bsgs(long long int k, long long int a, long long int b, long long int p) {  // k * a ^ x = b (mod p)
+    b %= p;
+    if (a == 0)
+        return b == 0 ? 1 : -1;
     unordered_map<long long int, int> mp;
-    b %= p; long long int t = sqrt(p) + 1;
-    for (long long int j = 0; j < t; j++) {
-        long long int cnt = b * fastPow(a, j, p) % p;
-        mp[cnt] = j;
+    int t = sqrt(p) + 1; long long int tmp = k % p;
+    for (int j = 0; j < t; j++) {
+        if (mp.find(tmp) != mp.end())
+            break;
+        mp[tmp] = j; tmp = tmp * a % p;
     }
 
-    a = fastPow(a, t, p);
-    if (a == 0)
-        return b == 0? 1 : -1;
-    for (long long int i = 0; i <= t; i++) {
-        long long int cnt = fastPow(a, i, p);
-        long long int j = mp.find(cnt) == mp.end() ? -1 : mp[cnt];
-        if (j >= 0 && i * t - j >= 0)
-            return i * t - j;
+    long long int phip = phi(p), inv = fastPow(a, phip - t % phip, p); tmp = b;
+    for (int i = 0; i <= t; i++) {
+        int j = mp.find(tmp) == mp.end() ? -1 : mp[tmp];
+        if (j != -1) 
+            return 1ll * i * t + j;
+        tmp = tmp * inv % p;
     }
     return -1;
+}
+
+long long int hiCon(long long int a, long long int b, long long int p) {
+    if (b == 1)
+        return 0;
+    long long int offset = 0, fac = 1;
+    while (true) {
+        if (fac == b) 
+            return offset;
+        long long int gcd = __gcd(a, p);
+        if (b % gcd != 0)
+            return -1;
+        if (gcd == 1)
+            break;
+        offset++; p /= gcd; b /= gcd; 
+        fac = a / gcd * fac % p;
+    }
+
+    long long int ret = bsgs(fac, a, b, p);
+    return ret == -1 ? ret : ret + offset;
 }
 
 typedef long long int (* fptr)(long long int, long long int, long long int);
@@ -60,8 +96,8 @@ int main() {
     int qNum, type;
     cin >> qNum >> type; type--;
     while (qNum--) {
-        long long int a, b, mod; cin >> a >> b >> mod;
-        long long int ret = func[type](a, b, mod);
+        long long int a, b, p; cin >> a >> b >> p;
+        long long int ret = func[type](a, b, p);
         if (ret == -1)
             cout << "Orz, I cannot find x!\n";
         else
