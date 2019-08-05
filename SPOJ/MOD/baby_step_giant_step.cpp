@@ -26,7 +26,7 @@ long long int phi(long long int num) {
 }
 
 long long int bsgs(long long int k, long long int a, long long int b, long long int p) {  // k * a ^ x = b (mod p)
-    b %= p;
+    a %= p; b %= p;
     if (a == 0)
         return b == 0 ? 1 : -1;
     unordered_map<long long int, int> mp;
@@ -48,6 +48,7 @@ long long int bsgs(long long int k, long long int a, long long int b, long long 
 }
 
 long long int hiCon(long long int a, long long int b, long long int p) {
+    a %= p; b %= p;
     if (b == 1)
         return 0;
     long long int offset = 0, fac = 1;
