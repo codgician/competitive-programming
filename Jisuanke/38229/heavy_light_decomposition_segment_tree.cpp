@@ -82,7 +82,7 @@ int querySum(int segPt, int qLeftPt, int qRightPt) {
     return ans;
 }
 
-/* Tree Chain Partition */
+/* Heavy-light Decomposition */
 
 int father[SIZE], depth[SIZE], siz[SIZE];
 int top[SIZE], hson[SIZE], id[SIZE], orig[SIZE], cntId;
@@ -195,7 +195,6 @@ int main() {
             update(1, id[order[cntPt].second], 1);
             cntPt++;
         }
-
         // Query answer
         ans[qArr[i].id] = queryRoute(qArr[i].from, qArr[i].to);
     }

@@ -18,6 +18,7 @@ void addEdge(int from, int to, int len) {
 }
 
 /* Disjoint Set */
+
 int parent[SIZE];
 
 int getParent(int cntPt) {
@@ -37,7 +38,8 @@ bool merge(int fstPt, int sndPt) {
     return true;
 }
 
-/* Tree Chain Partition :: Initializations */
+/* Heavy-light decomposition */
+
 int father[SIZE], depth[SIZE], siz[SIZE];
 int top[SIZE], hson[SIZE], id[SIZE], orig[SIZE], cntId;
 int valArr[SIZE];
@@ -133,8 +135,6 @@ long long int querySum(int segPt, int qLeftPt, int qRightPt) {
     return ans;
 }
 
-/* Tree Chain Partition :: Queries */
-
 long long int queryRoute(int fstPt, int sndPt) {
     long long int ans = 0;
     while (top[fstPt] != top[sndPt]) {
@@ -168,56 +168,51 @@ long long int queryLen(int fstPt, int sndPt) {
 int main() {
     ios::sync_with_stdio(false);
     cin.tie(0); cout.tie(0);
-    int caseNum;
-    cin >> caseNum;
-    while (caseNum--) {
-        memset(head, -1, sizeof(head));
-        edgePt = 0, cntId = 0;
+    memset(head, -1, sizeof(head));
+    edgePt = 0, cntId = 0;
 
-        int qNum;
-        cin >> vertexNum >> qNum;
-        for (int i = 0; i < vertexNum; i++)
-            parent[i] = i;
-        for (int i = 0; i < vertexNum; i++) {
-            int from, to, len;
-            cin >> from >> to >> len;
-            from--, to--;
+    int qNum;
+    cin >> vertexNum >> qNum;
+    for (int i = 0; i < vertexNum; i++)
+        parent[i] = i;
+    for (int i = 0; i < vertexNum; i++) {
+        int from, to, len;
+        cin >> from >> to >> len;
+        from--, to--;
 
-            if (merge(from, to)) {
-                addEdge(from, to, len);
-                addEdge(to, from, len);
-            } else {
-                extraPt = i;
-                edge[edgePt++] = {to, -1, len};
-                edge[edgePt++] = {from, -1, len};
-            }
+        if (merge(from, to)) {
+            addEdge(from, to, len);
+            addEdge(to, from, len);
+        } else {
+            extraPt = i;
+            edge[edgePt++] = {to, -1, len};
+            edge[edgePt++] = {from, -1, len};
         }
+    }
 
-        memset(depth, -1, sizeof(depth));
-        memset(hson, -1, sizeof(hson));
-        father[0] = 0, depth[0] = 0, valArr[0] = 0;
-        dfs1(0);
-        dfs2(0, 0);
-        build(1, 1, vertexNum);
+    memset(depth, -1, sizeof(depth));
+    memset(hson, -1, sizeof(hson));
+    father[0] = 0, depth[0] = 0, valArr[0] = 0;
+    dfs1(0);
+    dfs2(0, 0);
+    build(1, 1, vertexNum);
 
-        while (qNum--) {
-            int opr, fst, snd;
-            cin >> opr >> fst >> snd;
-            if (opr == 0) {
-                // Modify weight
-                fst--;
-                edge[fst << 1].len = snd;
-                edge[fst << 1 | 1].len = snd;
-                if (fst != extraPt)
-                    update(1, id[edge[fst << 1].pt], snd);
-            } else {
-                fst--, snd--;
-                long long int ans1 = queryLen(fst, snd);
-                long long int ans2 = edge[extraPt << 1].len + min(queryLen(fst, edge[extraPt << 1].to) + queryLen(edge[extraPt << 1 | 1].to, snd), 
-                                                                queryLen(fst, edge[extraPt << 1 | 1].to) + queryLen(edge[extraPt << 1].to, snd));
-                
-                cout << min(ans1, ans2) << '\n';
-            }
+    while (qNum--) {
+        int opr, fst, snd;
+        cin >> opr >> fst >> snd;
+        if (opr == 1) {
+            fst--;
+            edge[fst << 1].len = snd;
+            edge[fst << 1 | 1].len = snd;
+            if (fst != extraPt)
+                update(1, id[edge[fst << 1].pt], snd);
+        } else {
+            fst--, snd--;
+            long long int ans1 = queryLen(fst, snd);
+            long long int ans2 = edge[extraPt << 1].len + min(queryLen(fst, edge[extraPt << 1].to) + queryLen(edge[extraPt << 1 | 1].to, snd), 
+                                                            queryLen(fst, edge[extraPt << 1 | 1].to) + queryLen(edge[extraPt << 1].to, snd));
+            
+            cout << min(ans1, ans2) << '\n';
         }
     }
 

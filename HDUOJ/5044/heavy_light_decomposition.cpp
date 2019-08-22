@@ -15,7 +15,7 @@ int top[SIZE], hson[SIZE], id[SIZE], orig[SIZE], cntId;
 
 long long int pfx[2][SIZE];
 
-/* Tree Chain Partition */
+/* Heavy-light Decomposition */
 
 void addEdge(int from, int to, int id) {
     edge[edgePt] = {to, head[from], id};
