@@ -3,6 +3,7 @@ using namespace std;
 
 #define SIZE 110
 #define P_SIZE 2000010
+#define C_LIM 30
 
 int minFac[P_SIZE], primes[P_SIZE], phi[P_SIZE], primesPt;
 int vis[P_SIZE];
@@ -39,15 +40,15 @@ int getPhi(int num) {
     if (num < P_SIZE)
         return phi[num];
     int ret = num;
-    for (int i = 2; i * i <= num; i++) {
-        if (num % i != 0)
+    for (int i = 0; i < primesPt && primes[i] * primes[i] <= num; i++) {
+        if (num % primes[i] != 0)
             continue;
-        ret -= ret / i;
-        while (num % i == 0)
-            num /= i;
+        ret = ret / primes[i] * (primes[i] - 1);
+        while (num % primes[i] == 0)
+            num /= primes[i];
     }
     if (num > 1)
-        ret -= ret / num;
+        ret = ret / num * (num - 1);
     return ret;
 }
 
@@ -62,12 +63,14 @@ vector<int> mp[P_SIZE];
 
 int main() {
     ios::sync_with_stdio(false);
-    cin.tie(0); cout.tie(0);    
+    cin.tie(0); cout.tie(0);
+
+
     initPhi();
     for (int i = 1; i < P_SIZE; i++)
         mp[phi[i]].push_back(i);
     
-   int caseNum; cin >> caseNum;
+    int caseNum; cin >> caseNum;
     while (caseNum--) {
         for (int i = 0; i < 100; i++)
             cin >> arr[i];
@@ -88,19 +91,30 @@ int main() {
             continue;
         }
 
-        int ans = -1; const int p = 83;
-        for (int i = 0; i < 100 && ans == -1; i++) {
+        int ans = -1, qaq = 0; const int p = 83;
+        for (int i = 0; i < 100 && ans == -1 && qaq < C_LIM; i++) {
             if (arr[i] % (p - 1) != 0)
                 continue;
-            int rem = arr[i] / (p - 1);
+            qaq++;
+            int rem = arr[i] / (p - 1), pk = p;
             for (auto & v : mp[rem]) {
                 if (check(p * v - i)) {
                     ans = p * v - i;
                     break;
                 }
             }
-        } 
 
+            while (ans == -1 && rem % p == 0 && qaq < C_LIM) {
+                rem /= p; pk *= p; qaq++;
+                for (auto & v : mp[rem]) {
+                    if (check(pk * v - i)) {
+                        ans = pk * v - i;
+                        break;
+                    }
+                }
+            }
+        } 
+ 
         if (ans == -1) 
             cout << "NO\n";
         else
