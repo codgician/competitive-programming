@@ -2,6 +2,7 @@
 using namespace std;
 
 #define SIZE 200010
+#define EXP_SIZE 2
 
 const int mod = 998244353;
 
