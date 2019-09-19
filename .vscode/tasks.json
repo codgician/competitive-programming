@@ -1,0 +1,73 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build (O2)",
+            "type": "shell",
+            "command": "C:\\Users\\codgi\\scoop\\apps\\gcc\\current\\bin\\g++.exe",
+            "args": [
+                "-g",
+                "-std=c++14",
+                "-O2",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "options": {
+                "cwd": "C:\\Users\\codgi\\scoop\\apps\\gcc\\current\\bin"
+            },
+            "presentation": {
+                "reveal": "never"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "Build and Run (ICPC)",
+            "type": "shell",
+            "command": "start",
+            "args": [
+                "cmd",
+                "/k \"${fileDirname}\\${fileBasenameNoExtension}.exe & pause & exit\""
+            ],
+            "presentation": {
+                "reveal": "never"
+            },
+            "dependsOrder": "sequence",
+            "dependsOn": [
+                "Build (O2)"
+            ],
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        },
+        {
+            "label": "Build (Debug)",
+            "type": "shell",
+            "command": "C:\\Users\\codgi\\scoop\\apps\\gcc\\current\\bin\\g++.exe",
+            "args": [
+                "-g",
+                "-std=c++14",
+                "-Og",
+                "${file}",
+                "-o",
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
+            ],
+            "options": {
+                "cwd": "C:\\Users\\codgi\\scoop\\apps\\gcc\\current\\bin"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        }
+    ]
+}
