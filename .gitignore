@@ -357,5 +357,6 @@ test.cpp
 std.cpp
 chk.cpp
 data.cpp
+contest/*
 
 # End of https://www.gitignore.io/api/c,c++,vim,rust,java,macos,linux,python,kotlin,windows,codeblocks,sublimetext,visualstudiocode,notepadpp

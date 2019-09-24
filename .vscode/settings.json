@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "numeric": "cpp",
+        "iosfwd": "cpp"
+    }
+}
