@@ -7,6 +7,8 @@
         "deque": "cpp",
         "list": "cpp",
         "vector": "cpp",
-        "string_view": "cpp"
+        "string_view": "cpp",
+        "iomanip": "cpp",
+        "cmath": "cpp"
     }
 }
