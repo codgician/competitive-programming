@@ -9,6 +9,7 @@
         "vector": "cpp",
         "string_view": "cpp",
         "iomanip": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "iostream": "cpp"
     }
 }
