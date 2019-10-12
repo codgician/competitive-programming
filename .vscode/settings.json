@@ -10,6 +10,7 @@
         "string_view": "cpp",
         "iomanip": "cpp",
         "cmath": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "tuple": "cpp"
     }
 }
