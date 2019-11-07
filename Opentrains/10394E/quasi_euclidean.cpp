@@ -42,21 +42,11 @@ int main() {
         }
 
         __int128 a = (__int128)num * 10; 
-        auto ret1 = solve(a - 1, b, a + 5, b);   // round down
-        auto ret2 = solve(a - 6, b, a + 1, b);      // round up
+        auto ret1 = solve(a - 5, b, a + 5, b);
+        auto ret2 = make_pair(a - 5, b); simplify(ret2.first, ret2.second);
 
         const auto check = [b2](pair<__int128, __int128> & ret) {
-            if (ret.second > 1e9) return false;
-            __int128 fst = ret.first * inf * 10;
-            fst /= ret.second;
-
-            int c2 = (fst / 10) % 10, c1 = fst % 10;
-
-            if (c2 == b2 && c1 < 5)
-                return true;
-            if (c2 == b2 - 1 && c1 >= 5)
-                return true;
-            return false;
+            return ret.first <= 1e9 && ret.second <= 1e9;
         };
 
         if (check(ret1))
